@@ -1,7 +1,5 @@
 import unittest
-from fastqtsvfile import *
 import xmltodict
-
 
 class TestFastqTsvMethods(unittest.TestCase):
     """
