@@ -6,7 +6,7 @@ import csv
 import os
 import xmltodict
 import functools
-
+import argparse
 
 def tsvbuild(path, pattern, list_of_paths, tsv_name):
     """builds a tsv file from a directory of paired files
@@ -157,3 +157,24 @@ def dictquery(input_dict, listofpath):
     for path in listofpath:
         output_list.append(functools.reduce(dict.get, path.split('/'), input_dict))
     return output_list
+
+# path, pattern, list_of_paths, tsv_name)
+
+def parse_args():
+    """Parses arguments
+    Args:
+    
+    Returns:
+        arguments
+    """
+    parser = argparse.ArgumentParser()
+    parser.add_argument('path', type=string, help='location of parent folder')
+    parser.add_argument('pattern', type=string, help='location of parent folder')
+    parser.add_argument('lists_of_paths', type=list, help='location of parent folder')
+    parser.add_argument('tsv_name', type=string, help='location of parent folder')
+    return (args.path, args.pattern, args.list_of_paths, args.tsv_name)
+
+
+if __name__ == '__main__':
+    input_args = parse_args()
+    tsvbuild(*input_args)
