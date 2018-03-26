@@ -4,6 +4,7 @@ import glob
 import csv
 import os
 import argparse
+from build_meta import *
 from chunkiter import *
 from build_meta.py import *
 
@@ -58,7 +59,6 @@ def tsvbuild(path, pattern, list_of_paths, tsv_name):
 def parse_args():
     """Parses arguments
     Args:
-    
     Returns:
         arguments
     """
