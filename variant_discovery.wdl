@@ -31,24 +31,22 @@ workflow ReadsPipelineSparkWorkflow {
   File ref_fasta
   File known_variants
 
-  Boolean? is_host_aligned
   String? google_apiKey 
 
   String gatk_docker
-  Int? disk_space_gb
-  Int? machine_mem_gb
-  Int? preemptible_attempts
-  String? sparkurl
-  String gatk_path
-
+  Int? disk_size
+  Int? mem_size
+  String? runner
+  String? dataproc_cluster
+ 
   scatter (bamfile in bam_info) {
     call ReadsPipelineSpark {
       input:
-        input_bam = bamfile[0]
+        input_bam = bam_info[0]
         ref_fasta=ref_fasta
         known_variants=known_variants
         gatk_docker=gatk_docker
-        output = bamfile[1]
+        output = bam_info[1]
 
 # uBams to vcf
 task ReadsPipelineSpark {
@@ -58,37 +56,39 @@ task ReadsPipelineSpark {
   File ref_fasta
   File known_variants
   
-  Boolean? is_host_aligned
   String? google_apiKey
-  
+  String? runner
+  String? dataproc_cluster
   String gatk_docker
+  String java_opt
+  Int? disk_size
+  Int? mem_size
 
-  # You may have to change the following two parameter values depending on the task requirements
-  Int default_ram_mb = 208000
-  # WARNING: In the workflow, you should calculate the disk space as an input to this task (disk_space_gb).
-  Int default_disk_space_gb = 400
-  # Mem is in units of GB but our command and memory runtime values are in MB
-  Int machine_mem = if defined(mem_gb) then mem_gb *1000 else default_ram_mb
-  Int command_mem = machine_mem - 4000
   
   command <<<
     set -e
     export GATK_LOCAL_JAR=${default="/root/gatk.jar" gatk4_jar_override}
-      gatk -- java-options "-Xmx${command_mem}m" \
+      gatk --java-options ${java_opt} \
       ReadsPipelineSpark \
-      --input ${input_bam}
-      --knownSites ${known_variants}
-      --output ${output}
-      --reference ${ref_fasta}
-      --apiKey ${google_apiKey}
-      --sparkMaster ${sparkurl}
+      --input ${input_bam} \
+      --knownSites ${known_variants} \
+      --output ${output} \
+      --reference ${ref_fasta} \
+      --apiKey ${google_apiKey} \
+      -align \
+      -- \
+      --sparkRunner {runner} \
+      --cluster ${dataproc_cluster}
   >>>
   runtime {
     docker: gatk_docker
-    memory: machine_men + " MB"
-    disks: "local-disk " + select_first([disk_space_gb, default_disk_space_gb]) + " HDD"
+    memory: mem_size + " MB"
+    disks: "local-disk " + select_first([disk_size, default_disk_space_gb]) + " HDD"
     preemptible: select_first([preemptible_attempts, 3])
     cpu: select_first([cpu, 32])
   }
   output {
-  File bam_output = "${sample_name}.bam"
+    File bam_output = "${output}.bam"
+  }
+}
+  
