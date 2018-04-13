@@ -16,13 +16,12 @@ def gen_dict_extract(value, var, des_dict=None):
                 yield des_dict
     except AttributeError:
         pass
-    else:
-        # try excepts all the way down?
-        if isinstance(v, dict):
-            for result in gen_dict_extract(value, v, des_dict):
+    # try excepts all the way down?
+    if isinstance(v, dict):
+        for result in gen_dict_extract(value, v, des_dict):
+            yield result
+    elif isinstance(v, list):
+        for d in v:
+            des_dict = d
+            for result in gen_dict_extract(value, d, des_dict):
                 yield result
-        elif isinstance(v, list):
-            for d in v:
-                des_dict = d
-                for result in gen_dict_extract(value, d, des_dict):
-                    yield result
