@@ -1,4 +1,5 @@
 import xmltodict
+from collections import OrderedDict
 
 
 def xmldictconv(xml_name):
@@ -15,4 +16,4 @@ def xmldictconv(xml_name):
             output_dict = xmltodict.parse(xml_file.read())
         return output_dict
     except OSError:
-        return {}
+        return OrderedDict()
