@@ -33,19 +33,19 @@ workflow ReadsPipelineSparkWorkflow {
 
   String? google_apiKey 
 
-  String gatk_docker
-  Int? disk_size
-  Int? mem_size
+  String? google_apiKey
   String? runner
   String? dataproc_cluster
- 
+  String? mem
+  String? cores
+  String java_opt
+  
   scatter (bamfile in bam_info) {
     call ReadsPipelineSpark {
       input:
         input_bam = bam_info[0]
         ref_fasta=ref_fasta
         known_variants=known_variants
-        gatk_docker=gatk_docker
         output = bam_info[1]
 
 # uBams to vcf
@@ -59,10 +59,9 @@ task ReadsPipelineSpark {
   String? google_apiKey
   String? runner
   String? dataproc_cluster
-  String gatk_docker
+  String? mem
+  String? cores
   String java_opt
-  Int? disk_size
-  Int? mem_size
 
   
   command <<<
@@ -81,14 +80,11 @@ task ReadsPipelineSpark {
       --cluster ${dataproc_cluster}
   >>>
   runtime {
-    docker: gatk_docker
-    memory: mem_size + " MB"
-    disks: "local-disk " + select_first([disk_size, default_disk_space_gb]) + " HDD"
-    preemptible: select_first([preemptible_attempts, 3])
-    cpu: select_first([cpu, 32])
+    appMainClass: "org.broadinstitute.hellbender.Main"
+    executorMemory: select_first([mem, "4G"])
+    executorCores: select_first([cores, "2"])
   }
   output {
     File bam_output = "${output}.bam"
   }
 }
-  
