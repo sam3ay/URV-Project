@@ -4,9 +4,8 @@ import glob
 import csv
 import os
 import argparse
-from build_meta import *
-from chunkiter import *
-from build_meta.py import *
+import build_meta
+import chunkiter
 
 
 def tsvbuild(path, pattern, list_of_paths, tsv_name):
@@ -34,13 +33,16 @@ def tsvbuild(path, pattern, list_of_paths, tsv_name):
     exp_dict = {}
     with open('tsv_name.tsv', 'w+') as tsvfile:
         writer = csv.writer(tsvfile, delimiter='\t', newline='\n')
-        for files in grouper(glob.iglob(path, pattern, recursive=True), 2):
+        # glob searches directories while grouper pulls matches two at a time
+        for files in chunkiter.grouper(
+                glob.iglob(path, pattern, recursive=True), 2):
             path, filename_1 = os.path.split(files[0])
             filename_2 = os.path.split(files[1])[1]
             exp_id = filename_1.split('_')[0]
             exp_id_2 = filename_2.split('_')[0]
             if exp_id == exp_id_2:
-                exp_dict, metadata = build_metadata(exp_id, path, list_of_paths, input_dict=exp_dict)
+                exp_dict, metadata = build_meta.build_metadata(
+                        exp_id, path, list_of_paths, input_dict=exp_dict)
                 metadata.extend(files)
                 # tsv_fileformat:SampleName;output;predictedinsertsize;readgroup
                 # library_name;platformmodel;platform;sequencingcenter
@@ -49,7 +51,8 @@ def tsvbuild(path, pattern, list_of_paths, tsv_name):
             else:
                 # think about break if this is the case
                 with open('ubamlog', 'w+') as logfile:
-                    logfile.write('{0} and {1} are not paired files \n'.format(exp_id, exp_id_2))
+                    logfile.write('{0} and {1} are not paired files \n'.format(
+                        exp_id, exp_id_2))
                 break
     return tsv_name
 
@@ -65,7 +68,8 @@ def parse_args():
     parser = argparse.ArgumentParser()
     parser.add_argument('path', help='location of parent folder')
     parser.add_argument('pattern', help='location of parent folder')
-    parser.add_argument('lists_of_paths', type=list, help='location of parent folder')
+    parser.add_argument(
+            'lists_of_paths', type=list, help='location of parent folder')
     parser.add_argument('tsv_name', help='location of parent folder')
     args = parser.parse_args()
     return (args.path, args.pattern, args.list_of_paths, args.tsv_name)
