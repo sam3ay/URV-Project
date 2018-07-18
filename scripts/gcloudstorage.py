@@ -3,25 +3,36 @@ from google.cloud import storage
 from google.cloud import exceptions
 
 
-def get_gcsbucket(bucket_name):
+def gcsauth(json_path):
+    """Provides the Google Cloud service account credentials to be used
+
+    Args:
+        json_path: string, path to service account json
+    Returns:
+        Service account credentials
     """
+    credentials = storage.Client.from_service_account_json(json_path)
+    return credentials
+
+
+def get_gcsbucket(bucket_name, storage_client=storage.Client()):
+    """Retrieves Google Cloud storage bucket
 
     Args:
         bucket_name: string, name of desired bucket
+        storage_client: object, Google Cloud account credentials,
+                        Defaults to environmental variable.
     Returns:
         bucket object
     Notes:
         expects environment to provide google cloud authentication
     """
-
-    storage_client = storage.Client()
-
     try:
         bucket = storage_client.get_bucket(bucket_name)
     except exceptions.NotFound:
         print('Sorry, that bucket does not exist!')
     except exceptions.Forbidden:
-        print('Insufficient account permissions')
+        print('Insufficient account permissionsm')
     return bucket
 
 
