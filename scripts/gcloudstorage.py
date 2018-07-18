@@ -1,6 +1,6 @@
 import argparse
 from google.cloud import storage
-from google.cloud.exceptions import NotFound
+from google.cloud import exceptions
 
 
 def get_gcsbucket(bucket_name):
@@ -18,8 +18,10 @@ def get_gcsbucket(bucket_name):
 
     try:
         bucket = storage_client.get_bucket(bucket_name)
-    except NotFound:
+    except exceptions.NotFound:
         print('Sorry, that bucket does not exist!')
+    except exceptions.Forbidden:
+        print('Insufficient account permissions')
     return bucket
 
 
