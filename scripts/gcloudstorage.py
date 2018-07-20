@@ -50,13 +50,16 @@ def parse_args():
     Args:
     Returns: arguments
     """
-    parser = argparse.ArgumentParser
-    parser.add_argument(
-            'bucket name', help='Bucket name on google cloud storage')
+    parser = argparse.ArgumentParser()
+    parser.add_argument('bucket_name',
+                        help='Bucket name on google cloud storage')
+    parser.add_argument('-j', '--json', help='Path to service account json')
     args = parser.parse_args()
     return (args.parser)
 
 
 if __name__ == '__main__':
+    """
+    """
     input_args = parse_args()
-    blob_generator(*input_args)
+    get_gcsbucket(*input_args)
