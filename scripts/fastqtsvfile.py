@@ -31,7 +31,7 @@ def tsvbuild(path, pattern, list_of_paths, tsv_name):
         platformmodel; platform; sequencingcenter; Fastq1 ; Fastq2
     """
     exp_dict = {}
-    with open('tsv_name.tsv', 'w+') as tsvfile:
+    with open('tsv_name.tsv', 'a') as tsvfile:
         writer = csv.writer(tsvfile, delimiter='\t', newline='\n')
         # glob searches directories while grouper pulls matches two at a time
         for files in chunkiter.grouper(
@@ -66,11 +66,25 @@ def parse_args():
         arguments
     """
     parser = argparse.ArgumentParser()
-    parser.add_argument('path', help='location of parent folder')
-    parser.add_argument('pattern', help='location of parent folder')
     parser.add_argument(
-            'lists_of_paths', type=list, help='location of parent folder')
-    parser.add_argument('tsv_name', help='location of parent folder')
+            'path',
+            help='location of parent folder'
+            )
+    parser.add_argument(
+            'pattern',
+            help='location of parent folder'
+            )
+    parser.add_argument(
+            'lists_of_paths',
+            type=list, help='location of parent folder',
+            nargs='+'
+            )
+    parser.add_argument(
+            '-tsv',
+            '--tsv_name',
+            default='tsv',
+            help='location of parent folder'
+            )
     args = parser.parse_args()
     return (args.path, args.pattern, args.list_of_paths, args.tsv_name)
 

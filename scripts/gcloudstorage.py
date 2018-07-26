@@ -1,6 +1,6 @@
 import argparse
 from google.cloud import storage
-from google.cloud import exceptions
+from google.cloud import gcsexcept as gcsexcept
 
 
 def gcsauth(json_path):
@@ -29,9 +29,9 @@ def get_gcsbucket(bucket_name, storage_client=storage.Client()):
     """
     try:
         bucket = storage_client.get_bucket(bucket_name)
-    except exceptions.NotFound:
+    except gcsexcept.NotFound:
         print('Sorry, that bucket does not exist!')
-    except exceptions.Forbidden:
+    except gcsexcept.Forbidden:
         print('Insufficient account permissionsm')
     return bucket
 
@@ -43,23 +43,3 @@ def blob_generator(bucket_name, prefix=None, delimiter='/'):
     cloud_bucket = get_gcsbucket(bucket_name)
     for item in cloud_bucket.list_blobs(max_results=20):
         yield item
-
-
-def parse_args():
-    """Parses arguments
-    Args:
-    Returns: arguments
-    """
-    parser = argparse.ArgumentParser()
-    parser.add_argument('bucket_name',
-                        help='Bucket name on google cloud storage')
-    parser.add_argument('-j', '--json', help='Path to service account json')
-    args = parser.parse_args()
-    return (args.parser)
-
-
-if __name__ == '__main__':
-    """
-    """
-    input_args = parse_args()
-    get_gcsbucket(*input_args)
