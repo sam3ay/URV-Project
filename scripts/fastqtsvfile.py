@@ -3,7 +3,6 @@
 import glob
 import csv
 import os
-import argparse
 import build_meta
 import chunkiter
 
@@ -57,38 +56,4 @@ def tsvbuild(path, pattern, list_of_paths, tsv_name):
     return tsv_name
 
 
-# path, pattern, list_of_paths, tsv_name)
-
-def parse_args():
-    """Parses arguments
-    Args:
-    Returns:
-        arguments
-    """
-    parser = argparse.ArgumentParser()
-    parser.add_argument(
-            'path',
-            help='location of parent folder'
-            )
-    parser.add_argument(
-            'pattern',
-            help='location of parent folder'
-            )
-    parser.add_argument(
-            'lists_of_paths',
-            type=list, help='location of parent folder',
-            nargs='+'
-            )
-    parser.add_argument(
-            '-tsv',
-            '--tsv_name',
-            default='tsv',
-            help='location of parent folder'
-            )
-    args = parser.parse_args()
-    return (args.path, args.pattern, args.list_of_paths, args.tsv_name)
-
-
 if __name__ == '__main__':
-    input_args = parse_args()
-    tsvbuild(*input_args)
