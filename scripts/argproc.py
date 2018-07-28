@@ -3,9 +3,11 @@ import argparse
 
 def parse_args():
     """Parses arguments
-    Args:
     Returns:
         arguments
+    Notes:
+        Possible subparser addition later. parser.add_subparsers(),
+        subparserts.add_parser()
     """
     parser = argparse.ArgumentParser(
             prog='GCStoTSV',
@@ -38,4 +40,4 @@ def parse_args():
             help='Path to tsv File'
             )
     args = parser.parse_args()
-    return (args.path, args.pattern, args.list_of_paths, args.tsv_name)
+    return vars(args)
