@@ -3,13 +3,12 @@
 import glob
 import csv
 import os
-import argparse
-from build_meta import *
-from chunkiter import *
-from build_meta.py import *
+import build_meta
+import chunkiter
+import argproc
 
 
-def tsvbuild(path, pattern, list_of_paths, tsv_name):
+def tsvbuild(gcs, pattern, list_of_paths, tsv_name):
     """builds a tsv file from a directory of paired files
 
     Retrieves location of pairs of files matching pattern and retrieves
@@ -17,30 +16,32 @@ def tsvbuild(path, pattern, list_of_paths, tsv_name):
     Assumes paired files differences occur after an underscore '_'.
 
     Args:
-        path: string, path name, either absolute or relative accepted,
-              recursively searched
-        pattern: string pattern being searched
-        tsv_name: filename or tsv file
-        list_of_paths: list of strings, containing location of desired values
-                       in nested dictionary
+        gcs (str): google cloud bucket name, recursively searched
+        pattern (str): file identifying pattern being searched
+        tsv_name (str): filename or tsv file
+        list_of_paths (list): containing location of desired values
+            in nested dictionary
 
     Returns:
-        tsv file with format preceded by list_of_paths followed by files
+        str: location of tsv file with format preceded by list_of_paths followed by files
     Notes:
         format of column separation marked by semicolons
         SampleName; output; predictedinsertsize; readgroup; library_name;
         platformmodel; platform; sequencingcenter; Fastq1 ; Fastq2
     """
     exp_dict = {}
-    with open('tsv_name.tsv', 'w+') as tsvfile:
+    with open('tsv_name.tsv', 'a') as tsvfile:
         writer = csv.writer(tsvfile, delimiter='\t', newline='\n')
-        for files in grouper(glob.iglob(path, pattern, recursive=True), 2):
+        # glob searches directories while grouper pulls matches two at a time
+        for files in chunkiter.grouper(
+                glob.iglob(gcs, pattern, recursive=True), 2):
             path, filename_1 = os.path.split(files[0])
             filename_2 = os.path.split(files[1])[1]
             exp_id = filename_1.split('_')[0]
             exp_id_2 = filename_2.split('_')[0]
             if exp_id == exp_id_2:
-                exp_dict, metadata = build_metadata(exp_id, path, list_of_paths, input_dict=exp_dict)
+                exp_dict, metadata = build_meta.build_metadata(
+                        exp_id, path, list_of_paths, input_dict=exp_dict)
                 metadata.extend(files)
                 # tsv_fileformat:SampleName;output;predictedinsertsize;readgroup
                 # library_name;platformmodel;platform;sequencingcenter
@@ -49,28 +50,12 @@ def tsvbuild(path, pattern, list_of_paths, tsv_name):
             else:
                 # think about break if this is the case
                 with open('ubamlog', 'w+') as logfile:
-                    logfile.write('{0} and {1} are not paired files \n'.format(exp_id, exp_id_2))
+                    logfile.write('{0} and {1} are not paired files \n'.format(
+                        exp_id, exp_id_2))
                 break
     return tsv_name
 
 
-# path, pattern, list_of_paths, tsv_name)
-
-def parse_args():
-    """Parses arguments
-    Args:
-    Returns:
-        arguments
-    """
-    parser = argparse.ArgumentParser()
-    parser.add_argument('path', help='location of parent folder')
-    parser.add_argument('pattern', help='location of parent folder')
-    parser.add_argument('lists_of_paths', type=list, help='location of parent folder')
-    parser.add_argument('tsv_name', help='location of parent folder')
-    args = parser.parse_args()
-    return (args.path, args.pattern, args.list_of_paths, args.tsv_name)
-
-
 if __name__ == '__main__':
-    input_args = parse_args()
-    tsvbuild(*input_args)
+    darg = argproc.parse_args()
+    tsvbuild(darg[gcs], darg[pattern], darg[metadata], darg[tsv_name])
