@@ -6,13 +6,17 @@ class TestUrvMethods(unittest.TestCase):
     """Establish testing environment
     """
 
+    @classmethod
+    def setUpClass(cls):
+        """Provides gcs account credentials to all tests
+        """
+        storage_client = gstorage.google_auth('authenticate key')
+
     def setUp(self):
         """
-        Provides gcs account credentials to all tests
         Retrieves google bucket
         WIP: Creates temporary directory
         """
-        storage_client = gstorage.google_auth('authenticate key')
         storage_bucket = gstorage.get_bucket(storage_client, 'bucket name')
 
 
