@@ -1,15 +1,14 @@
-import argparse
 from google.cloud import storage
-from google.cloud import gcsexcept as gcsexcept
+from google.cloud import exceptions as gcsexcept
 
 
 def gcsauth(json_path):
     """Provides the Google Cloud service account credentials to be used
 
     Args:
-        json_path: string, path to service account json
+        json_path (str): Path to service account json
     Returns:
-        Service account credentials
+        obj: Service account credentials
     """
     credentials = storage.Client.from_service_account_json(json_path)
     return credentials
@@ -19,9 +18,9 @@ def get_gcsbucket(bucket_name, storage_client=storage.Client()):
     """Retrieves Google Cloud storage bucket
 
     Args:
-        bucket_name: string, name of desired bucket
-        storage_client: object, Google Cloud account credentials,
-                        Defaults to environmental variable.
+        bucket_name (str): name of desired bucket
+        storage_client (:obj: optional):Google Cloud account credentials,
+            Defaults to environmental variable.
     Returns:
         bucket object
     Notes:
