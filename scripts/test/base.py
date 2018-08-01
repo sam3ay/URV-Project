@@ -1,6 +1,7 @@
 import unittest
 import gcloudstorage
 
+
 class TestUrvMethods(unittest.TestCase):
     """Establish testing environment
     """
@@ -16,7 +17,7 @@ class TestUrvMethods(unittest.TestCase):
         Retrieves google bucket
         WIP: Creates temporary directory
         """
-        storage_bucket = gstorage.get_bucket(storage_client, 'bucket name')
+        storage_bucket = gcloudstorage.get_gcsbucket('bucket name', '~/Hail_Genomic.json')
 
 
 if __name__ == '__main__':

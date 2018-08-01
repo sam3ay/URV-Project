@@ -1,17 +1,19 @@
 from google.oauth2client import service_account
 from google.datalab import storage
 from datalab import context
+from google.datalab.utils import RequestException
 
 
-def gcsauth(json_path):
+def gcsauth(json_path,
+            scope='https://www.googleapis.com/auth/devstorage.read_only'):
     """Provides the Google Cloud service account credentials to be used
 
     Args:
         json_path (str): Path to service account json
+
     Returns:
         obj: Service account credentials
     """
-    scope = 'https://www.googleapis.com/auth/devstorage.read_only'
     credentials = service_account.Credentials.from_service_account_file(
             json_path, scopes=(scope,))
     return credentials
@@ -29,16 +31,21 @@ def get_context(credentials):
     context_obj = context.Context(credentials.project_id, credentials)
     return context_obj
 
+
 def get_gcsbucket(bucket_name, json_path):
     """Retrieves Google Cloud storage bucket
 
     Args:
         bucket_name (str): name of desired bucket
-        storage_client (:obj: optional):Google Cloud account credentials,
-            Defaults to environmental variable.
+        json_path (str): Path to service account json
+
     Returns:
         bucket object
+
     Raises:
+        RequestException: If the bucket does not exist or
+            the service_account has inadequate permissions
+
     Notes:
         expects environment to provide google cloud authentication
     """
@@ -46,17 +53,22 @@ def get_gcsbucket(bucket_name, json_path):
     proj_context = get_context(credentials)
     try:
         bucket = storage.Bucket(bucket_name, context=proj_context)
-    except gcsexcept.NotFound:
-        print('Sorry, that bucket does not exist!')
-    except gcsexcept.Forbidden:
-        print('Insufficient account permissionsm')
+    except RequestException:
+        raise
     return bucket
 
 
-def blob_generator(bucket_name, prefix=None, delimiter='/'):
+def blob_generator(bucket_name, json_path, pattern='_1.fastq.bz2'):
+    """Yields blob object url location
+
+    Args:
+        bucket_name (str): name of desired bucket
+        json_path (str): Path to service account json
+
+    Yields:
+        Link to Google Cloud storage object
     """
-    WIP
-    """
-    cloud_bucket = get_gcsbucket(bucket_name)
-    for item in cloud_bucket.list_blobs(max_results=20):
-        yield item
+    cloud_bucket = get_gcsbucket(bucket_name, json_path)
+    for blob in cloud_bucket.objects():
+        if blob.key.endswith(pattern):
+            yield blob.uri
