@@ -1,6 +1,5 @@
 import unittest
-import gstorage
-
+import gcloudstorage
 
 class TestUrvMethods(unittest.TestCase):
     """Establish testing environment
@@ -10,7 +9,7 @@ class TestUrvMethods(unittest.TestCase):
     def setUpClass(cls):
         """Provides gcs account credentials to all tests
         """
-        storage_client = gstorage.google_auth('authenticate key')
+        credentials = gcloudstorage.gcsauth('~/Hail_Genomic.json')
 
     def setUp(self):
         """

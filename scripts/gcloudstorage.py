@@ -1,5 +1,6 @@
-from google.cloud import storage
-from google.cloud import exceptions as gcsexcept
+from google.oauth2client import service_account
+from google.datalab import storage
+from datalab import context
 
 
 def gcsauth(json_path):
@@ -10,11 +11,25 @@ def gcsauth(json_path):
     Returns:
         obj: Service account credentials
     """
-    credentials = storage.Client.from_service_account_json(json_path)
+    scope = 'https://www.googleapis.com/auth/devstorage.read_only'
+    credentials = service_account.Credentials.from_service_account_file(
+            json_path, scopes=(scope,))
     return credentials
 
 
-def get_gcsbucket(bucket_name, storage_client=storage.Client()):
+def get_context(credentials):
+    """Initializes a context object
+
+    Args:
+        credentials (obj): Google Cloud account authorization.
+
+    Returns:
+        Context object.  Used for connecting with Google Cloud APIs.
+    """
+    context_obj = context.Context(credentials.project_id, credentials)
+    return context_obj
+
+def get_gcsbucket(bucket_name, json_path):
     """Retrieves Google Cloud storage bucket
 
     Args:
@@ -23,11 +38,14 @@ def get_gcsbucket(bucket_name, storage_client=storage.Client()):
             Defaults to environmental variable.
     Returns:
         bucket object
+    Raises:
     Notes:
         expects environment to provide google cloud authentication
     """
+    credentials = gcsauth(json_path)
+    proj_context = get_context(credentials)
     try:
-        bucket = storage_client.get_bucket(bucket_name)
+        bucket = storage.Bucket(bucket_name, context=proj_context)
     except gcsexcept.NotFound:
         print('Sorry, that bucket does not exist!')
     except gcsexcept.Forbidden:
