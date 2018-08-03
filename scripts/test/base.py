@@ -12,13 +12,6 @@ class TestUrvMethods(unittest.TestCase):
         """
         credentials = gcloudstorage.gcsauth('~/Hail_Genomic.json')
 
-    def setUp(self):
-        """
-        Retrieves google bucket
-        WIP: Creates temporary directory
-        """
-        storage_bucket = gcloudstorage.get_gcsbucket('bucket name', '~/Hail_Genomic.json')
-
 
 if __name__ == '__main__':
     """
