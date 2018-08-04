@@ -28,3 +28,7 @@ class TestGcsAuthentication(unittest.TestCase):
         # check type
         self.assertIsInstance(
                 context_c, context.Context, msg='Not context class')
+
+
+if __name__ == '__main__':
+    unittest.main()
