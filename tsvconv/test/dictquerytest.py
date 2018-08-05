@@ -1,5 +1,5 @@
 import unittest
-import dictquery
+from tsvconv import dictquery
 
 
 class DictQueryTest(unittest.TestCase):
@@ -13,4 +13,4 @@ class DictQueryTest(unittest.TestCase):
         """
         input_dict = {'hello': {'all': {'we': {'see': 'there'}}}}
         self.assertEqual(dictquery.dictquery(input_dict, [
-            'hello/all/we/see']), ['there'])
+            'hello/all/we/see']), ['there'], msg='Dictionary Parsing error')

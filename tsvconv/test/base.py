@@ -10,7 +10,7 @@ class TestUrvMethods(unittest.TestCase):
     def setUpClass(cls):
         """Provides gcs account credentials to all tests
         """
-        credentials = gcloudstorage.gcsauth('~/Hail_Genomic.json')
+        credentials = gcloudstorage.gcsauth('/root/Hail_Genomic.json')
 
 
 if __name__ == '__main__':

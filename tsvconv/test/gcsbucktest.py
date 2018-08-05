@@ -12,7 +12,7 @@ class TestGCSbucket(base.TestUrvMethods):
         """
         """
         storage_bucket = gcloudstorage.get_gcsbucket(
-                'bucket name', '~/Hail_Genomic.json')
+                'bucket name', '/root/Hail_Genomic.json')
         # Check type
         self.assertIsInstance(
                 storage_bucket, storage.Bucket, msg='Object is not a bucket')
