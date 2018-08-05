@@ -1,4 +1,5 @@
 import unittest
+from tsvconv import xmldictconv
 import xmltodict
 
 
@@ -12,5 +13,6 @@ class XmlToDictTest(unittest.TestCase):
         """
         with open('test.xml', 'r') as testxml:
             self.assertEqual(
-                    xmltodict.xmldictconv(
-                        'test.xml'), xmltodict.parse(testxml.read()))
+                    xmldictconv.xmldictconv(testxml)
+                    , xmltodict.parse(testxml.read()),
+                    msg='Dictionary Conversion Error')
