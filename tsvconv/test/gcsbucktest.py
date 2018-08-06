@@ -1,27 +1,32 @@
-import base
-import gcloudstorage
+from tsvconv import gcloudstorage
+from tsvconv.test import base
 from google.datalab import storage
-import unittest
 
 
 class TestGCSbucket(base.TestUrvMethods):
     """Test bucket related methods
     """
 
-    def Testbucket(self):
+    def testbucketexist(self):
         """
         """
         storage_bucket = gcloudstorage.get_gcsbucket(
-                'bucket name', '/root/Hail_Genomic.json')
+                'urv_genetics', '/root/Hail_Genomic.json')
         # Check type
         self.assertIsInstance(
                 storage_bucket, storage.Bucket, msg='Object is not a bucket')
         # check if bucket exists
         self.assertTrue(storage_bucket.exists(), msg='Bucket does not Exist')
-        # Check access to bucket
-        self.assertIsInstance(
-                storage_bucket.metadata, msg='No access to storage_bucket')
+    
+    def testbucketaccess(self):
+        """
+        """
+        blob_bucket = gcloudstorage.blob_generator(
+                'urv_genetics', '/root/Hail_Genomic.json')
+        self.assertIsInstance(blob_bucket.next(), storage.Object msg='No access to bucket')
 
 
 if __name__ == '__main__':
-    unittest.main()
+    """
+    """
+    base.main()

@@ -1,5 +1,5 @@
 import unittest
-import gcloudstorage
+from tsvconv import gcloudstorage
 
 
 class TestUrvMethods(unittest.TestCase):
@@ -13,7 +13,5 @@ class TestUrvMethods(unittest.TestCase):
         credentials = gcloudstorage.gcsauth('/root/Hail_Genomic.json')
 
 
-if __name__ == '__main__':
-    """
-    """
+def main():
     unittest.main()
