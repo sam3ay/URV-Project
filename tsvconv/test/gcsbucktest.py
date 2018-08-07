@@ -1,6 +1,7 @@
 from tsvconv import gcloudstorage
 from tsvconv.test import base
 from google.datalab import storage
+from google.datalab.utils import RequestException
 
 
 class TestGCSbucket(base.TestUrvMethods):
@@ -17,13 +18,21 @@ class TestGCSbucket(base.TestUrvMethods):
                 storage_bucket, storage.Bucket, msg='Object is not a bucket')
         # check if bucket exists
         self.assertTrue(storage_bucket.exists(), msg='Bucket does not Exist')
-    
-    def testbucketaccess(self):
+        # check failed permission error handling
+        self.assertRaises(
+                RequestException,
+                gcloudstorage.get_gcsbucket('we', '/root/Hail_Genomic.json'),
+                msg='Failed to catch incorrect perimission')
+
+    def testbucketobject(self):
         """
         """
         blob_bucket = gcloudstorage.blob_generator(
                 'urv_genetics', '/root/Hail_Genomic.json')
-        self.assertIsInstance(blob_bucket.next(), storage.Object msg='No access to bucket')
+        blob_str = next(blob_bucket)
+        self.assertEqual(blob_str[0:5],
+                         'gs://',
+                         msg='Failed to return google cloud storage link')
 
 
 if __name__ == '__main__':

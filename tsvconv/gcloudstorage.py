@@ -2,6 +2,7 @@ from google.oauth2 import service_account
 from google.datalab import storage
 from datalab import context
 from google.datalab.utils import RequestException
+from json.decoder import JSONDecodeError
 
 
 def gcsauth(json_path,
@@ -13,9 +14,21 @@ def gcsauth(json_path,
 
     Returns:
         obj: Service account credentials
+
+    Raises:
+        JSONDecodeError: When file can't be decoded
+        IsADirectoryError: When directory supplied instead of file
+        AttributeError: Unexpected Json file provided
     """
-    credentials = service_account.Credentials.from_service_account_file(
-            json_path, scopes=(scope,))
+    try:
+        credentials = service_account.Credentials.from_service_account_file(
+                json_path, scopes=(scope,))
+    except IsADirectoryError:
+        raise
+    except JSONDecodeError:
+        raise
+    except AttributeError:
+        raise
     return credentials
 
 
@@ -27,8 +40,13 @@ def get_context(credentials):
 
     Returns:
         Context object.  Used for connecting with Google Cloud APIs.
+    Raise:
+        AttributeError: Not a valid service_account.Credentials object
     """
-    context_obj = context.Context(credentials.project_id, credentials)
+    try:
+        context_obj = context.Context(credentials.project_id, credentials)
+    except AttributeError:
+        raise
     return context_obj
 
 
@@ -43,11 +61,7 @@ def get_gcsbucket(bucket_name, json_path):
         bucket object
 
     Raises:
-        RequestException: If the bucket does not exist or
-            the service_account has inadequate permissions
-
-    Notes:
-        expects environment to provide google cloud authentication
+        RequestException: The service_account has inadequate permissions
     """
     credentials = gcsauth(json_path)
     proj_context = get_context(credentials)
@@ -67,8 +81,13 @@ def blob_generator(bucket_name, json_path, pattern='_1.fastq.bz2'):
 
     Yields:
         Link to Google Cloud storage object
+    Raises:
+        RequestException: Bucket doesn't exist
     """
     cloud_bucket = get_gcsbucket(bucket_name, json_path)
-    for blob in cloud_bucket.objects():
-        if blob.key.endswith(pattern):
-            yield blob.uri
+    try:
+        for blob in cloud_bucket.objects():
+            if blob.key.endswith(pattern):
+                yield blob.uri
+    except RequestException:
+        raise
