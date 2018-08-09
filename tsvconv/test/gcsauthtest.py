@@ -26,6 +26,10 @@ class TestGcsAuthentication(unittest.TestCase):
                 gcloudstorage.JSONDecodeError,
                 gcloudstorage.gcsauth('/root/bad'),
                 msg='Failed to identify non json file')
+        self.assertRaises(
+                AttributeError,
+                gcloudstorage.gcsauth('/root/rand.json'),
+                msg='Failed to identify incorrect json file')
 
     def test_context(self):
         """Ensure context is set
