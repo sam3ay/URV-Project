@@ -18,18 +18,18 @@ class TestGcsAuthentication(unittest.TestCase):
                 service_account.Credentials, msg='Not credential class')
         self.assertEqual(
                 credentials.scopes, scopes, msg='Incorrect Permissions')
-        self.assertRaises(
+        with self.assertRaises(
                 IsADirectoryError,
-                gcloudstorage.gcsauth('/root/'),
-                msg='Directory Error not handled')
-        self.assertRaises(
+                msg='Directory Error not handled'):
+            gcloudstorage.gcsauth('/root/')
+        with self.assertRaises(
                 gcloudstorage.JSONDecodeError,
-                gcloudstorage.gcsauth('/root/bad'),
-                msg='Failed to identify non json file')
-        self.assertRaises(
+                msg='Failed to identify non json file'):
+            gcloudstorage.gcsauth('/root/bad')
+        with self.assertRaises(
                 AttributeError,
-                gcloudstorage.gcsauth('/root/rand.json'),
-                msg='Failed to identify incorrect json file')
+                msg='Failed to identify incorrect json file'):
+            gcloudstorage.gcsauth('/root/rand.json')
 
     def test_context(self):
         """Ensure context is set

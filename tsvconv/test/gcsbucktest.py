@@ -18,11 +18,6 @@ class TestGCSbucket(base.TestUrvMethods):
                 storage_bucket, storage.Bucket, msg='Object is not a bucket')
         # check if bucket exists
         self.assertTrue(storage_bucket.exists(), msg='Bucket does not Exist')
-        # check failed permission error handling
-        self.assertRaises(
-                RequestException,
-                gcloudstorage.get_gcsbucket('we', '/root/Hail_Genomic.json'),
-                msg='Failed to catch incorrect perimission')
 
     def testbucketobject(self):
         """
