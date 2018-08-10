@@ -9,8 +9,6 @@ class TestGCSbucket(base.TestUrvMethods):
     """
 
     def testbucketexist(self):
-        """
-        """
         storage_bucket = gcloudstorage.get_gcsbucket(
                 'urv_genetics', '/root/Hail_Genomic.json')
         # Check type
@@ -20,8 +18,6 @@ class TestGCSbucket(base.TestUrvMethods):
         self.assertTrue(storage_bucket.exists(), msg='Bucket does not Exist')
 
     def testbloblink(self):
-        """
-        """
         blob_bucket = gcloudstorage.bloblink_generator(
                 'urv_genetics', '/root/Hail_Genomic.json')
         blob_str = next(blob_bucket)
@@ -30,8 +26,6 @@ class TestGCSbucket(base.TestUrvMethods):
                          msg='Failed to return google cloud storage link')
 
     def testblobdownload(self):
-        """
-        """
         blob = gcloudstorage.blob_download(
                 'blob_key',
                 'bucket_name',
@@ -48,6 +42,4 @@ class TestGCSbucket(base.TestUrvMethods):
 
 
 if __name__ == '__main__':
-    """
-    """
     base.main()
