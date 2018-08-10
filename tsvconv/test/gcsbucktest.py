@@ -19,15 +19,32 @@ class TestGCSbucket(base.TestUrvMethods):
         # check if bucket exists
         self.assertTrue(storage_bucket.exists(), msg='Bucket does not Exist')
 
-    def testbucketobject(self):
+    def testbloblink(self):
         """
         """
-        blob_bucket = gcloudstorage.blob_generator(
+        blob_bucket = gcloudstorage.bloblink_generator(
                 'urv_genetics', '/root/Hail_Genomic.json')
         blob_str = next(blob_bucket)
         self.assertEqual(blob_str[0:5],
                          'gs://',
                          msg='Failed to return google cloud storage link')
+
+    def testblobdownload(self):
+        """
+        """
+        blob = gcloudstorage.blob_download(
+                'blob_key',
+                'bucket_name',
+                'json_path')
+        self.assertEqual(
+                blob[0:5],
+                "b'<?xml",
+                msg='Unexpected File Encountered')
+        with self.assertRaises(
+                TypeError,
+                msg='Key not found'):
+            gcloudstorage.blob_download(
+                    'blob_key', 'bucket_name', 'json_path')
 
 
 if __name__ == '__main__':
