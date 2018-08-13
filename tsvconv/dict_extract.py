@@ -14,6 +14,7 @@ def gen_dict_extract(value, var, des_dict=None):
         for k, v in var.items():
             if v == value:
                 yield des_dict
+            # lists should be caugt by the except
             elif isinstance(v, (dict, list)):
                 for result in gen_dict_extract(value, v, des_dict):
                     yield result
