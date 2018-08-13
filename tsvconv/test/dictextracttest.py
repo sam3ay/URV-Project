@@ -2,7 +2,7 @@ import unittest
 from tsvconv import dict_extract
 
 
-class TestDictExtract(unittest.case):
+class TestDictExtract(unittest.TestCase):
     """
     """
 
@@ -15,3 +15,7 @@ class TestDictExtract(unittest.case):
                 [x for x in dict_extract.gen_dict_extract(
                     'up', input_dict)], [{'Hold': 'up'}],
                 msg='Failed to extract expected dictionary')
+
+
+if __name__ == '__main__':
+    unittest.TestCase
