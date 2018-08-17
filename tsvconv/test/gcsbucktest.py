@@ -1,4 +1,5 @@
 from tsvconv import gcloudstorage
+from tsvconv import env
 from tsvconv.test import base
 from google.datalab import storage
 from google.datalab.utils import RequestException
@@ -8,7 +9,7 @@ class TestGCSbucket(base.TestUrvMethods):
     """Test bucket related methods
     """
 
-    def testbucketexist(self):
+    def testbucketretrieval(self):
         """
         """
         storage_bucket = gcloudstorage.get_gcsbucket(
@@ -23,28 +24,36 @@ class TestGCSbucket(base.TestUrvMethods):
         with self.assertRaises(
                 IsADirectoryError,
                 msg='Directory Error not handled'):
-            gcloudstorage.set_gcs_env('/root/')
+            env.set_env(
+                    'GOOGLE_APPLICATION_CREDENTIALS',
+                    '/root/')
             gcloudstorage.get_gcsbucket('urv_genetics')
         with self.assertRaises(
                 gcloudstorage.DefaultCredentialsError,
                 msg='Failed to identify non json file'):
-            gcloudstorage.set_gcs_env('/root/bad')
+            env.set_env(
+                    'GOOGLE_APPLICATION_CREDENTIALS',
+                    '/root/bad')
             gcloudstorage.get_gcsbucket('urv_genetics')
         with self.assertRaises(
                 AttributeError,
                 msg='Failed to identify incorrect json file'):
-            gcloudstorage.set_gcs_env('/root/rand.json')
+            env.set_env(
+                    'GOOGLE_APPLICATION_CREDENTIALS',
+                    '/root/rand.json')
             gcloudstorage.get_gcsbucket('urv_genetics')
         with self.assertRaises(
                 gcloudstorage.DefaultCredentialsError,
                 msg='Found non existing json file'):
-            gcloudstorage.set_gcs_env('/root/noexist')
+            env.set_env('GOOGLE_APPLICATION_CREDENTIALS', '/root/noexist')
             gcloudstorage.get_gcsbucket('urv_genetics')
 
     def testbucketobject(self):
         """
         """
-        gcloudstorage.set_gcs_env('/root/Hail_Genomic.json')
+        env.set_env(
+                'GOOGLE_APPLICATION_CREDENTIALS',
+                '/root/Hail_Genomic.json')
         blob_bucket = gcloudstorage.blob_generator(
                 'urv_genetics')
         blob_str = next(blob_bucket)
