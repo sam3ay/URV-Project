@@ -1,5 +1,5 @@
 import unittest
-from tsvconv import gcloudstorage
+from tsvconv import env
 
 
 class TestUrvMethods(unittest.TestCase):
@@ -10,7 +10,9 @@ class TestUrvMethods(unittest.TestCase):
     def setUpClass(cls):
         """Provides gcs account credentials to all tests
         """
-        credentials = gcloudstorage.gcsauth('/root/Hail_Genomic.json')
+        env.set_env(
+                'GOOGLE_APPLICATION_CREDENTIALS',
+                '/root/Hail_Genomic.json')
 
 
 def main():
