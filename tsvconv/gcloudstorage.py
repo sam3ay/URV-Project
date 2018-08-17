@@ -2,19 +2,6 @@ from google.auth.exceptions import DefaultCredentialsError
 from google.datalab import storage
 from google.datalab.utils import RequestException
 from json.decoder import JSONDecodeError
-import os
-
-
-def set_gcs_env(json_path):
-    """Provides the Google Cloud service account credentials to be used
-
-    Args:
-        json_path (str): Path to service account json
-
-    Returns:
-        Environmental variable providing service account credentials
-    """
-    os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = json_path
 
 
 def get_gcsbucket(bucket_name):

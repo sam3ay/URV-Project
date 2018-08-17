@@ -1,5 +1,5 @@
 import unittest
-from tsvconv import gcloudstorage
+from tsvconv import env
 import os
 
 
@@ -10,7 +10,9 @@ class TestGcsStorage(unittest.TestCase):
     def test_env(self):
         """Ensure credentials have read only access to the bucket
         """
-        gcloudstorage.set_gcs_env('/root/Hail_Genomic.json')
+        env.set_env(
+                "GOOGLE_APPLICATION_CREDENTIALS",
+                '/root/Hail_Genomic.json')
         self.assertTrue(
                 "GOOGLE_APPLICATION_CREDENTIALS" in os.environ,
                 msg="Setting Environmental value failed")
