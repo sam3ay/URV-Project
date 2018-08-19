@@ -1,6 +1,6 @@
-import dict_extract
-import dictquery
-import xmldictconv
+from tsvconv import dict_extract
+from tsvconv import dictquery
+from tsvconv import xmldictconv
 import os
 
 

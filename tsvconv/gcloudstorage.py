@@ -9,7 +9,6 @@ def get_gcsbucket(bucket_name):
 
     Args:
         bucket_name (str): name of desired bucket
-        json_path (str): Path to service account json
 
     Returns:
         bucket object
@@ -39,7 +38,6 @@ def blob_generator(bucket_name, pattern='_1.fastq.bz2'):
 
     Args:
         bucket_name (str): name of desired bucket
-        json_path (str): Path to service account json
 
     Yields:
         Link to Google Cloud storage object
@@ -54,23 +52,23 @@ def blob_generator(bucket_name, pattern='_1.fastq.bz2'):
     except RequestException:
         raise
 
-    def blob_download(blob_key, bucket_name, json_path):
-        """Retrieves content of google cloud object
-        Args:
-            blob_key (str): key of gcs object
-            bucket_name (str): name of desired bucket
-            json_path (str): Path to service account json
 
-        Return:
-            Content of GCS object
-        Raises:
-            TypeError: Non-bytes like Object Retrieved;
-                Indicative of non existing key
-        """
-        bucket = get_gcsbucket(bucket_name, json_path)
-        blob = bucket.object(blob_key)
-        try:
-            blobc = blob.download()
-        except TypeError:
-            raise
-        return blobc
+def blob_download(blob_key, bucket_name):
+    """Retrieves content of google cloud object
+    Args:
+        blob_key (str): key of gcs object
+        bucket_name (str): name of desired bucket
+
+    Return:
+        Content of GCS object
+    Raises:
+        TypeError: Non-bytes like Object Retrieved;
+            Indicative of non existing key
+    """
+    bucket = get_gcsbucket(bucket_name)
+    blob = bucket.object(blob_key)
+    try:
+        blobc = blob.download()
+    except TypeError:
+        raise
+    return blobc
