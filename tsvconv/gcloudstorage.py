@@ -33,11 +33,12 @@ def get_gcsbucket(bucket_name):
     return bucket
 
 
-def blob_generator(bucket_name, pattern='_1.fastq.bz2'):
+def blob_generator(bucket_name, pattern):
     """Yields blob object url location
 
     Args:
         bucket_name (str): name of desired bucket
+        pattern (str): unique characters and extension desired files contain
 
     Yields:
         Link to Google Cloud storage object

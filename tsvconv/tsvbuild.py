@@ -9,9 +9,10 @@ from tsvconv import dict_extract
 from tsvconv import dictquery
 from tsvconv import gcloudstorage
 from tsvconv import xmldictconv
+from tsvconv import env
 
 
-def tsvbuild(json_path, gcs, pattern, list_of_paths, tsv_name):
+def tsvbuild(json_path, gcsbucket, pattern, list_of_paths, tsv_name):
     """builds a tsv file from a directory of paired files
 
     Retrieves location of pairs of files matching pattern and retrieves
@@ -19,7 +20,8 @@ def tsvbuild(json_path, gcs, pattern, list_of_paths, tsv_name):
     Assumes paired files differences occur after an underscore '_'.
 
     Args:
-        gcs (str): google cloud bucket name, recursively searched
+        json_path (str): path to the json credentials file for GCS access
+        gcsbucket (str): google cloud bucket name, recursively searched
         pattern (str): file identifying pattern being searched
         tsv_name (str): filename or tsv file
         list_of_paths (list): containing location of desired values
@@ -35,31 +37,11 @@ def tsvbuild(json_path, gcs, pattern, list_of_paths, tsv_name):
     Dev:
         Add dictquery to list of links
     """
-    exp_dict = {}
-    with open('tsv_name.tsv', 'a') as tsvfile:
-        writer = csv.writer(tsvfile, delimiter='\t', newline='\n')
-        # glob searches directories while grouper pulls matches two at a time
-        for files in chunkiter.grouper(
-                glob.iglob(gcs, pattern, recursive=True), 2):
-            path, filename_1 = os.path.split(files[0])
-            filename_2 = os.path.split(files[1])[1]
-            exp_id = filename_1.split('_')[0]
-            exp_id_2 = filename_2.split('_')[0]
-            if exp_id == exp_id_2:
-                exp_dict, metadata = build_meta.build_metadata(
-                        exp_id, path, list_of_paths, input_dict=exp_dict)
-                metadata.extend(files)
-                # tsv_fileformat:SampleName;output;predictedinsertsize;readgroup
-                # library_name;platformmodel;platform;sequencingcenter
-                # Fastq1;Fastq2;
-                writer.writerow(metadata)
-            else:
-                # think about break if this is the case
-                with open('ubamlog', 'w+') as logfile:
-                    logfile.write('{0} and {1} are not paired files \n'.format(
-                        exp_id, exp_id_2))
-                break
-    return tsv_name
+    # set google auth
+    env.set_env(
+        'GOOGLE_APPLICATION_CREDENTIALS',
+        json_path)
+    for gcs_url in gcloudstorage.blob_generator(gcsbucket, pattern):
 
 
 def dictbuild(keys, values):
