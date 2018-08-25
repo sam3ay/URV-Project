@@ -1,0 +1,1213 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EXPERIMENT_SET xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <EXPERIMENT alias="SC_EXP_4487_7" center_name="SC" accession="ERX007307">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX007307</PRIMARY_ID>
+      <SUBMITTER_ID namespace="SC">SC_EXP_4487_7</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000114" refname="Native American Population Genetics-sc-2010-07-07" refcenter="SC">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000114</PRIMARY_ID>
+        <SUBMITTER_ID namespace="SC">Native American Population Genetics-sc-2010-07-07</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION>Illumina sequencing of sample "Mex01"; library "Mex01 120124" for the "Native American Population Genetics" study.</DESIGN_DESCRIPTION>
+      <SAMPLE_DESCRIPTOR accession="ERS009190" refname="Mex01-sc-2010-05-07-30352" refcenter="SC">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS009190</PRIMARY_ID>
+          <SUBMITTER_ID namespace="SC">Mex01-sc-2010-05-07-30352</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>Mex01 120124</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="450"/>
+        </LIBRARY_LAYOUT>
+        <LIBRARY_CONSTRUCTION_PROTOCOL>Standard</LIBRARY_CONSTRUCTION_PROTOCOL>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>216</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>109</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer II</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+  </EXPERIMENT>
+  <EXPERIMENT alias="SC_EXP_4692_2" center_name="SC" accession="ERX007308">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX007308</PRIMARY_ID>
+      <SUBMITTER_ID namespace="SC">SC_EXP_4692_2</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000114" refname="Native American Population Genetics-sc-2010-07-07" refcenter="SC">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000114</PRIMARY_ID>
+        <SUBMITTER_ID namespace="SC">Native American Population Genetics-sc-2010-07-07</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION>Illumina sequencing of sample "Mex01"; library "Mex01 120122" for the "Native American Population Genetics" study.</DESIGN_DESCRIPTION>
+      <SAMPLE_DESCRIPTOR accession="ERS009190" refname="Mex01-sc-2010-05-07-30352" refcenter="SC">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS009190</PRIMARY_ID>
+          <SUBMITTER_ID namespace="SC">Mex01-sc-2010-05-07-30352</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>Mex01 120122</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="350"/>
+        </LIBRARY_LAYOUT>
+        <LIBRARY_CONSTRUCTION_PROTOCOL>Standard</LIBRARY_CONSTRUCTION_PROTOCOL>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>216</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>109</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer II</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+  </EXPERIMENT>
+  <EXPERIMENT alias="SC_EXP_4673_5" center_name="SC" accession="ERX007309">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX007309</PRIMARY_ID>
+      <SUBMITTER_ID namespace="SC">SC_EXP_4673_5</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000114" refname="Native American Population Genetics-sc-2010-07-07" refcenter="SC">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000114</PRIMARY_ID>
+        <SUBMITTER_ID namespace="SC">Native American Population Genetics-sc-2010-07-07</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION>Illumina sequencing of sample "Peru64"; library "Peru64 120123" for the "Native American Population Genetics" study.</DESIGN_DESCRIPTION>
+      <SAMPLE_DESCRIPTOR accession="ERS009191" refname="Peru64-sc-2010-05-07-30353" refcenter="SC">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS009191</PRIMARY_ID>
+          <SUBMITTER_ID namespace="SC">Peru64-sc-2010-05-07-30353</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>Peru64 120123</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="350"/>
+        </LIBRARY_LAYOUT>
+        <LIBRARY_CONSTRUCTION_PROTOCOL>Standard</LIBRARY_CONSTRUCTION_PROTOCOL>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>216</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>109</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer II</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+  </EXPERIMENT>
+  <EXPERIMENT alias="SC_EXP_4673_2" center_name="SC" accession="ERX007310">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX007310</PRIMARY_ID>
+      <SUBMITTER_ID namespace="SC">SC_EXP_4673_2</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000114" refname="Native American Population Genetics-sc-2010-07-07" refcenter="SC">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000114</PRIMARY_ID>
+        <SUBMITTER_ID namespace="SC">Native American Population Genetics-sc-2010-07-07</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION>Illumina sequencing of sample "Peru64"; library "Peru64 120123" for the "Native American Population Genetics" study.</DESIGN_DESCRIPTION>
+      <SAMPLE_DESCRIPTOR accession="ERS009191" refname="Peru64-sc-2010-05-07-30353" refcenter="SC">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS009191</PRIMARY_ID>
+          <SUBMITTER_ID namespace="SC">Peru64-sc-2010-05-07-30353</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>Peru64 120123</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="350"/>
+        </LIBRARY_LAYOUT>
+        <LIBRARY_CONSTRUCTION_PROTOCOL>Standard</LIBRARY_CONSTRUCTION_PROTOCOL>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>216</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>109</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer II</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+  </EXPERIMENT>
+  <EXPERIMENT alias="SC_EXP_4833_8" center_name="SC" accession="ERX007311">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX007311</PRIMARY_ID>
+      <SUBMITTER_ID namespace="SC">SC_EXP_4833_8</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000114" refname="Native American Population Genetics-sc-2010-07-07" refcenter="SC">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000114</PRIMARY_ID>
+        <SUBMITTER_ID namespace="SC">Native American Population Genetics-sc-2010-07-07</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION>Illumina sequencing of sample "Mex01"; library "Mex01 160138" for the "Native American Population Genetics" study.</DESIGN_DESCRIPTION>
+      <SAMPLE_DESCRIPTOR accession="ERS009190" refname="Mex01-sc-2010-05-07-30352" refcenter="SC">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS009190</PRIMARY_ID>
+          <SUBMITTER_ID namespace="SC">Mex01-sc-2010-05-07-30352</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>Mex01 160138</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="350"/>
+        </LIBRARY_LAYOUT>
+        <LIBRARY_CONSTRUCTION_PROTOCOL>Double size selected</LIBRARY_CONSTRUCTION_PROTOCOL>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>216</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>109</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer II</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+  </EXPERIMENT>
+  <EXPERIMENT alias="SC_EXP_4487_3" center_name="SC" accession="ERX007312">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX007312</PRIMARY_ID>
+      <SUBMITTER_ID namespace="SC">SC_EXP_4487_3</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000114" refname="Native American Population Genetics-sc-2010-07-07" refcenter="SC">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000114</PRIMARY_ID>
+        <SUBMITTER_ID namespace="SC">Native American Population Genetics-sc-2010-07-07</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION>Illumina sequencing of sample "Peru64"; library "Peru64 120121" for the "Native American Population Genetics" study.</DESIGN_DESCRIPTION>
+      <SAMPLE_DESCRIPTOR accession="ERS009191" refname="Peru64-sc-2010-05-07-30353" refcenter="SC">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS009191</PRIMARY_ID>
+          <SUBMITTER_ID namespace="SC">Peru64-sc-2010-05-07-30353</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>Peru64 120121</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="250"/>
+        </LIBRARY_LAYOUT>
+        <LIBRARY_CONSTRUCTION_PROTOCOL>Standard</LIBRARY_CONSTRUCTION_PROTOCOL>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>216</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>109</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer II</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+  </EXPERIMENT>
+  <EXPERIMENT alias="SC_EXP_4673_8" center_name="SC" accession="ERX007313">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX007313</PRIMARY_ID>
+      <SUBMITTER_ID namespace="SC">SC_EXP_4673_8</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000114" refname="Native American Population Genetics-sc-2010-07-07" refcenter="SC">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000114</PRIMARY_ID>
+        <SUBMITTER_ID namespace="SC">Native American Population Genetics-sc-2010-07-07</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION>Illumina sequencing of sample "Peru64"; library "Peru64 120123" for the "Native American Population Genetics" study.</DESIGN_DESCRIPTION>
+      <SAMPLE_DESCRIPTOR accession="ERS009191" refname="Peru64-sc-2010-05-07-30353" refcenter="SC">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS009191</PRIMARY_ID>
+          <SUBMITTER_ID namespace="SC">Peru64-sc-2010-05-07-30353</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>Peru64 120123</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="350"/>
+        </LIBRARY_LAYOUT>
+        <LIBRARY_CONSTRUCTION_PROTOCOL>Standard</LIBRARY_CONSTRUCTION_PROTOCOL>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>216</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>109</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer II</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+  </EXPERIMENT>
+  <EXPERIMENT alias="SC_EXP_4666_8" center_name="SC" accession="ERX007314">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX007314</PRIMARY_ID>
+      <SUBMITTER_ID namespace="SC">SC_EXP_4666_8</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000114" refname="Native American Population Genetics-sc-2010-07-07" refcenter="SC">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000114</PRIMARY_ID>
+        <SUBMITTER_ID namespace="SC">Native American Population Genetics-sc-2010-07-07</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION>Illumina sequencing of sample "Mex01"; library "Mex01 120122" for the "Native American Population Genetics" study.</DESIGN_DESCRIPTION>
+      <SAMPLE_DESCRIPTOR accession="ERS009190" refname="Mex01-sc-2010-05-07-30352" refcenter="SC">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS009190</PRIMARY_ID>
+          <SUBMITTER_ID namespace="SC">Mex01-sc-2010-05-07-30352</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>Mex01 120122</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="350"/>
+        </LIBRARY_LAYOUT>
+        <LIBRARY_CONSTRUCTION_PROTOCOL>Standard</LIBRARY_CONSTRUCTION_PROTOCOL>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>216</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>109</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer II</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+  </EXPERIMENT>
+  <EXPERIMENT alias="SC_EXP_4487_2" center_name="SC" accession="ERX007315">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX007315</PRIMARY_ID>
+      <SUBMITTER_ID namespace="SC">SC_EXP_4487_2</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000114" refname="Native American Population Genetics-sc-2010-07-07" refcenter="SC">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000114</PRIMARY_ID>
+        <SUBMITTER_ID namespace="SC">Native American Population Genetics-sc-2010-07-07</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION>Illumina sequencing of sample "Mex01"; library "Mex01 120120" for the "Native American Population Genetics" study.</DESIGN_DESCRIPTION>
+      <SAMPLE_DESCRIPTOR accession="ERS009190" refname="Mex01-sc-2010-05-07-30352" refcenter="SC">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS009190</PRIMARY_ID>
+          <SUBMITTER_ID namespace="SC">Mex01-sc-2010-05-07-30352</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>Mex01 120120</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="250"/>
+        </LIBRARY_LAYOUT>
+        <LIBRARY_CONSTRUCTION_PROTOCOL>Standard</LIBRARY_CONSTRUCTION_PROTOCOL>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>216</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>109</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer II</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+  </EXPERIMENT>
+  <EXPERIMENT alias="SC_EXP_4673_1" center_name="SC" accession="ERX007316">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX007316</PRIMARY_ID>
+      <SUBMITTER_ID namespace="SC">SC_EXP_4673_1</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000114" refname="Native American Population Genetics-sc-2010-07-07" refcenter="SC">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000114</PRIMARY_ID>
+        <SUBMITTER_ID namespace="SC">Native American Population Genetics-sc-2010-07-07</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION>Illumina sequencing of sample "Peru64"; library "Peru64 120123" for the "Native American Population Genetics" study.</DESIGN_DESCRIPTION>
+      <SAMPLE_DESCRIPTOR accession="ERS009191" refname="Peru64-sc-2010-05-07-30353" refcenter="SC">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS009191</PRIMARY_ID>
+          <SUBMITTER_ID namespace="SC">Peru64-sc-2010-05-07-30353</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>Peru64 120123</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="350"/>
+        </LIBRARY_LAYOUT>
+        <LIBRARY_CONSTRUCTION_PROTOCOL>Standard</LIBRARY_CONSTRUCTION_PROTOCOL>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>216</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>109</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer II</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+  </EXPERIMENT>
+  <EXPERIMENT alias="SC_EXP_4673_6" center_name="SC" accession="ERX007317">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX007317</PRIMARY_ID>
+      <SUBMITTER_ID namespace="SC">SC_EXP_4673_6</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000114" refname="Native American Population Genetics-sc-2010-07-07" refcenter="SC">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000114</PRIMARY_ID>
+        <SUBMITTER_ID namespace="SC">Native American Population Genetics-sc-2010-07-07</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION>Illumina sequencing of sample "Peru64"; library "Peru64 120123" for the "Native American Population Genetics" study.</DESIGN_DESCRIPTION>
+      <SAMPLE_DESCRIPTOR accession="ERS009191" refname="Peru64-sc-2010-05-07-30353" refcenter="SC">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS009191</PRIMARY_ID>
+          <SUBMITTER_ID namespace="SC">Peru64-sc-2010-05-07-30353</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>Peru64 120123</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="350"/>
+        </LIBRARY_LAYOUT>
+        <LIBRARY_CONSTRUCTION_PROTOCOL>Standard</LIBRARY_CONSTRUCTION_PROTOCOL>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>216</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>109</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer II</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+  </EXPERIMENT>
+  <EXPERIMENT alias="SC_EXP_4692_3" center_name="SC" accession="ERX007318">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX007318</PRIMARY_ID>
+      <SUBMITTER_ID namespace="SC">SC_EXP_4692_3</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000114" refname="Native American Population Genetics-sc-2010-07-07" refcenter="SC">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000114</PRIMARY_ID>
+        <SUBMITTER_ID namespace="SC">Native American Population Genetics-sc-2010-07-07</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION>Illumina sequencing of sample "Mex01"; library "Mex01 120122" for the "Native American Population Genetics" study.</DESIGN_DESCRIPTION>
+      <SAMPLE_DESCRIPTOR accession="ERS009190" refname="Mex01-sc-2010-05-07-30352" refcenter="SC">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS009190</PRIMARY_ID>
+          <SUBMITTER_ID namespace="SC">Mex01-sc-2010-05-07-30352</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>Mex01 120122</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="350"/>
+        </LIBRARY_LAYOUT>
+        <LIBRARY_CONSTRUCTION_PROTOCOL>Standard</LIBRARY_CONSTRUCTION_PROTOCOL>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>216</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>109</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer II</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+  </EXPERIMENT>
+  <EXPERIMENT alias="SC_EXP_4487_8" center_name="SC" accession="ERX007319">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX007319</PRIMARY_ID>
+      <SUBMITTER_ID namespace="SC">SC_EXP_4487_8</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000114" refname="Native American Population Genetics-sc-2010-07-07" refcenter="SC">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000114</PRIMARY_ID>
+        <SUBMITTER_ID namespace="SC">Native American Population Genetics-sc-2010-07-07</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION>Illumina sequencing of sample "Peru64"; library "Peru64 120125" for the "Native American Population Genetics" study.</DESIGN_DESCRIPTION>
+      <SAMPLE_DESCRIPTOR accession="ERS009191" refname="Peru64-sc-2010-05-07-30353" refcenter="SC">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS009191</PRIMARY_ID>
+          <SUBMITTER_ID namespace="SC">Peru64-sc-2010-05-07-30353</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>Peru64 120125</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="450"/>
+        </LIBRARY_LAYOUT>
+        <LIBRARY_CONSTRUCTION_PROTOCOL>Standard</LIBRARY_CONSTRUCTION_PROTOCOL>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>216</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>109</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer II</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+  </EXPERIMENT>
+  <EXPERIMENT alias="SC_EXP_4833_7" center_name="SC" accession="ERX007320">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX007320</PRIMARY_ID>
+      <SUBMITTER_ID namespace="SC">SC_EXP_4833_7</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000114" refname="Native American Population Genetics-sc-2010-07-07" refcenter="SC">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000114</PRIMARY_ID>
+        <SUBMITTER_ID namespace="SC">Native American Population Genetics-sc-2010-07-07</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION>Illumina sequencing of sample "Peru64"; library "Peru64 140712" for the "Native American Population Genetics" study.</DESIGN_DESCRIPTION>
+      <SAMPLE_DESCRIPTOR accession="ERS009191" refname="Peru64-sc-2010-05-07-30353" refcenter="SC">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS009191</PRIMARY_ID>
+          <SUBMITTER_ID namespace="SC">Peru64-sc-2010-05-07-30353</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>Peru64 140712</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="350"/>
+        </LIBRARY_LAYOUT>
+        <LIBRARY_CONSTRUCTION_PROTOCOL>Double size selected</LIBRARY_CONSTRUCTION_PROTOCOL>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>216</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>109</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer II</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+  </EXPERIMENT>
+  <EXPERIMENT alias="SC_EXP_4692_1" center_name="SC" accession="ERX007321">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX007321</PRIMARY_ID>
+      <SUBMITTER_ID namespace="SC">SC_EXP_4692_1</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000114" refname="Native American Population Genetics-sc-2010-07-07" refcenter="SC">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000114</PRIMARY_ID>
+        <SUBMITTER_ID namespace="SC">Native American Population Genetics-sc-2010-07-07</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION>Illumina sequencing of sample "Mex01"; library "Mex01 120122" for the "Native American Population Genetics" study.</DESIGN_DESCRIPTION>
+      <SAMPLE_DESCRIPTOR accession="ERS009190" refname="Mex01-sc-2010-05-07-30352" refcenter="SC">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS009190</PRIMARY_ID>
+          <SUBMITTER_ID namespace="SC">Mex01-sc-2010-05-07-30352</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>Mex01 120122</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="350"/>
+        </LIBRARY_LAYOUT>
+        <LIBRARY_CONSTRUCTION_PROTOCOL>Standard</LIBRARY_CONSTRUCTION_PROTOCOL>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>216</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>109</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer II</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+  </EXPERIMENT>
+  <EXPERIMENT alias="SC_EXP_4666_5" center_name="SC" accession="ERX007322">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX007322</PRIMARY_ID>
+      <SUBMITTER_ID namespace="SC">SC_EXP_4666_5</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000114" refname="Native American Population Genetics-sc-2010-07-07" refcenter="SC">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000114</PRIMARY_ID>
+        <SUBMITTER_ID namespace="SC">Native American Population Genetics-sc-2010-07-07</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION>Illumina sequencing of sample "Mex01"; library "Mex01 120122" for the "Native American Population Genetics" study.</DESIGN_DESCRIPTION>
+      <SAMPLE_DESCRIPTOR accession="ERS009190" refname="Mex01-sc-2010-05-07-30352" refcenter="SC">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS009190</PRIMARY_ID>
+          <SUBMITTER_ID namespace="SC">Mex01-sc-2010-05-07-30352</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>Mex01 120122</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="350"/>
+        </LIBRARY_LAYOUT>
+        <LIBRARY_CONSTRUCTION_PROTOCOL>Standard</LIBRARY_CONSTRUCTION_PROTOCOL>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>216</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>109</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer II</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+  </EXPERIMENT>
+  <EXPERIMENT alias="SC_EXP_4487_5" center_name="SC" accession="ERX007323">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX007323</PRIMARY_ID>
+      <SUBMITTER_ID namespace="SC">SC_EXP_4487_5</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000114" refname="Native American Population Genetics-sc-2010-07-07" refcenter="SC">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000114</PRIMARY_ID>
+        <SUBMITTER_ID namespace="SC">Native American Population Genetics-sc-2010-07-07</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION>Illumina sequencing of sample "Mex01"; library "Mex01 120122" for the "Native American Population Genetics" study.</DESIGN_DESCRIPTION>
+      <SAMPLE_DESCRIPTOR accession="ERS009190" refname="Mex01-sc-2010-05-07-30352" refcenter="SC">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS009190</PRIMARY_ID>
+          <SUBMITTER_ID namespace="SC">Mex01-sc-2010-05-07-30352</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>Mex01 120122</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="350"/>
+        </LIBRARY_LAYOUT>
+        <LIBRARY_CONSTRUCTION_PROTOCOL>Standard</LIBRARY_CONSTRUCTION_PROTOCOL>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>216</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>109</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer II</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+  </EXPERIMENT>
+  <EXPERIMENT alias="SC_EXP_4673_7" center_name="SC" accession="ERX007324">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX007324</PRIMARY_ID>
+      <SUBMITTER_ID namespace="SC">SC_EXP_4673_7</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000114" refname="Native American Population Genetics-sc-2010-07-07" refcenter="SC">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000114</PRIMARY_ID>
+        <SUBMITTER_ID namespace="SC">Native American Population Genetics-sc-2010-07-07</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION>Illumina sequencing of sample "Peru64"; library "Peru64 120123" for the "Native American Population Genetics" study.</DESIGN_DESCRIPTION>
+      <SAMPLE_DESCRIPTOR accession="ERS009191" refname="Peru64-sc-2010-05-07-30353" refcenter="SC">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS009191</PRIMARY_ID>
+          <SUBMITTER_ID namespace="SC">Peru64-sc-2010-05-07-30353</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>Peru64 120123</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="350"/>
+        </LIBRARY_LAYOUT>
+        <LIBRARY_CONSTRUCTION_PROTOCOL>Standard</LIBRARY_CONSTRUCTION_PROTOCOL>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>216</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>109</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer II</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+  </EXPERIMENT>
+  <EXPERIMENT alias="SC_EXP_4666_6" center_name="SC" accession="ERX007325">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX007325</PRIMARY_ID>
+      <SUBMITTER_ID namespace="SC">SC_EXP_4666_6</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000114" refname="Native American Population Genetics-sc-2010-07-07" refcenter="SC">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000114</PRIMARY_ID>
+        <SUBMITTER_ID namespace="SC">Native American Population Genetics-sc-2010-07-07</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION>Illumina sequencing of sample "Mex01"; library "Mex01 120122" for the "Native American Population Genetics" study.</DESIGN_DESCRIPTION>
+      <SAMPLE_DESCRIPTOR accession="ERS009190" refname="Mex01-sc-2010-05-07-30352" refcenter="SC">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS009190</PRIMARY_ID>
+          <SUBMITTER_ID namespace="SC">Mex01-sc-2010-05-07-30352</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>Mex01 120122</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="350"/>
+        </LIBRARY_LAYOUT>
+        <LIBRARY_CONSTRUCTION_PROTOCOL>Standard</LIBRARY_CONSTRUCTION_PROTOCOL>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>216</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>109</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer II</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+  </EXPERIMENT>
+  <EXPERIMENT alias="SC_EXP_4487_6" center_name="SC" accession="ERX007326">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX007326</PRIMARY_ID>
+      <SUBMITTER_ID namespace="SC">SC_EXP_4487_6</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000114" refname="Native American Population Genetics-sc-2010-07-07" refcenter="SC">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000114</PRIMARY_ID>
+        <SUBMITTER_ID namespace="SC">Native American Population Genetics-sc-2010-07-07</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION>Illumina sequencing of sample "Peru64"; library "Peru64 120123" for the "Native American Population Genetics" study.</DESIGN_DESCRIPTION>
+      <SAMPLE_DESCRIPTOR accession="ERS009191" refname="Peru64-sc-2010-05-07-30353" refcenter="SC">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS009191</PRIMARY_ID>
+          <SUBMITTER_ID namespace="SC">Peru64-sc-2010-05-07-30353</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>Peru64 120123</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="350"/>
+        </LIBRARY_LAYOUT>
+        <LIBRARY_CONSTRUCTION_PROTOCOL>Standard</LIBRARY_CONSTRUCTION_PROTOCOL>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>216</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>109</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer II</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+  </EXPERIMENT>
+  <EXPERIMENT alias="SC_EXP_4666_7" center_name="SC" accession="ERX007327">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX007327</PRIMARY_ID>
+      <SUBMITTER_ID namespace="SC">SC_EXP_4666_7</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000114" refname="Native American Population Genetics-sc-2010-07-07" refcenter="SC">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000114</PRIMARY_ID>
+        <SUBMITTER_ID namespace="SC">Native American Population Genetics-sc-2010-07-07</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION>Illumina sequencing of sample "Mex01"; library "Mex01 120122" for the "Native American Population Genetics" study.</DESIGN_DESCRIPTION>
+      <SAMPLE_DESCRIPTOR accession="ERS009190" refname="Mex01-sc-2010-05-07-30352" refcenter="SC">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS009190</PRIMARY_ID>
+          <SUBMITTER_ID namespace="SC">Mex01-sc-2010-05-07-30352</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>Mex01 120122</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="350"/>
+        </LIBRARY_LAYOUT>
+        <LIBRARY_CONSTRUCTION_PROTOCOL>Standard</LIBRARY_CONSTRUCTION_PROTOCOL>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>216</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>109</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer II</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+  </EXPERIMENT>
+  <EXPERIMENT alias="SC_EXP_4673_3" center_name="SC" accession="ERX007328">
+    <IDENTIFIERS>
+      <PRIMARY_ID>ERX007328</PRIMARY_ID>
+      <SUBMITTER_ID namespace="SC">SC_EXP_4673_3</SUBMITTER_ID>
+    </IDENTIFIERS>
+    <TITLE/>
+    <STUDY_REF accession="ERP000114" refname="Native American Population Genetics-sc-2010-07-07" refcenter="SC">
+      <IDENTIFIERS>
+        <PRIMARY_ID>ERP000114</PRIMARY_ID>
+        <SUBMITTER_ID namespace="SC">Native American Population Genetics-sc-2010-07-07</SUBMITTER_ID>
+      </IDENTIFIERS>
+    </STUDY_REF>
+    <DESIGN>
+      <DESIGN_DESCRIPTION>Illumina sequencing of sample "Peru64"; library "Peru64 120123" for the "Native American Population Genetics" study.</DESIGN_DESCRIPTION>
+      <SAMPLE_DESCRIPTOR accession="ERS009191" refname="Peru64-sc-2010-05-07-30353" refcenter="SC">
+        <IDENTIFIERS>
+          <PRIMARY_ID>ERS009191</PRIMARY_ID>
+          <SUBMITTER_ID namespace="SC">Peru64-sc-2010-05-07-30353</SUBMITTER_ID>
+        </IDENTIFIERS>
+      </SAMPLE_DESCRIPTOR>
+      <LIBRARY_DESCRIPTOR>
+        <LIBRARY_NAME>Peru64 120123</LIBRARY_NAME>
+        <LIBRARY_STRATEGY>WGS</LIBRARY_STRATEGY>
+        <LIBRARY_SOURCE>GENOMIC</LIBRARY_SOURCE>
+        <LIBRARY_SELECTION>RANDOM</LIBRARY_SELECTION>
+        <LIBRARY_LAYOUT>
+          <PAIRED NOMINAL_LENGTH="350"/>
+        </LIBRARY_LAYOUT>
+        <LIBRARY_CONSTRUCTION_PROTOCOL>Standard</LIBRARY_CONSTRUCTION_PROTOCOL>
+      </LIBRARY_DESCRIPTOR>
+      <SPOT_DESCRIPTOR>
+        <SPOT_DECODE_SPEC>
+          <SPOT_LENGTH>216</SPOT_LENGTH>
+          <READ_SPEC>
+            <READ_INDEX>0</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Forward</READ_TYPE>
+            <BASE_COORD>1</BASE_COORD>
+          </READ_SPEC>
+          <READ_SPEC>
+            <READ_INDEX>1</READ_INDEX>
+            <READ_CLASS>Application Read</READ_CLASS>
+            <READ_TYPE>Reverse</READ_TYPE>
+            <BASE_COORD>109</BASE_COORD>
+          </READ_SPEC>
+        </SPOT_DECODE_SPEC>
+      </SPOT_DESCRIPTOR>
+    </DESIGN>
+    <PLATFORM>
+      <ILLUMINA>
+        <INSTRUMENT_MODEL>Illumina Genome Analyzer II</INSTRUMENT_MODEL>
+      </ILLUMINA>
+    </PLATFORM>
+    <PROCESSING/>
+  </EXPERIMENT>
+</EXPERIMENT_SET>

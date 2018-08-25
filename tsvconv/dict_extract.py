@@ -1,27 +1,28 @@
-def gen_dict_extract(value, var, des_dict=None):
+def dict_extract(value, var, ret_dict=None):
     """Search a list of nested dictionaries
 
     Args:
-        value: Object being search
-        var: iterable containing dictionaries or lists
-        des_dict: default dictionary
+        value(obj): Object being searched for
+        var(iterable): iterable containing dictionaries or lists
+        ret_dict(dict): Highest depth dictionary containing value
 
-    Yields:
+    Yield:
         Dictionary containing desired values
+    Notes:
+        Find highest depth dictionary in the lowest depth list
+        that contains the desired value
     """
-    # not optimal
     try:
-        for k, v in var.items():
+        for v in var.values():
             if v == value:
-                yield des_dict
+                yield ret_dict
+            # lists should be caugt by the except
+            elif isinstance(v, (dict, list)):
+                for result in dict_extract(value, v, ret_dict):
+                    yield result
     except AttributeError:
-        pass
-    # try excepts all the way down?
-    if isinstance(v, dict):
-        for result in gen_dict_extract(value, v, des_dict):
-            yield result
-    elif isinstance(v, list):
-        for d in v:
-            des_dict = d
-            for result in gen_dict_extract(value, d, des_dict):
-                yield result
+        if isinstance(var, list):
+            for d in var:
+                ret_dict = d
+                for result in dict_extract(value, d, ret_dict):
+                    yield result
