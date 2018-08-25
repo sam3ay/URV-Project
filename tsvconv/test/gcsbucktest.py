@@ -46,14 +46,9 @@ class TestGCSbucket(base.TestUrvMethods):
             env.set_env('GOOGLE_APPLICATION_CREDENTIALS', '/root/noexist')
             gcloudstorage.get_gcsbucket('urv_genetics')
 
-    def testbucketobject(self):
-        """
-        """
-        env.set_env(
-                'GOOGLE_APPLICATION_CREDENTIALS',
-                '/root/Hail_Genomic.json')
-        blob_bucket = gcloudstorage.blob_generator(
-                'urv_genetics')
+    def testbloblink(self):
+        blob_bucket = gcloudstorage.bloblink_generator(
+                'urv_genetics', '/root/Hail_Genomic.json')
         blob_str = next(blob_bucket)
         self.assertEqual(
                 blob_str[0:5],
