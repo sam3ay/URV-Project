@@ -26,7 +26,7 @@ class TestParseUrl(unittest.TestCase):
                      'ERA013549/ERA013549.experiment.xml')
 
         self.assertEqual(
-                parentfile,
+                parentfile[1],
                 parenturl,
                 msg='Unexpected Unnamed Parent File returned')
         self.assertEqual(
@@ -35,7 +35,7 @@ class TestParseUrl(unittest.TestCase):
                     'hello',
                     sep,
                     fileext,
-                    depth),
+                    depth)[1],
                 'is/it/hello.experiment.xml',
                 msg='Unexpected Parent File returned')
         with self.assertRaises(
@@ -67,7 +67,7 @@ class TestParseUrl(unittest.TestCase):
                    'ddbj_database/dra/fastq/ERA013/'
                    'ERA013549/ERX007307/ERR018783_2.fastq.bz2')
         self.assertEqual(
-                pairfile,
+                pairfile[1],
                 pairurl,
                 msg='Not a pair file')
         self.assertEqual(
@@ -77,5 +77,5 @@ class TestParseUrl(unittest.TestCase):
                     '_',
                     'there',
                     0,
-                    pair=True),
+                    pair=True)[1],
                 'hello/where/are/they_there')

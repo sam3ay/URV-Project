@@ -10,6 +10,7 @@ from tsvconv import dictquery
 from tsvconv import gcloudstorage
 from tsvconv import xmldictconv
 from tsvconv import env
+from tsvconv import pathhandling
 
 
 def tsvbuild(json_path, gcsbucket, pattern, list_of_paths, tsv_name):
@@ -37,11 +38,18 @@ def tsvbuild(json_path, gcsbucket, pattern, list_of_paths, tsv_name):
     Dev:
         Add dictquery to list of links
     """
+    exp_dict = {}
     # set google auth
     env.set_env(
         'GOOGLE_APPLICATION_CREDENTIALS',
         json_path)
     for gcs_url in gcloudstorage.blob_generator(gcsbucket, pattern):
+        exp_path = pathhandling.get_fileurl(gcs_url, None, '.', 'experiment.xml', 1)
+        try:
+            metadata = dictquery.dictquery(exp_dict[exp_path], list_of_paths)
+        except KeyError:
+            gcloudstorage.blob_download(exp_path, gcsbucket)
+            dict_extract.dict_extract(
 
 
 def dictbuild(keys, values):

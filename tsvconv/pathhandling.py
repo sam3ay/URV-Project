@@ -32,8 +32,10 @@ def get_fileurl(url, filename, sep, fileext, depth, pair=False):
     elif filename is None:
         filename = parentpath.parts[-1]
     if fileext is not None:
-        filename = filename + sep + fileext
-    output_path = parentpath.joinpath(filename)
+        filereturn = filename + sep + fileext
+    else:
+        filereturn = filename
+    output_path = parentpath.joinpath(filereturn)
     output_url = parse.urlunparse(
             (urlp.scheme,
              urlp.netloc,
@@ -42,4 +44,4 @@ def get_fileurl(url, filename, sep, fileext, depth, pair=False):
              urlp.query,
              urlp.fragment)
             )
-    return output_url
+    return (filename, output_url)
