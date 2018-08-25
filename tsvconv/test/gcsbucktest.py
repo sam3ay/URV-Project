@@ -9,9 +9,7 @@ class TestGCSbucket(base.TestUrvMethods):
     """Test bucket related methods
     """
 
-    def testbucketretrieval(self):
-        """
-        """
+    def testbucketexist(self):
         storage_bucket = gcloudstorage.get_gcsbucket(
                 'urv_genetics')
         # Check type
@@ -48,14 +46,9 @@ class TestGCSbucket(base.TestUrvMethods):
             env.set_env('GOOGLE_APPLICATION_CREDENTIALS', '/root/noexist')
             gcloudstorage.get_gcsbucket('urv_genetics')
 
-    def testbucketobject(self):
-        """
-        """
-        env.set_env(
-                'GOOGLE_APPLICATION_CREDENTIALS',
-                '/root/Hail_Genomic.json')
-        blob_bucket = gcloudstorage.blob_generator(
-                'urv_genetics')
+    def testbloblink(self):
+        blob_bucket = gcloudstorage.bloblink_generator(
+                'urv_genetics', '/root/Hail_Genomic.json')
         blob_str = next(blob_bucket)
         self.assertEqual(
                 blob_str[0:5],
@@ -70,8 +63,21 @@ class TestGCSbucket(base.TestUrvMethods):
                 msg="Failed to identify Insffucient Permission"):
             next(gcloudstorage.blob_generator('where'))
 
+    def testblobdownload(self):
+        blob = gcloudstorage.blob_download(
+                'blob_key',
+                'bucket_name',
+                'json_path')
+        self.assertEqual(
+                blob[0:5],
+                "b'<?xml",
+                msg='Unexpected File Encountered')
+        with self.assertRaises(
+                TypeError,
+                msg='Key not found'):
+            gcloudstorage.blob_download(
+                    'blob_key', 'bucket_name', 'json_path')
+
 
 if __name__ == '__main__':
-    """
-    """
     base.main()
