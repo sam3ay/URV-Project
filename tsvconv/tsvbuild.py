@@ -39,17 +39,46 @@ def tsvbuild(json_path, gcsbucket, pattern, list_of_paths, tsv_name):
         Add dictquery to list of links
     """
     exp_dict = {}
+    meta_key = ['fastq1', 'fastq2'] + list_of_paths
     # set google auth
     env.set_env(
         'GOOGLE_APPLICATION_CREDENTIALS',
         json_path)
     for gcs_url in gcloudstorage.blob_generator(gcsbucket, pattern):
-        exp_path = pathhandling.get_fileurl(gcs_url, None, '.', 'experiment.xml', 1)
+        exp_name, exp_path = pathhandling.get_fileurl(
+                url=gcs_url,
+                filename=None,
+                sep='.',
+                suffix='experiment.xml',
+                path=1)
+        gcs_pairname, gcs_pairpath = pathhandling.get_fileurl(
+                url=gcs_url,
+                filename=None,
+                sep='_',
+                suffix='2.Fastq.bz2',
+                depth=0,
+                pair=True)
+        metalist = [gcs_url, gcs_pairpath]
         try:
-            metadata = dictquery.dictquery(exp_dict[exp_path], list_of_paths)
+            metadata = dictquery.dictquery(
+                    input_dict=exp_dict[exp_name],
+                    listofpath=list_of_paths)
         except KeyError:
-            gcloudstorage.blob_download(exp_path, gcsbucket)
-            dict_extract.dict_extract(
+            xmlfile = gcloudstorage.blob_download(exp_path, gcsbucket)
+            xml_dict = xmldictconv(xmlfile)
+            exp_dict[exp_name] = dict_extract.dict_extract(
+                    value=gcs_pairname,
+                    var=xml_dict)
+            metadata = dictquery.dictquery(
+                    input_dict=exp_dict[exp_name],
+                    listofpath=list_of_paths)
+        metalist += metadata
+        meta_dict = dictbuild(
+                key=meta_key,
+                value=metalist)
+        tsvwriter(tsv_name, meta_dict)
+        return tsv_name
+
 
 
 def dictbuild(keys, values):
