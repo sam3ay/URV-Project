@@ -1,16 +1,13 @@
 #!/usr/bin/env python
 
 import csv
-import os
-from tsvconv import build_meta
-from tsvconv import chunkiter
-from tsvconv import argproc
-from tsvconv import dict_extract
-from tsvconv import dictquery
-from tsvconv import gcloudstorage
-from tsvconv import xmldictconv
-from tsvconv import env
-from tsvconv import pathhandling
+import argproc
+import dict_extract
+import dictquery
+import gcloudstorage
+import xmldictconv
+import env
+import pathhandling
 
 
 def tsvbuild(json_path, gcsbucket, pattern, list_of_paths, tsv_name):
@@ -58,7 +55,8 @@ def tsvbuild(json_path, gcsbucket, pattern, list_of_paths, tsv_name):
                 suffix='2.Fastq.bz2',
                 depth=0,
                 pair=True)
-        metalist = [gcs_url, gcs_pairpath]
+        output_bam = 'gs://{0}/output/{1}.bam'.format(gcsbucket, gcs_pairname)
+        metalist = [gcs_url, gcs_pairpath, output_bam]
         try:
             metadata = dictquery.dictquery(
                     input_dict=exp_dict[exp_name],
@@ -78,7 +76,6 @@ def tsvbuild(json_path, gcsbucket, pattern, list_of_paths, tsv_name):
                 value=metalist)
         tsvwriter(tsv_name, meta_dict)
         return tsv_name
-
 
 
 def dictbuild(keys, values):
@@ -133,5 +130,12 @@ def tsvwriter(filepath, input_dict):
 
 
 if __name__ == '__main__':
-    darg = argproc.parse_args()
-    tsvbuild(darg[gcs], darg[pattern], darg[metadata], darg[tsv_name])
+    parser = argproc.create_parser()
+    args = parser.parse_args()
+    darg = vars(args)
+    tsvbuild(
+            json_path=darg['json'],
+            gcsbucket=darg['gcs'],
+            pattern=darg['pattern'],
+            list_of_paths=darg['metadata'],
+            tsv_name=darg['tsv_name'])
