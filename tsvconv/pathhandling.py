@@ -22,12 +22,14 @@ def get_fileurl(url, filename, sep, suffix, depth, pair=False):
     """
     urlp = parse.urlparse(url)
     path = urlp.path
+    accension = None
     try:
         parentpath = PurePath(path).parents[depth]
     except IndexError:
         raise
     if filename is None and pair:
         filename = PurePath(path).parts[-1].split(sep)[0]
+        accension = PurePath(path).parts[-2]
     elif filename is None:
         filename = parentpath.parts[-1]
     if suffix is not None:
@@ -43,4 +45,4 @@ def get_fileurl(url, filename, sep, suffix, depth, pair=False):
              urlp.query,
              urlp.fragment)
             )
-    return (filename, output_url)
+    return (filename, output_url, accension)

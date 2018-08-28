@@ -36,46 +36,50 @@ def tsvbuild(json_path, gcsbucket, pattern, list_of_paths, tsv_name):
         Add dictquery to list of links
     """
     exp_dict = {}
-    meta_key = ['fastq1', 'fastq2'] + list_of_paths
+    meta_key = ['fastq1', 'fastq2', 'output'] + list_of_paths
     # set google auth
     env.set_env(
         'GOOGLE_APPLICATION_CREDENTIALS',
         json_path)
     for gcs_url in gcloudstorage.blob_generator(gcsbucket, pattern):
-        exp_name, exp_path = pathhandling.get_fileurl(
+        exp_name, exp_path, exp_folder = pathhandling.get_fileurl(
                 url=gcs_url,
                 filename=None,
                 sep='.',
                 suffix='experiment.xml',
-                path=1)
-        gcs_pairname, gcs_pairpath = pathhandling.get_fileurl(
+                depth=1,
+                pair=False)
+        gcs_pairname, gcs_pairpath, accension = pathhandling.get_fileurl(
                 url=gcs_url,
                 filename=None,
                 sep='_',
                 suffix='2.Fastq.bz2',
                 depth=0,
                 pair=True)
-        output_bam = 'gs://{0}/output/{1}.bam'.format(gcsbucket, gcs_pairname)
+        output_bam = 'gs://{0}/output/{1}.ubam'.format(gcsbucket, gcs_pairname)
         metalist = [gcs_url, gcs_pairpath, output_bam]
         try:
+            curr_dict = next(dict_extract.dict_extract(
+                    value=accension,
+                    var=exp_dict[exp_name]))
             metadata = dictquery.dictquery(
-                    input_dict=exp_dict[exp_name],
+                    input_dict=curr_dict,
                     listofpath=list_of_paths)
         except KeyError:
-            xmlfile = gcloudstorage.blob_download(exp_path, gcsbucket)
-            xml_dict = xmldictconv(xmlfile)
-            exp_dict[exp_name] = dict_extract.dict_extract(
-                    value=gcs_pairname,
-                    var=xml_dict)
+            xmlfile = gcloudstorage.blob_download(exp_path)
+            exp_dict[exp_name] = xmldictconv.xmldictconv(xmlfile)
+            curr_dict = next(dict_extract.dict_extract(
+                    value=accension,
+                    var=exp_dict[exp_name]))
             metadata = dictquery.dictquery(
-                    input_dict=exp_dict[exp_name],
+                    input_dict=curr_dict,
                     listofpath=list_of_paths)
         metalist += metadata
         meta_dict = dictbuild(
-                key=meta_key,
-                value=metalist)
+                keys=meta_key,
+                values=metalist)
         tsvwriter(tsv_name, meta_dict)
-        return tsv_name
+    return tsv_name
 
 
 def dictbuild(keys, values):
@@ -97,6 +101,7 @@ def dictbuild(keys, values):
     if len(keys) == len(values):
         output_dict = dict(zip(keys, values))
     else:
+        print(keys, values)
         raise ValueError("Unexpected input")
     return output_dict
 

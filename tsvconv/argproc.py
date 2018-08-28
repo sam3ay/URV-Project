@@ -33,7 +33,6 @@ def create_parser():
             )
     parser.add_argument(
             'metadata',
-            type=list,
             help='pattern of desired metadata info, location should be in parent \
             folder relative to pattern file',
             nargs='+'

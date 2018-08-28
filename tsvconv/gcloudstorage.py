@@ -54,11 +54,10 @@ def blob_generator(bucket_name, pattern):
         raise
 
 
-def blob_download(blob_key, bucket_name):
+def blob_download(blob_url):
     """Retrieves content of google cloud object
     Args:
-        blob_key (str): key of gcs object
-        bucket_name (str): name of desired bucket
+        blob_url (str): url of gcs object
 
     Return:
         Content of GCS object
@@ -66,8 +65,7 @@ def blob_download(blob_key, bucket_name):
         TypeError: Non-bytes like Object Retrieved;
             Indicative of non existing key
     """
-    bucket = get_gcsbucket(bucket_name)
-    blob = bucket.object(blob_key)
+    blob = storage.Object.from_url(blob_url)
     try:
         blobc = blob.download()
     except TypeError:
