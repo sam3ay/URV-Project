@@ -1,7 +1,7 @@
 import argparse
 
 
-def parse_args():
+def create_parser():
     """Parses arguments
     Returns:
         arguments
@@ -22,22 +22,19 @@ def parse_args():
             help='Pattern unique to desired files such as file extension',
             )
     parser.add_argument(
-            '--metafile',
-            action='store_false',
-            help='Metadata file exists'
+            'tsv_name',
+            default='tsv',
+            help='Path to tsv File'
             )
     parser.add_argument(
-            '--metadata',
-            type=list,
+            'json',
+            default='tsv',
+            help='Path to json file'
+            )
+    parser.add_argument(
+            'metadata',
             help='pattern of desired metadata info, location should be in parent \
             folder relative to pattern file',
             nargs='+'
             )
-    parser.add_argument(
-            '-tsv',
-            '--tsv_name',
-            default='tsv',
-            help='Path to tsv File'
-            )
-    args = parser.parse_args()
-    return vars(args)
+    return parser

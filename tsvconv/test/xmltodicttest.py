@@ -13,6 +13,6 @@ class XmlToDictTest(unittest.TestCase):
         """
         with open('test.xml', 'r') as testxml:
             self.assertEqual(
-                    xmldictconv.xmldictconv(testxml)
+                    xmldictconv.xmldictconv(testxml.read())
                     , xmltodict.parse(testxml.read()),
                     msg='Dictionary Conversion Error')

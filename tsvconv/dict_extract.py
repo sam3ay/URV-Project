@@ -14,8 +14,10 @@ def dict_extract(value, var, ret_dict=None):
     """
     try:
         for v in var.values():
-            if v == value:
+            if v == value and ret_dict is not None:
                 yield ret_dict
+            elif v == value and ret_dict is None:
+                yield var
             # lists should be caugt by the except
             elif isinstance(v, (dict, list)):
                 for result in dict_extract(value, v, ret_dict):

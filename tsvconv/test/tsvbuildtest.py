@@ -56,6 +56,3 @@ class TestTsvBuild(base.TestUrvMethods):
                 IsADirectoryError,
                 msg='Failed to identify directory instead of file'):
             tsvbuild.tsvwriter(directory_file, input_dict)
-    
-    def testtsvbuild(self):
-
