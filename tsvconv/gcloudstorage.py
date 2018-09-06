@@ -1,7 +1,4 @@
-from google.auth.exceptions import DefaultCredentialsError
 from google.datalab import storage
-from google.datalab.utils import RequestException
-from json.decoder import JSONDecodeError
 
 
 def get_gcsbucket(bucket_name):
@@ -20,16 +17,7 @@ def get_gcsbucket(bucket_name):
         IsADirectoryError: When directory supplied instead of file
         AttributeError: Not a valid service_account.Credentials object
     """
-    try:
-        bucket = storage.Bucket(bucket_name)
-    except RequestException:
-        raise
-    except DefaultCredentialsError:
-        raise
-    except IsADirectoryError:
-        raise
-    except AttributeError:
-        raise
+    bucket = storage.Bucket(bucket_name)
     return bucket
 
 
@@ -46,12 +34,9 @@ def blob_generator(bucket_name, pattern):
         RequestException: Bucket doesn't exist
     """
     cloud_bucket = get_gcsbucket(bucket_name)
-    try:
-        for blob in cloud_bucket.objects():
-            if blob.key.endswith(pattern):
-                yield blob.uri
-    except RequestException:
-        raise
+    for blob in cloud_bucket.objects():
+        if blob.key.endswith(pattern):
+            yield blob.uri
 
 
 def blob_download(blob_url):
@@ -66,8 +51,5 @@ def blob_download(blob_url):
             Indicative of non existing key
     """
     blob = storage.Object.from_url(blob_url)
-    try:
-        blobc = blob.download()
-    except TypeError:
-        raise
+    blobc = blob.download()
     return blobc

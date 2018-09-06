@@ -38,7 +38,6 @@ class TestTsvBuild(base.TestUrvMethods):
         file_test = '/root/URV-Project/tsv_test.tsv'
         tsvfile_test = tsvbuild.tsvwriter(file_test, input_dict)
         file_control = open('/root/URV-Project/tsv_expected', 'w')
-        directory_file = '/root/'
         empty_dict = {}
         self.assertEqual(magic.from_file(
             tsvfile_test),
@@ -52,7 +51,3 @@ class TestTsvBuild(base.TestUrvMethods):
                 ValueError,
                 msg='Value Error due to blank field names expected'):
             tsvbuild.tsvwriter(tsvfile_test, empty_dict)
-        with self.assertRaises(
-                IsADirectoryError,
-                msg='Failed to identify directory instead of file'):
-            tsvbuild.tsvwriter(directory_file, input_dict)

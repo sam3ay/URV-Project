@@ -10,7 +10,11 @@ class TestArgParse(unittest.TestCase):
         parser_2 = self.parser.parse_args(
                 ['test', 'hello', 'next', 'week', 'there'])
         parse_dict = vars(parser_2)
-        self.assertTrue(parse_dict['gcs'])
+        self.assertEqual(parse_dict['gcs'], 'test')
+        self.assertEqual(parse_dict['suffix'], 'hello')
+        self.assertEqual(parse_dict['tsv_name'], 'next')
+        self.assertEqual(parse_dict['json'], 'week')
+        self.assertEqual(parse_dict['metadata'], 'there')
 
 
 if __name__ == '__main__':

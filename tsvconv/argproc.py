@@ -18,7 +18,7 @@ def create_parser():
             help='GCS bucket name'
             )
     parser.add_argument(
-            'pattern',
+            'suffix',
             help='Pattern unique to desired files such as file extension',
             )
     parser.add_argument(
@@ -33,8 +33,8 @@ def create_parser():
             )
     parser.add_argument(
             'metadata',
-            help='pattern of desired metadata info, location should be in parent \
-            folder relative to pattern file',
+            help='suffix of desired metadata info, location should be in parent \
+            folder relative to original file',
             nargs='+'
             )
     return parser

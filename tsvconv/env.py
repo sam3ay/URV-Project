@@ -25,14 +25,11 @@ def unset_env(variable_name):
 
     Returns:
         Removes environmental variable and updates os.environ
-    
+
     Raises:
         KeyError: When variable_name is not in environ
     Notes:
         del is prefereable to unsetenv because it also updates os.environ;
         see unsetenv documentation
     """
-    try:
-        del os.environ[variable_name]
-    except KeyError:
-        raise
+    del os.environ[variable_name]

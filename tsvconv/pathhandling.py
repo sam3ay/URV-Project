@@ -23,10 +23,7 @@ def get_fileurl(url, filename, sep, suffix, depth, pair=False):
     urlp = parse.urlparse(url)
     path = urlp.path
     accension = None
-    try:
-        parentpath = PurePath(path).parents[depth]
-    except IndexError:
-        raise
+    parentpath = PurePath(path).parents[depth]
     if filename is None and pair:
         filename = PurePath(path).parts[-1].split(sep)[0]
         accension = PurePath(path).parts[-2]
