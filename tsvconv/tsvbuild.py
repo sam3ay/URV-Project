@@ -8,9 +8,10 @@ import gcloudstorage
 import xmldictconv
 import env
 import pathhandling
+import asyncio
 
 
-def tsvbuild(json_path, gcsbucket, suffix, list_of_paths, tsv_name):
+def tsvbuild(json_path, gcsbucket, suffix, tsv_name):
     """builds a tsv file from a directory of paired files
 
     Retrieves location of pairs of files matching suffix and retrieves
@@ -22,8 +23,6 @@ def tsvbuild(json_path, gcsbucket, suffix, list_of_paths, tsv_name):
         gcsbucket (str): google cloud bucket name, recursively searched
         suffix (str): file identifying pattern being searched
         tsv_name (str): filename or tsv file
-        list_of_paths (list): containing location of desired values
-            in nested dictionary
 
     Returns:
         str: location of tsv file
@@ -36,13 +35,14 @@ def tsvbuild(json_path, gcsbucket, suffix, list_of_paths, tsv_name):
         Add dictquery to list of links
     """
     exp_dict = {}
-    meta_key = ['fastq1', 'fastq2', 'output'] + list_of_paths
     # set google auth
     env.set_env(
         'GOOGLE_APPLICATION_CREDENTIALS',
         json_path)
     header = True
+    loop = asyncio.get_event_loop()
     for gcs_url in gcloudstorage.blob_generator(gcsbucket, suffix):
+        meta_dict = {}
         exp_name, exp_path, exp_folder = pathhandling.get_fileurl(
                 url=gcs_url,
                 filename=None,
@@ -58,50 +58,27 @@ def tsvbuild(json_path, gcsbucket, suffix, list_of_paths, tsv_name):
                 depth=0,
                 pair=True)
         output_bam = 'gs://{0}/output/{1}.ubam'.format(gcsbucket, gcs_pairname)
-        metalist = [gcs_url, gcs_pairpath, output_bam]
+        meta_dict['Fastq1'] = gcs_url
+        meta_dict['Fastq2'] = gcs_pairpath
+        meta_dict['output'] = output_bam
         try:
             curr_dict = next(dict_extract.dict_extract(
                     value=accension,
                     var=exp_dict[exp_name]))
-            metadata = dictquery.dictquery(
-                    input_dict=curr_dict,
-                    listofpath=list_of_paths)
         except KeyError:
             xmlfile = gcloudstorage.blob_download(exp_path)
             exp_dict[exp_name] = xmldictconv.xmldictconv(xmlfile)
             curr_dict = next(dict_extract.dict_extract(
                     value=accension,
                     var=exp_dict[exp_name]))
-            metadata = dictquery.dictquery(
+        loop.run_until_complete(
+                dictquery.dict_endpoints(
                     input_dict=curr_dict,
-                    listofpath=list_of_paths)
-        metalist += metadata
-        meta_dict = dictbuild(
-                keys=meta_key,
-                values=metalist)
+                    endpoint_dict=meta_dict))
         tsvwriter(tsv_name, meta_dict, header)
         header = False
+    loop.close()
     return tsv_name
-
-
-def dictbuild(keys, values):
-    """builds a dictionary
-
-    Args:
-        keys (list): list of keys of size n
-        values (list): list of values of size n
-
-    Returns:
-        dict: dictionary
-    Raises:
-        ValueError: If lenght of keys and values are unequal
-    """
-    if len(keys) == len(values):
-        output_dict = dict(zip(keys, values))
-    else:
-        print(keys, values)
-        raise ValueError("Unexpected input")
-    return output_dict
 
 
 def tsvwriter(filepath, input_dict, header):
@@ -131,5 +108,4 @@ if __name__ == '__main__':
             json_path=darg['json'],
             gcsbucket=darg['gcs'],
             suffix=darg['suffix'],
-            list_of_paths=darg['metadata'],
             tsv_name=darg['tsv_name'])

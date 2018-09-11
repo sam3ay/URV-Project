@@ -31,10 +31,4 @@ def create_parser():
             default='tsv',
             help='Path to json file'
             )
-    parser.add_argument(
-            'metadata',
-            help='suffix of desired metadata info, location should be in parent \
-            folder relative to original file',
-            nargs='+'
-            )
     return parser

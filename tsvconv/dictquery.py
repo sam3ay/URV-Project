@@ -1,4 +1,5 @@
 from functools import reduce
+import asyncio
 
 
 def dictquery(input_dict, listofpath):
@@ -23,3 +24,26 @@ def dictquery(input_dict, listofpath):
     except AttributeError:
         output_list.append(None)
     return output_list
+
+
+async def dict_endpoints(input_dict, endpoint_dict, key=None):
+    """Retrieve key and value pair and yields them as tuples
+    Args:
+        input_dict (dict): Dictionary with desired values
+        endpoint_dict (dict)
+        key (str: optional): default key
+
+    Yields:
+        tuple of key value
+    Example:
+        asyncio.run(dict_endpoints(input_dict))
+    """
+    for k, v in input_dict.items():
+        if isinstance(v, dict):
+            await dict_endpoints(v, endpoint_dict, key=k)
+        else:
+            if k in endpoint_dict:
+                new_key = '_'.join([key, k])
+                endpoint_dict[new_key] = v
+            else:
+                endpoint_dict[k] = v
