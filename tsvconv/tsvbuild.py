@@ -72,9 +72,9 @@ def tsvbuild(json_path, gcsbucket, suffix, tsv_name):
                     value=accension,
                     var=exp_dict[exp_name]))
         loop.run_until_complete(
-                dictquery.dict_endpoints(
+                asyncio.gather(dictquery.dict_endpoints(
                     input_dict=curr_dict,
-                    endpoint_dict=meta_dict))
+                    endpoint_dict=meta_dict)))
         tsvwriter(tsv_name, meta_dict, header)
         header = False
     loop.close()
