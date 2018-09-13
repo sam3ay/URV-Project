@@ -8,7 +8,7 @@ async def dict_endpoints(input_dict, endpoint_dict, key=None):
         endpoint_dict (dict)
 
     Yields:
-        tuple of key value
+        Adds key, value pairs to endpoint_dict
     Example:
         asyncio.run(dict_endpoints(input_dict))
     """
