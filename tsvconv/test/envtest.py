@@ -20,6 +20,11 @@ class TestGcsStorage(unittest.TestCase):
                 os.environ["GOOGLE_APPLICATION_CREDENTIALS"],
                 '/root/Hail_Genomic.json',
                 msg='Incorrect value for environmental value')
+        env.unset_env(
+                "GOOGLE_APPLICATION_CREDENTIALS")
+        self.assertTrue(
+                "GOOGLE_APPLICATION_CREDENTIALS" not in os.environ,
+                msg='Unexpected environmental value encountered')
 
 
 if __name__ == '__main__':
