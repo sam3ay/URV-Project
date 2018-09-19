@@ -30,14 +30,16 @@ workflow fastqconversion {
     # Convert pair of FASTQs to uBAM
     call FastqToSam {
       sample_name=inputFastqarray[i][0],
-      fastq1=inputFastqarray[i][9],
-      fastq2=inputFastqarray[i][8],
-      platform=inputFastqarray[i][6],
-      platform_model=inputFastqarray[i][5],
-      library_name=inputFastqarray[i][4],
-      sequencing_center=inputFastqarray[i][7],
+      fastq1=inputFastqarray[i][0],
+      fastq2=inputFastqarray[i][1],
+      output=inputFastqarray[i][2]
+      platform= "illumina",
+      platform_model=inputFastqarray[i][24],
+      library_name=inputFastqarray[i][13],
+      sequencing_center=inputFastqarray[i][4],
       readgroup=inputFastqarray[i][3],
       predictedinsertsize = inputFastqarray[2],
+      comment=inputFastqarray[i][8]
       docker = docker,
       preemptible_attempts = preemptible_attempts
     }
@@ -46,7 +48,7 @@ workflow fastqconversion {
 # Create a list with the generated ubams
     call CreateUbamList {
       input:
-        unmapped_bams = FastQsToUnmappedBAM.output_bam,
+        unmapped_bams = FastqToSam.output_bam,
         ubam_list_name = ubam_list_name,
         docker = docker,
         preemptible_attempts = preemptible_attempts
@@ -74,6 +76,7 @@ task FastToSam {
   String predictedinsertsize
   String sample_name
   String readgroup
+  string comment
   Boolean? seq
 
 
@@ -96,7 +99,8 @@ task FastToSam {
       --SEQUENCING_CENTER ${sequencing_center} \
       --PREDICTED_INSERT_SIZE ${predictedinsertsize}
       --PLATFORM_MODEL=${platform_model} 
-      --USE_SEQUENTIAL_FASTQS ${seq}
+      --USE_SEQUENTIAL_FASTQS ${seq} \
+      --COMMENT ${comment}
   }
   # revist specs perhaps add bucket
   runtime {
