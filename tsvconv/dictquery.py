@@ -21,7 +21,6 @@ async def dict_endpoints(input_dict, endpoint_dict, key=None):
                 await dict_endpoints(item, endpoint_dict, key=key)
         elif key not in endpoint_dict:
             endpoint_dict[key] = input_dict
-        elif isinstance(endpoint_dict[key], list):
-            endpoint_dict[key].append(input_dict)
         else:
-            endpoint_dict[key] = [endpoint_dict[key], input_dict]
+            key += '_2'
+            endpoint_dict[key] = input_dict
