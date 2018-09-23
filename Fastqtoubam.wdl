@@ -16,6 +16,7 @@ workflow fastqconversion {
   # TSV File contains inputFastqarray name; fastq1; fastq2; read_group;unmapped_bam output
   File fastqTsv
   Array[Array[String]] inputFastqarray = read_tsv(fastqTsv)
+  String ubam_list_name
 
   String gatk_docker = "us.gcr.io/broad-gatk/gatk:latest"
   String gatk_path = "/gatk/gatk"
@@ -31,7 +32,7 @@ workflow fastqconversion {
       input:
         fastq1=inputFastqarray[i][0],
         fastq2=inputFastqarray[i][1],
-        output_bam=inputFastqarray[i][2],
+        bamfile=inputFastqarray[i][2],
         platform= work_platform,
         sequencing_center=inputFastqarray[i][4],
         sample_name=inputFastqarray[i][5],
@@ -50,12 +51,12 @@ workflow fastqconversion {
   call CreateUbamList {
      input:
        unmapped_bams = FastqToSam.output_bam,
-       ubam_list_name = ubam_list_name,
+       ubam_list = ubam_list_name,
        docker = gatk_docker,
    }
 # Outputs that will be retained when execution is complete
     output {
-      Array[File] output_bams = FastQsToUnmappedBAM.output_bam
+      Array[File] output_bams = FastqToSam.output_bam
       File unmapped_bam_list = CreateUbamList.unmapped_bam_list
     }
 }
@@ -65,7 +66,7 @@ workflow fastqconversion {
 
 
 # Convert Fastq files to uBAMs 
-task FastToSam {
+task FastqToSam {
   File fastq1
   File fastq2
   String platform
@@ -77,7 +78,7 @@ task FastToSam {
   String readgroup
   String comment
   String description
-  String output_bam
+  String bamfile
 
 
   String docker
@@ -89,7 +90,7 @@ task FastToSam {
     FastqToSam \
       --FASTQ ${fastq1} \
       --FASTQ2 ${fastq2} \
-      --OUTPUT ${output_bam} \
+      --OUTPUT ${bamfile} \
       --PLATFORM ${platform} \
       --LIBRARY_NAME ${library_name} \
       --SAMPLE_NAME ${sample_name} \
@@ -109,21 +110,21 @@ task FastToSam {
     preemptible: 3
   }
   output {
-    File output_bam = output_bam
+    File output_bam = bamfile
   }
 }
 
 task CreateUbamList {
   Array[String] unmapped_bams
-  String ubam_list_name
+  String ubam_list
   
   String docker
   
   command {
-    mv ${write_lines(unmapped_bams)} ${ubam_list_name}.list
+    mv ${write_lines(unmapped_bams)} ${ubam_list}.list
   }
   output {
-    File unmapped_bam_list = ${ubam_list_name}.list
+    File unmapped_bam_list = "${ubam_list}.list"
 
   }
   runtime {

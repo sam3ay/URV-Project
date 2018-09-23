@@ -1,0 +1,8 @@
+{
+  "fastqconversion.work_platform": "String (optional, default = \"illumina\")",
+  "fastqconversion.gatk_path": "String (optional, default = \"/gatk/gatk\")",
+  "fastqconversion.ubam_list_name": "String",
+  "fastqconversion.gatk_docker": "String (optional, default = \"us.gcr.io/broad-gatk/gatk:latest\")",
+  "fastqconversion.fastqTsv": "File"
+}
+
