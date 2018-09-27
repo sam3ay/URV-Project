@@ -32,18 +32,16 @@ workflow fastqconversion {
       input:
         fastq1=inputFastqarray[i][0],
         fastq2=inputFastqarray[i][1],
-        bamfile=inputFastqarray[i][2],
-        platform= work_platform,
+        platform=work_platform,
         sequencing_center=inputFastqarray[i][4],
-        sample_name=inputFastqarray[i][5],
-        readgroup=inputFastqarray[i][10],
+        sample_name=inputFastqarray[i][10],
+        readgroup=inputFastqarray[i][5],
         comment=inputFastqarray[i][15],
-        description=inputFastqarray[i][16],
         library_name=inputFastqarray[i][19],
         predictedinsertsize=inputFastqarray[i][23],
         platform_model=inputFastqarray[i][34],
         docker=gatk_docker,
-        gatk_path=gatk_path,
+        gatk_path=gatk_path
     }
   }
 
@@ -52,12 +50,12 @@ workflow fastqconversion {
      input:
        unmapped_bams = FastqToSam.output_bam,
        ubam_list = ubam_list_name,
-       docker = gatk_docker,
+       docker = gatk_docker
    }
 # Outputs that will be retained when execution is complete
     output {
       Array[File] output_bams = FastqToSam.output_bam
-      File unmapped_bam_list = CreateUbamList.unmapped_bam_list
+      File ubam_list = CreateUbamList.unmapped_bam_list
     }
 }
 
@@ -77,8 +75,6 @@ task FastqToSam {
   String sample_name
   String readgroup
   String comment
-  String description
-  String bamfile
 
 
   String docker
@@ -90,27 +86,26 @@ task FastqToSam {
     FastqToSam \
       --FASTQ ${fastq1} \
       --FASTQ2 ${fastq2} \
-      --OUTPUT ${bamfile} \
+      --OUTPUT ${readgroup}.unmapped.bam \
       --PLATFORM ${platform} \
-      --LIBRARY_NAME ${library_name} \
+      --LIBRARY_NAME "${library_name}" \
       --SAMPLE_NAME ${sample_name} \
       --SEQUENCING_CENTER ${sequencing_center} \
-      --PREDICTED_INSERT_SIZE ${predictedinsertsize}
-      --PLATFORM_MODEL=${platform_model} \
-      --READGROUP_NAME ${readgroup} \
-      --COMMENT ${comment} \
-      --DESCRIPTION ${description}
+      --PREDICTED_INSERT_SIZE ${predictedinsertsize} \
+      --PLATFORM_MODEL ${platform_model} \
+      --READ_GROUP_NAME ${readgroup} \
+      --COMMENT ${comment} 
   }
   # revist specs perhaps add bucket
   runtime {
     docker: docker
-    memory: 10 + " GB"
+    memory: 20 + " GB"
     cpu: "1"
-    disks: "local-disk " + 100 + " HDD"
+    disks: "local-disk " + 300 + " HDD"
     preemptible: 3
   }
   output {
-    File output_bam = bamfile
+    File output_bam = "${readgroup}.unmapped.bam"
   }
 }
 
@@ -129,9 +124,6 @@ task CreateUbamList {
   }
   runtime {
     docker: docker
-    memory: 5 + " GB"
-    cpu: "1"
-    disks: "local-disk " + 10 + " HDD"
     preemptible: 3   
     } 
   }

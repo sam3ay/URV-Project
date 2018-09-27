@@ -54,7 +54,7 @@ def tsvbuild(json_path, gcsbucket, suffix, tsv_name):
                 url=gcs_url,
                 filename=None,
                 sep='_',
-                suffix='2.Fastq.bz2',
+                suffix='2.fastq.bz2',
                 depth=0,
                 pair=True)
         output_bam = 'gs://{0}/output/{1}.ubam'.format(gcsbucket, gcs_pairname)
