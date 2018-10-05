@@ -27,8 +27,7 @@ def create_parser():
             help='Path to tsv File'
             )
     parser.add_argument(
-            'json',
-            default='tsv',
+            '--json',
             help='Path to json file'
             )
     return parser

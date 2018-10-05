@@ -23,6 +23,7 @@ def tsvbuild(json_path, gcsbucket, suffix, tsv_name):
         gcsbucket (str): google cloud bucket name, recursively searched
         suffix (str): file identifying pattern being searched
         tsv_name (str): filename or tsv file
+        default ('bool'): Use the default credentials
 
     Returns:
         str: location of tsv file
@@ -36,9 +37,12 @@ def tsvbuild(json_path, gcsbucket, suffix, tsv_name):
     """
     exp_dict = {}
     # set google auth
-    env.set_env(
-        'GOOGLE_APPLICATION_CREDENTIALS',
-        json_path)
+    try:
+        env.set_env(
+            'GOOGLE_APPLICATION_CREDENTIALS',
+            json_path)
+    except NameError:
+        pass
     header = True
     loop = asyncio.get_event_loop()
     for gcs_url in gcloudstorage.blob_generator(gcsbucket, suffix):
@@ -108,4 +112,5 @@ if __name__ == '__main__':
             json_path=darg['json'],
             gcsbucket=darg['gcs'],
             suffix=darg['suffix'],
-            tsv_name=darg['tsv_name'])
+            tsv_name=darg['tsv_name'],
+            default=darg['default'])
