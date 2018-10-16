@@ -16,11 +16,11 @@ workflow fastqconversion {
   # TSV File contains inputFastqarray name; fastq1; fastq2; read_group;unmapped_bam output
   File fastqTsv
   Array[Array[String]] inputFastqarray = read_tsv(fastqTsv)
-  String ubam_list_name = basename(readgroup_list,".list")
+  String ubam_list_name
 
-
-  String docker
-  Int? preemptible_attempts
+  String gatk_docker = "us.gcr.io/broad-gatk/gatk:latest"
+  String gatk_path = "/gatk/gatk"
+  String work_platform = "illumina"
 
 
   # run multiple fastq pair conversions in parallel
@@ -29,32 +29,33 @@ workflow fastqconversion {
 
     # Convert pair of FASTQs to uBAM
     call FastqToSam {
-      sample_name=inputFastqarray[i][0],
-      fastq1=inputFastqarray[i][9],
-      fastq2=inputFastqarray[i][8],
-      platform=inputFastqarray[i][6],
-      platform_model=inputFastqarray[i][5],
-      library_name=inputFastqarray[i][4],
-      sequencing_center=inputFastqarray[i][7],
-      readgroup=inputFastqarray[i][3],
-      predictedinsertsize = inputFastqarray[2],
-      docker = docker,
-      preemptible_attempts = preemptible_attempts
+      input:
+        fastq1=inputFastqarray[i][0],
+        fastq2=inputFastqarray[i][1],
+        platform=work_platform,
+        sequencing_center=inputFastqarray[i][4],
+        sample_name=inputFastqarray[i][10],
+        readgroup=inputFastqarray[i][5],
+        comment=inputFastqarray[i][15],
+        library_name=inputFastqarray[i][19],
+        predictedinsertsize=inputFastqarray[i][23],
+        platform_model=inputFastqarray[i][34],
+        docker=gatk_docker,
+        gatk_path=gatk_path
     }
   }
 
 # Create a list with the generated ubams
-    call CreateUbamList {
-      input:
-        unmapped_bams = FastQsToUnmappedBAM.output_bam,
-        ubam_list_name = ubam_list_name,
-        docker = docker,
-        preemptible_attempts = preemptible_attempts
-    }
+  call CreateUbamList {
+     input:
+       unmapped_bams = FastqToSam.output_bam,
+       ubam_list = ubam_list_name,
+       docker = gatk_docker
+   }
 # Outputs that will be retained when execution is complete
     output {
-      Array[File] output_bams = FastQsToUnmappedBAM.output_bam
-      File unmapped_bam_list = CreateUbamList.unmapped_bam_list
+      Array[File] output_bams = FastqToSam.output_bam
+      File ubam_list = CreateUbamList.unmapped_bam_list
     }
 }
 
@@ -63,48 +64,45 @@ workflow fastqconversion {
 
 
 # Convert Fastq files to uBAMs 
-task FastToSam {
+task FastqToSam {
   File fastq1
   File fastq2
   String platform
   String platform_model
-  String inputFastqarray_name
   String library_name
   String sequencing_center
   String predictedinsertsize
   String sample_name
   String readgroup
-  Boolean? seq
+  String comment
 
 
-  Int? disk_space_gb
-  Int? machine_mem_gb
-  Int? preemptible_attempts
   String docker
   String gatk_path
 
 
   command {
     ${gatk_path} --java-options "-Xmx3000m" \
-      FastqToSam \
-      --FASTQ ${fastq} \
+    FastqToSam \
+      --FASTQ ${fastq1} \
       --FASTQ2 ${fastq2} \
-      --OUTPUT ${readgroup} \
+      --OUTPUT ${readgroup}.unmapped.bam \
       --PLATFORM ${platform} \
-      --LIBRARY_NAME ${library_name} \
-      --SAMPLE_NAME ${sample} \
+      --LIBRARY_NAME "${library_name}" \
+      --SAMPLE_NAME ${sample_name} \
       --SEQUENCING_CENTER ${sequencing_center} \
-      --PREDICTED_INSERT_SIZE ${predictedinsertsize}
-      --PLATFORM_MODEL=${platform_model} 
-      --USE_SEQUENTIAL_FASTQS ${seq}
+      --PREDICTED_INSERT_SIZE ${predictedinsertsize} \
+      --PLATFORM_MODEL ${platform_model} \
+      --READ_GROUP_NAME ${readgroup} \
+      --COMMENT ${comment} 
   }
   # revist specs perhaps add bucket
   runtime {
     docker: docker
-    memory: select_first([machine_mem_gb, 10]) + " GB"
+    memory: 20 + " GB"
     cpu: "1"
-    disks: "local-disk " + select_first([disk_space_gb, 100]) + " HDD"
-    preemptible: select_first([preemptible_attempts, 3])
+    disks: "local-disk " + 300 + " HDD"
+    preemptible: 3
   }
   output {
     File output_bam = "${readgroup}.unmapped.bam"
@@ -113,25 +111,19 @@ task FastToSam {
 
 task CreateUbamList {
   Array[String] unmapped_bams
-  String ubam_list_name
+  String ubam_list
   
-  Int? machine_mem_gb
-  Int? disk_space_gb
-  Int? preemptible_attempts
   String docker
   
   command {
-    echo "${sep=',' unmapped_bams}" | sed s/"\""//g | sed s/"\["//g | sed s/\]//g | sed s/" "//g | sed 's/,/\n/g' >> ${ubam_list_name}.unmapped_bams.list
-    
+    mv ${write_lines(unmapped_bams)} ${ubam_list}.list
   }
   output {
-    File unmapped_bam_list = "${ubam_list_name}.unmapped_bams.list"   
+    File unmapped_bam_list = "${ubam_list}.list"
+
   }
   runtime {
     docker: docker
-    memory: select_first([machine_mem_gb,5]) + " GB"
-    cpu: "1"
-    disks: "local-disk " + select_first([disk_space_gb, 10]) + " HDD"
-    preemptible: select_first([preemptible_attempts, 3])   
+    preemptible: 3   
     } 
   }
