@@ -19,8 +19,8 @@ class TestGCSbucket(base.TestUrvMethods):
                 msg='Bucket does not Exist')
 
     def testbloblink(self):
-        blob_bucket = gcloudstorage.bloblink_generator(
-                'urv_genetics', '/root/Hail_Genomic.json')
+        blob_bucket = gcloudstorage.blob_generator(
+                'urv_genetics', '_1.fastq')
         blob_str = next(blob_bucket)
         self.assertEqual(
                 blob_str[0:5],
@@ -29,12 +29,10 @@ class TestGCSbucket(base.TestUrvMethods):
 
     def testblobdownload(self):
         blob = gcloudstorage.blob_download(
-                'blob_key',
-                'bucket_name',
-                'json_path')
+                'gs://urv_genetics/test.experiment.xml')
         self.assertEqual(
-                blob[0:5],
-                "b'<?xml",
+                str(blob[0:5]),
+                "b'<?xml'",
                 msg='Unexpected File Encountered')
 
     def testblobexists(self):

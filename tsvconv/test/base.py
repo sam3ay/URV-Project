@@ -10,15 +10,21 @@ class TestUrvMethods(unittest.TestCase):
     def setUpClass(cls):
         """Provides gcs account credentials to all tests
         """
-        env.set_env(
-                'GOOGLE_APPLICATION_CREDENTIALS',
-                '/root/Hail_Genomic.json')
+        default = True
+        if not default:
+            env.set_env(
+                    'GOOGLE_APPLICATION_CREDENTIALS',
+                    '/root/Hail_Genomic.json')
 
+    @classmethod
     def tearDownClass(cls):
         """Removes gcs environmental variable
         """
-        env.unset_env(
-                'GOOGLE_APPLICATION_CREDENTIALS')
+        try:
+            env.unset_env(
+                    'GOOGLE_APPLICATION_CREDENTIALS')
+        except KeyError:
+            print("default credentials used")
 
 
 def main():
