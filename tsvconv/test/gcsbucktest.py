@@ -37,6 +37,14 @@ class TestGCSbucket(base.TestUrvMethods):
                 "b'<?xml",
                 msg='Unexpected File Encountered')
 
+    def testblobexists(self):
+        blob_true = "gs://urv_genetics/output/ERR018779_1.fastq"
+        blob_false = "gs://urv_genetics/output/what"
+        self.assertTrue(gcloudstorage.blob_exists(blob_true),
+                        msg="Failed to identify existing blob")
+        self.assertFalse(gcloudstorage.blob_exists(blob_false),
+                         msg="Failed to identify nonexisting blob")
+
 
 if __name__ == '__main__':
     base.main()

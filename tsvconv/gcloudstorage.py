@@ -53,3 +53,16 @@ def blob_download(blob_url):
     blob = storage.Object.from_url(blob_url)
     blobc = blob.download()
     return blobc
+
+
+def blob_exists(blob_url):
+    """Checks existence of object at uri
+    Args:
+        blob_url (str): url of gcs object
+
+    Return:
+        bool: True if object exists, False if otherwise
+    """
+    blob = storage.Object.from_url(blob_url)
+    blobex = blob.exists()
+    return blobex
