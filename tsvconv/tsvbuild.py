@@ -27,7 +27,7 @@ def tsvbuild(json_path, gcsbucket, suffix, tsv_name):
     Returns:
         str: location of tsv file
     Notes:
-        format of column separation marked by semicolons
+        format of column separation marked by tabs
         SampleName; output; predictedinsertsize; readgroup; library_name;
         platformmodel; platform; sequencingcenter; Fastq1 ; Fastq2
 

@@ -7,10 +7,12 @@ async def dict_endpoints(input_dict, endpoint_dict, key=None):
         input_dict (dict): Dictionary with desired values
         endpoint_dict (dict)
 
-    Yields:
+    Note:
         Adds key, value pairs to endpoint_dict
     Example:
         asyncio.run(dict_endpoints(input_dict))
+    TODO:
+        Update async logic to be parrallel
     """
     try:
         for k, v in input_dict.items():

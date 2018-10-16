@@ -6,7 +6,7 @@ def xmldictconv(xml_name):
     """Convert xml fie to an ordered dictionary
 
     Args:
-        xml_name (obj): xml file stream
+        xml_name (obj): xml file object
 
     Returns:
         Dictionary version of xml file or empty dictionary if file not found
