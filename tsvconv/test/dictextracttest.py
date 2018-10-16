@@ -1,6 +1,7 @@
 import unittest
 from tsvconv import dict_extract, dictquery
 import xmltodict
+import asyncio
 
 
 class TestDictExtract(unittest.TestCase):
@@ -26,25 +27,20 @@ class TestDictExtract(unittest.TestCase):
                 msg='Failed None condition')
 
     def test_dictquery(self):
-        input_dict = {'hello': {'all': {'we': {'see': 'there'}}}}
-        self.assertEqual(
-                dictquery.dictquery(
-                    input_dict,
-                    ['hello/all/we/see']),
-                ['there'],
-                msg='Dictionary Parsing error: Unexpected value returned')
-        self.assertEqual(
-                dictquery.dictquery(
-                    input_dict,
-                    ['hello/all/nokey/']),
-                [None],
-                msg='Dictionary Parsing error: TypeError not handled')
-        self.assertEqual(
-                dictquery.dictquery(
-                    input_dict,
-                    ['hello/all/we/see/there/attr']),
-                [None],
-                msg='Dictionary Parsing error: AttributeError not handled')
+        input_dict = {'hello': {'all': {'we': {'see': 'there'}}},
+                      'maybe': {'there': 'will'},
+                      'second': {'point': {'there': 'is'}}}
+        output_dict = {}
+        loop = asyncio.get_event()
+        loop.run_until_complete(
+                dictquery.dict_endpoints(input_dict, output_dict))
+        loop.close()
+        self.assertEqual(output_dict['see'],
+                         'there',
+                         msg='Unexpected endpoint assigned')
+        self.assertEqual(output_dict['there'],
+                         ['will', 'is'],
+                         msg='Unexpected value list check failed')
 
 
 if __name__ == '__main__':

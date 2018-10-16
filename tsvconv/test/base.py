@@ -14,6 +14,12 @@ class TestUrvMethods(unittest.TestCase):
                 'GOOGLE_APPLICATION_CREDENTIALS',
                 '/root/Hail_Genomic.json')
 
+    def tearDownClass(cls):
+        """Removes gcs environmental variable
+        """
+        env.unset_env(
+                'GOOGLE_APPLICATION_CREDENTIALS')
+
 
 def main():
     unittest.main()
