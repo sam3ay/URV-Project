@@ -61,10 +61,13 @@ def tsvbuild(json_path, gcsbucket, suffix, tsv_name):
                 suffix='2.fastq.bz2',
                 depth=0,
                 pair=True)
-        output_bam = 'gs://{0}/output/{1}.ubam'.format(gcsbucket, gcs_pairname)
-        meta_dict['Fastq1'] = gcs_url
-        meta_dict['Fastq2'] = gcs_pairpath
-        meta_dict['output'] = output_bam
+        fastq_1 = 'gs://{0}/output/{1}_1.fastq'.format(gcsbucket, gcs_pairname)
+        fastq_2 = 'gs://{0}/output/{1}_2.fastq'.format(gcsbucket, gcs_pairname)
+        if (gcloudstorage.blob_exists(fastq_1)
+                and gcloudstorage.blob_exists(fastq_2)):
+            meta_dict['Fastq1'] = fastq_1
+            meta_dict['Fastq2'] = fastq_2
+
         try:
             curr_dict = next(dict_extract.dict_extract(
                     value=accension,

@@ -22,7 +22,9 @@ async def dict_endpoints(input_dict, endpoint_dict, key=None):
             for item in input_dict:
                 await dict_endpoints(item, endpoint_dict, key=key)
         elif key not in endpoint_dict:
-            endpoint_dict[key] = input_dict
+            value = input_dict.replace(" ", "")
+            endpoint_dict[key] = value
         else:
+            value = input_dict.replace(" ", "")
             key += '_2'
-            endpoint_dict[key] = input_dict
+            endpoint_dict[key] = value
