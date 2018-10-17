@@ -65,23 +65,22 @@ def tsvbuild(json_path, gcsbucket, suffix, tsv_name, default):
                 and gcloudstorage.blob_exists(fastq_2)):
             meta_dict['Fastq1'] = fastq_1
             meta_dict['Fastq2'] = fastq_2
-
-        try:
-            curr_dict = next(dict_extract.dict_extract(
-                    value=accension,
-                    var=exp_dict[exp_name]))
-        except KeyError:
-            xmlfile = gcloudstorage.blob_download(exp_path)
-            exp_dict[exp_name] = xmldictconv.xmldictconv(xmlfile)
-            curr_dict = next(dict_extract.dict_extract(
-                    value=accension,
-                    var=exp_dict[exp_name]))
-        loop.run_until_complete(
-                asyncio.gather(dictquery.dict_endpoints(
-                    input_dict=curr_dict,
-                    endpoint_dict=meta_dict)))
-        tsvwriter(tsv_name, meta_dict, header)
-        header = False
+            try:
+                curr_dict = next(dict_extract.dict_extract(
+                        value=accension,
+                        var=exp_dict[exp_name]))
+            except KeyError:
+                xmlfile = gcloudstorage.blob_download(exp_path)
+                exp_dict[exp_name] = xmldictconv.xmldictconv(xmlfile)
+                curr_dict = next(dict_extract.dict_extract(
+                        value=accension,
+                        var=exp_dict[exp_name]))
+            loop.run_until_complete(
+                    dictquery.dict_endpoints(
+                        input_dict=curr_dict,
+                        endpoint_dict=meta_dict))
+            tsvwriter(tsv_name, meta_dict, header)
+            header = False
     loop.close()
     if not default:
         env.unset_env('GOOGLE_APPLICATION_CREDENTIALS')

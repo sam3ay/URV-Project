@@ -31,7 +31,7 @@ class TestDictExtract(unittest.TestCase):
                       'maybe': {'there': 'will'},
                       'second': {'point': {'there': 'is'}}}
         output_dict = {}
-        loop = asyncio.get_event()
+        loop = asyncio.get_event_loop()
         loop.run_until_complete(
                 dictquery.dict_endpoints(input_dict, output_dict))
         loop.close()
@@ -39,7 +39,10 @@ class TestDictExtract(unittest.TestCase):
                          'there',
                          msg='Unexpected endpoint assigned')
         self.assertEqual(output_dict['there'],
-                         ['will', 'is'],
+                         'will',
+                         msg='Unexpected value list check failed')
+        self.assertEqual(output_dict['there_2'],
+                         'is',
                          msg='Unexpected value list check failed')
 
 

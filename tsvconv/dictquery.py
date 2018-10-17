@@ -5,7 +5,7 @@ async def dict_endpoints(input_dict, endpoint_dict, key=None):
     """Retrieve key and value pair and yields them as tuples
     Args:
         input_dict (dict): Dictionary with desired values
-        endpoint_dict (dict)
+        endpoint_dict (dict): Dictionary holding desired values
 
     Note:
         Adds key, value pairs to endpoint_dict
@@ -21,10 +21,16 @@ async def dict_endpoints(input_dict, endpoint_dict, key=None):
         if isinstance(input_dict, list):
             for item in input_dict:
                 await dict_endpoints(item, endpoint_dict, key=key)
-        elif key not in endpoint_dict and key is not None:
-            value = input_dict.replace(" ", "")
-            endpoint_dict[key] = value
-        elif key in endpoint_dict:
-            value = input_dict.replace(" ", "")
+        elif key not in endpoint_dict:
+            try:
+                input_dict = input_dict.replace(" ", "")
+            except AttributeError:
+                pass
+            endpoint_dict[key] = input_dict
+        else:
+            try:
+                input_dict = input_dict.replace(" ", "")
+            except AttributeError:
+                pass
             key += '_2'
-            endpoint_dict[key] = value
+            endpoint_dict[key] = input_dict
