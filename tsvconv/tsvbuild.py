@@ -11,7 +11,7 @@ import pathhandling
 import asyncio
 
 
-def tsvbuild(json_path, gcsbucket, suffix, tsv_name):
+def tsvbuild(json_path, gcsbucket, suffix, tsv_name, default):
     """builds a tsv file from a directory of paired files
 
     Retrieves location of pairs of files matching suffix and retrieves
@@ -37,12 +37,10 @@ def tsvbuild(json_path, gcsbucket, suffix, tsv_name):
     """
     exp_dict = {}
     # set google auth
-    try:
+    if not default:
         env.set_env(
             'GOOGLE_APPLICATION_CREDENTIALS',
             json_path)
-    except NameError:
-        pass
     header = True
     loop = asyncio.get_event_loop()
     for gcs_url in gcloudstorage.blob_generator(gcsbucket, suffix):
@@ -85,6 +83,8 @@ def tsvbuild(json_path, gcsbucket, suffix, tsv_name):
         tsvwriter(tsv_name, meta_dict, header)
         header = False
     loop.close()
+    if not default:
+        env.unset_env('GOOGLE_APPLICATION_CREDENTIALS')
     return tsv_name
 
 

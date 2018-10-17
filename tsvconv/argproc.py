@@ -30,4 +30,10 @@ def create_parser():
             '--json',
             help='Path to json file'
             )
+    parser.add_argument(
+            '--default',
+            type=bool,
+            default=True,
+            help="Use environmental credentials"
+            )
     return parser

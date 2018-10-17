@@ -21,10 +21,10 @@ async def dict_endpoints(input_dict, endpoint_dict, key=None):
         if isinstance(input_dict, list):
             for item in input_dict:
                 await dict_endpoints(item, endpoint_dict, key=key)
-        elif key not in endpoint_dict:
+        elif key not in endpoint_dict and key is not None:
             value = input_dict.replace(" ", "")
             endpoint_dict[key] = value
-        else:
+        elif key in endpoint_dict:
             value = input_dict.replace(" ", "")
             key += '_2'
             endpoint_dict[key] = value
