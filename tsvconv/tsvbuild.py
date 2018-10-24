@@ -11,7 +11,9 @@ import pathhandling
 import asyncio
 
 
-def tsvbuild(json_path, gcsbucket, suffix, pairsuffix, tsv_name, default):
+def tsvbuild(
+        json_path, gcsbucket, suffix, pairsuffix,
+        tsv_name, default, meta_flag):
     """builds a tsv file from a directory of paired files
 
     Retrieves location of pairs of files matching suffix and retrieves
@@ -23,7 +25,8 @@ def tsvbuild(json_path, gcsbucket, suffix, pairsuffix, tsv_name, default):
         gcsbucket (str): google cloud bucket name, recursively searched
         suffix (str): file identifying pattern being searched
         tsv_name (str): filename or tsv file
-        default ('bool'): Use the default credentials
+        default (bool): Use the default credentials
+        meta_flag (bool): No metadata
 
     Returns:
         str: location of tsv file
@@ -43,6 +46,25 @@ def tsvbuild(json_path, gcsbucket, suffix, pairsuffix, tsv_name, default):
             json_path)
     header = True
     loop = asyncio.get_event_loop()
+    if not default:
+        env.unset_env('GOOGLE_APPLICATION_CREDENTIALS')
+    if ubam_flag:
+        ubamtsv()
+    else:
+        fastqtsv()
+    return tsv_name
+
+
+def ubamtsv(json_path,):
+    """
+    create for loop
+    """
+
+
+def fastqtsv()
+    """
+    Insert for loop from tsv
+    """
     for gcs_url in gcloudstorage.blob_generator(gcsbucket, suffix):
         meta_dict = {}
         exp_name, exp_path, exp_folder = pathhandling.get_fileurl(
@@ -83,21 +105,6 @@ def tsvbuild(json_path, gcsbucket, suffix, pairsuffix, tsv_name, default):
             tsvwriter(tsv_name, meta_dict, header)
             header = False
     loop.close()
-    if not default:
-        env.unset_env('GOOGLE_APPLICATION_CREDENTIALS')
-    return tsv_name
-
-
-def ubamtsv(json_path,):
-    """
-    create for loop
-    """
-
-
-def fastqtsv()
-    """
-    Insert for loop from tsv
-    """
 
 
 def tsvwriter(filepath, input_dict, header):
