@@ -23,7 +23,8 @@ def create_parser():
             )
     parser.add_argument(
             '--pairflag',
-            default=True,
+            type=bool,
+            default=False,
             help='Find file pair'
             )
     parser.add_argument(
@@ -41,10 +42,10 @@ def create_parser():
             default=True,
             help="Use environmental credentials"
             )
-    parser.add_arguement(
+    parser.add_argument(
             '--metaflag',
             type=bool,
-            default=True,
+            default=False,
             help="Find metadata"
             )
     return parser
