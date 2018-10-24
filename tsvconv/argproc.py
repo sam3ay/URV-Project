@@ -22,6 +22,11 @@ def create_parser():
             help='Pattern unique to desired files such as file extension',
             )
     parser.add_argument(
+            '--pairsuffix',
+            default='_2.fastq'
+            help='Pattern unique to desired files such as file extension',
+            )
+    parser.add_argument(
             'tsv_name',
             default='tsv',
             help='Path to tsv File'
@@ -35,5 +40,11 @@ def create_parser():
             type=bool,
             default=True,
             help="Use environmental credentials"
+            )
+    parser.add_arguement(
+            '--ubam',
+            type=bool,
+            default=True,
+            help="search for ubam, assumes no external metada file"
             )
     return parser

@@ -11,7 +11,7 @@ import pathhandling
 import asyncio
 
 
-def tsvbuild(json_path, gcsbucket, suffix, tsv_name, default):
+def tsvbuild(json_path, gcsbucket, suffix, pairsuffix, tsv_name, default):
     """builds a tsv file from a directory of paired files
 
     Retrieves location of pairs of files matching suffix and retrieves
@@ -55,12 +55,13 @@ def tsvbuild(json_path, gcsbucket, suffix, tsv_name, default):
         gcs_pairname, gcs_pairpath, accension = pathhandling.get_fileurl(
                 url=gcs_url,
                 filename=None,
-                sep='_',
-                suffix='2.fastq.bz2',
+                sep=suffix[0],
+                suffix=suffix,
                 depth=0,
                 pair=True)
-        fastq_1 = 'gs://{0}/output/{1}_1.fastq'.format(gcsbucket, gcs_pairname)
-        fastq_2 = 'gs://{0}/output/{1}_2.fastq'.format(gcsbucket, gcs_pairname)
+        fastq_1 = 'gs://{0}/output/{1}{2}'.format(
+                gcsbucket, gcs_pairname, suffix)
+        fastq_2 = 'gs://{0}/output/{1}{3}'.format(gcsbucket, gcs_pairname, pairsuffix)
         if (gcloudstorage.blob_exists(fastq_1)
                 and gcloudstorage.blob_exists(fastq_2)):
             meta_dict['Fastq1'] = fastq_1
@@ -85,6 +86,18 @@ def tsvbuild(json_path, gcsbucket, suffix, tsv_name, default):
     if not default:
         env.unset_env('GOOGLE_APPLICATION_CREDENTIALS')
     return tsv_name
+
+
+def ubamtsv(json_path,):
+    """
+    create for loop
+    """
+
+
+def fastqtsv()
+    """
+    Insert for loop from tsv
+    """
 
 
 def tsvwriter(filepath, input_dict, header):
@@ -114,5 +127,7 @@ if __name__ == '__main__':
             json_path=darg['json'],
             gcsbucket=darg['gcs'],
             suffix=darg['suffix'],
+            pairsuffix=darg['pairsuffix']
             tsv_name=darg['tsv_name'],
-            default=darg['default'])
+            default=darg['default'],
+            ubam=darg['ubam'])
