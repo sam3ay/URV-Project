@@ -12,8 +12,8 @@ import asyncio
 
 
 def tsvbuild(
-        json_path, gcsbucket, suffix, pairsuffix,
-        tsv_name, default, meta_flag):
+        json_path, gcsbucket, suffix, pairflag,
+        tsv_name, default, metaflag):
     """builds a tsv file from a directory of paired files
 
     Retrieves location of pairs of files matching suffix and retrieves
@@ -26,7 +26,8 @@ def tsvbuild(
         suffix (str): file identifying pattern being searched
         tsv_name (str): filename or tsv file
         default (bool): Use the default credentials
-        meta_flag (bool): No metadata
+        metaflag (bool): Find and write metadata
+        pairflag (bool): Find and write File pair
 
     Returns:
         str: location of tsv file
@@ -46,48 +47,34 @@ def tsvbuild(
             json_path)
     header = True
     loop = asyncio.get_event_loop()
-    if not default:
-        env.unset_env('GOOGLE_APPLICATION_CREDENTIALS')
-    if ubam_flag:
-        ubamtsv()
-    else:
-        fastqtsv()
-    return tsv_name
-
-
-def ubamtsv(json_path,):
-    """
-    create for loop
-    """
-
-
-def fastqtsv()
-    """
-    Insert for loop from tsv
-    """
     for gcs_url in gcloudstorage.blob_generator(gcsbucket, suffix):
         meta_dict = {}
-        exp_name, exp_path, exp_folder = pathhandling.get_fileurl(
-                url=gcs_url,
-                filename=None,
-                sep='.',
-                suffix='experiment.xml',
-                depth=1,
-                pair=False)
-        gcs_pairname, gcs_pairpath, accension = pathhandling.get_fileurl(
-                url=gcs_url,
-                filename=None,
-                sep=suffix[0],
-                suffix=suffix,
-                depth=0,
-                pair=True)
-        fastq_1 = 'gs://{0}/output/{1}{2}'.format(
-                gcsbucket, gcs_pairname, suffix)
-        fastq_2 = 'gs://{0}/output/{1}{3}'.format(gcsbucket, gcs_pairname, pairsuffix)
-        if (gcloudstorage.blob_exists(fastq_1)
-                and gcloudstorage.blob_exists(fastq_2)):
-            meta_dict['Fastq1'] = fastq_1
-            meta_dict['Fastq2'] = fastq_2
+        meta_dict['File'] = gcs_url
+        if pairflag:
+            gcs_pairname, gcs_pairpath, accension = pathhandling.get_fileurl(
+                    url=gcs_url,
+                    sep=suffix[0],
+                    suffix=suffix,
+                    depth=0,
+                    pair=pairflag)
+            if gcloudstorage.blob_exists(gcs_pairpath):
+                meta_dict['File_2'] = gcs_pairpath
+        else:
+            # seeking to create a filename
+            gcs_fileout, gcs_filepath, parent = pathhandling.get_fileurl(
+                    url=gcs_url,
+                    sep=suffix[0],
+                    suffix=suffix,
+                    depth=0,
+                    pair=True)
+            meta_dict['output'] = gcs_fileout
+        if metaflag:
+            exp_name, exp_path, exp_folder = pathhandling.get_fileurl(
+                    url=gcs_url,
+                    sep=suffix[0],
+                    suffix='.experiment.xml',
+                    depth=1,
+                    pair=False)
             try:
                 curr_dict = next(dict_extract.dict_extract(
                         value=accension,
@@ -102,9 +89,12 @@ def fastqtsv()
                     dictquery.dict_endpoints(
                         input_dict=curr_dict,
                         endpoint_dict=meta_dict))
-            tsvwriter(tsv_name, meta_dict, header)
-            header = False
+        tsvwriter(tsv_name, meta_dict, header)
+        header = False
     loop.close()
+    if not default:
+        env.unset_env('GOOGLE_APPLICATION_CREDENTIALS')
+    return tsv_name
 
 
 def tsvwriter(filepath, input_dict, header):
@@ -134,7 +124,7 @@ if __name__ == '__main__':
             json_path=darg['json'],
             gcsbucket=darg['gcs'],
             suffix=darg['suffix'],
-            pairsuffix=darg['pairsuffix']
             tsv_name=darg['tsv_name'],
             default=darg['default'],
-            ubam=darg['ubam'])
+            pairflag=darg['pairflag'],
+            metaflag=darg['metaflag'])
