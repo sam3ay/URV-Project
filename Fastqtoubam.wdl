@@ -25,8 +25,6 @@ workflow fastqconversion {
 
   # run multiple fastq pair conversions in parallel
   scatter (i in range(length(inputFastqarray))) {
-
-
     # Convert pair of FASTQs to uBAM
     call FastqToSam {
       input:
@@ -81,7 +79,7 @@ task FastqToSam {
   String gatk_path
 
 
-  command {
+  command <<<
     ${gatk_path} --java-options "-Xmx3000m" \
     FastqToSam \
       --FASTQ ${fastq1} \
@@ -95,7 +93,7 @@ task FastqToSam {
       --PLATFORM_MODEL ${platform_model} \
       --READ_GROUP_NAME ${readgroup} \
       --COMMENT ${comment} 
-  }
+  >>>
   # revist specs perhaps add bucket
   runtime {
     docker: docker

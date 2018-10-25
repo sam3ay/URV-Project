@@ -27,27 +27,31 @@
 workflow ReadsPipelineSparkWorkflow {
 
   File bamtsv
-  Array[File] bam_info = read_tsv(bamtsv)
+  Array[Array[String]] inputbamarray = read_tsv(bamtsv)
   File ref_fasta
   File known_variants
+  String google_apiKey
+  String dataproc_cluster
 
-  String? google_apiKey 
-
-  String? google_apiKey
   String? runner
-  String? dataproc_cluster
   String? mem
   String? cores
-  String java_opt
   
-  scatter (bamfile in bam_info) {
+  scatter (i in range(length(inputbamarray))) {
     call ReadsPipelineSpark {
       input:
-        input_bam = bam_info[0]
+        input_bam=inputbamarray[i][0]
         ref_fasta=ref_fasta
         known_variants=known_variants
-        output = bam_info[1]
-
+        output_name=inputbamarray[i][1]
+        google_apiKey=google_apiKey
+        dataproc_cluster=dataproc_cluster
+        runner=runner
+        mem=mem
+        cores=cores
+    }
+  }
+}
 # uBams to vcf
 task ReadsPipelineSpark {
 
@@ -55,6 +59,7 @@ task ReadsPipelineSpark {
   File input_bam
   File ref_fasta
   File known_variants
+  String Output
   
   String? google_apiKey
   String? runner
@@ -64,27 +69,27 @@ task ReadsPipelineSpark {
   String java_opt
 
   
-  command <<<
+  command {
     set -e
     export GATK_LOCAL_JAR=${default="/root/gatk.jar" gatk4_jar_override}
-      gatk --java-options ${java_opt} \
+      gatk \
       ReadsPipelineSpark \
       --input ${input_bam} \
       --knownSites ${known_variants} \
-      --output ${output} \
+      --output "${output}.vcf" \
       --reference ${ref_fasta} \
       --apiKey ${google_apiKey} \
       -align \
       -- \
-      --sparkRunner {runner} \
+      --sparkRunner ${runner} \
       --cluster ${dataproc_cluster}
-  >>>
+  }
   runtime {
     appMainClass: "org.broadinstitute.hellbender.Main"
     executorMemory: select_first([mem, "4G"])
     executorCores: select_first([cores, "2"])
   }
   output {
-    File bam_output = "${output}.bam"
+    File rawVCF = "${output}.vcf"
   }
 }
