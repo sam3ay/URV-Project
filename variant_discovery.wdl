@@ -31,6 +31,8 @@ workflow ReadsPipelineSparkWorkflow {
   File ref_fasta
   File known_variants
 
+  String gatk_path
+
   # spark params
   String runner
   String master
@@ -70,12 +72,11 @@ task ReadsPipelineSpark {
   
   command {
     set -e
-    export GATK_LOCAL_JAR=${default="/root/gatk.jar" gatk4_jar_override}
-      gatk \
-      ReadsPipelineSpark \
+   ${gatk_path} \
+   ReadsPipelineSpark \
       --input ${input_bam} \
       --knownSites ${known_variants} \
-      --output "${sample}.raw.vcf" \
+      --output "${sample}.vcf" \
       --reference ${ref_fasta} \
       --align \
       -- \
@@ -88,6 +89,6 @@ task ReadsPipelineSpark {
     executorCores: select_first([cores, "2"])
   }
   output {
-    File rawVCF = "${output}.raw.vcf"
+    File VCF = "${output}.vcf"
   }
 }
