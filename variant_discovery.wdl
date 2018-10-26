@@ -30,10 +30,12 @@ workflow ReadsPipelineSparkWorkflow {
   Array[Array[String]] inputbamarray = read_tsv(bamtsv)
   File ref_fasta
   File known_variants
-  String google_apiKey
-  String dataproc_cluster
 
-  String? runner
+  # spark params
+  String runner
+  String master
+
+  # runtime params
   String? mem
   String? cores
   
@@ -43,10 +45,9 @@ workflow ReadsPipelineSparkWorkflow {
         input_bam=inputbamarray[i][0]
         ref_fasta=ref_fasta
         known_variants=known_variants
-        output_name=inputbamarray[i][1]
-        google_apiKey=google_apiKey
-        dataproc_cluster=dataproc_cluster
+        sample=inputbamarray[i][1]
         runner=runner
+        master=master
         mem=mem
         cores=cores
     }
@@ -60,14 +61,12 @@ task ReadsPipelineSpark {
   File ref_fasta
   File known_variants
   String Output
-  
-  String? google_apiKey
-  String? runner
-  String? dataproc_cluster
+
+  # spark params
+  String runner
+  String master
   String? mem
   String? cores
-  String java_opt
-
   
   command {
     set -e
@@ -76,13 +75,12 @@ task ReadsPipelineSpark {
       ReadsPipelineSpark \
       --input ${input_bam} \
       --knownSites ${known_variants} \
-      --output "${output}.vcf" \
+      --output "${sample}.raw.vcf" \
       --reference ${ref_fasta} \
-      --apiKey ${google_apiKey} \
-      -align \
+      --align \
       -- \
-      --sparkRunner ${runner} \
-      --cluster ${dataproc_cluster}
+      --spark-runner ${runner} \
+      --spark-master ${master}
   }
   runtime {
     appMainClass: "org.broadinstitute.hellbender.Main"
@@ -90,6 +88,6 @@ task ReadsPipelineSpark {
     executorCores: select_first([cores, "2"])
   }
   output {
-    File rawVCF = "${output}.vcf"
+    File rawVCF = "${output}.raw.vcf"
   }
 }
