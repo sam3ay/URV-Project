@@ -32,12 +32,13 @@ workflow ReadsPipelineSparkWorkflow {
   File known_variants
 
   String gatk_path
+  bucketpath
 
   # spark params
   String runner
-  String master
 
   # runtime params
+  String? execnum
   String? mem
   String? cores
   
@@ -48,8 +49,10 @@ workflow ReadsPipelineSparkWorkflow {
         ref_fasta=ref_fasta
         known_variants=known_variants
         sample=inputbamarray[i][1]
+        gatk_path=gatk_path
+        bucketpath=bucketpath
         runner=runner
-        master=master
+        execnum=execnum
         mem=mem
         cores=cores
     }
@@ -62,33 +65,37 @@ task ReadsPipelineSpark {
   File input_bam
   File ref_fasta
   File known_variants
-  String Output
+  String sample
+
+  String gatk_path
+  bucketpath
 
   # spark params
   String runner
-  String master
+  String? execnum
   String? mem
   String? cores
   
-  command {
+  command <<<
     set -e
-   ${gatk_path} \
-   ReadsPipelineSpark \
-      --input ${input_bam} \
-      --knownSites ${known_variants} \
-      --output "${sample}.vcf" \
-      --reference ${ref_fasta} \
-      --align \
-      -- \
-      --spark-runner ${runner} \
-      --spark-master ${master}
-  }
+    ${gatk_path} \
+      ReadsPipelineSpark \
+        --input ${input_bam} \
+        --knownSites ${known_variants} \
+        --output "${bucketpath}${sample}.vcf" \
+        --reference ${ref_fasta} \
+        --align \
+        -- \
+        --spark-runner ${runner} \
+  >>>
   runtime {
     appMainClass: "org.broadinstitute.hellbender.Main"
+    numberOfExecutors: select_first([execnum, "7"])
     executorMemory: select_first([mem, "4G"])
-    executorCores: select_first([cores, "2"])
+    executorCores: select_first([cores, "3"])
   }
   output {
-    File VCF = "${output}.vcf"
+    File VCF = "${bucketpath}${sample}.vcf" \
+
   }
 }
