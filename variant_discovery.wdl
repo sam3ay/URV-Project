@@ -2,22 +2,21 @@
 ## Requirements/expectations:
 ## - Pair-end sequencing data in unmapped bam
 ## - Input bam Requirements
-## -- filenames all have the same suffix (use ".unmapped.bam")
-## -- files must pass validation by ValidateSamFile
-## -- reads are provided in query-sorted order
-## -- all reads must have an RG tag
+## - - filenames all have the same suffix (use ".unmapped.bam")
+## - - files must pass validation by ValidateSamFile
+## - - reads are provided in query-sorted order
+## - - all reads must have an RG tag
+## - Local environment must contain
 ## Output :
-## - Clean BAM file and its index, suitable for variant discovery analyses.
-## - VCF file and its index
 ## - Filtered VCF file and its index, filtered using variant quality score recalibration
-##   (VQSR) with genotypes for all samples present in the input VCF. All sites that 
-##   are present in the input VCF are retained; filtered sites are annotated as such 
-##   in the FILTER field.
+##   (VQSR). All sites that are present in the input VCF are retained.
+##   Filtered sites are annotated as such in the FILTER field.
 ##
-## Software version requirements (see recommended dockers in inuts JSON)
+## Software version requirements
 ## - GATK4.beta.3 or later
 ## - Samtools (see gotc docker)
 ## - Python 2.7 & Python 3.6
+## - Google Cloud SDK (ver 223.0.0 or later)
 ##
 ## Cromwell version support 
 ## - Successfully tested on v29 
@@ -26,21 +25,50 @@
 # Workflow Definition
 workflow ReadsPipelineSparkWorkflow {
 
+  # Dataproc settings
+  String cluster_name
+  String bucket_name
+  String project
+  String? region
+  String? zone
+  String? mastermachinetype
+  Int? masterbootdisk
+  String? workermachinetype
+  Int? workerbootdisk
+  Int? numworker
+  String? max_idle
+  String? max_age
+  String? scopes
+
+  # ReadsPipelineSpark inputs
   File bamtsv
   Array[Array[String]] inputbamarray = read_tsv(bamtsv)
   File ref_fasta
   File known_variants
+  String outputpath
 
   String gatk_path
-  bucketpath
-
-  # spark params
-  String runner
 
   # runtime params
-  String? execnum
-  String? mem
-  String? cores
+  String mem
+  Int cores
+
+  call CreateCluster {
+    input:
+      cluster=cluster_name
+      bucket=bucket_name
+      region=region
+      zone=zone
+      mastermachinetype=mastermachinetype
+      workermachinetype=workermachinetype
+      masterbootdisk=masterbootdisk
+      workerbootdisk=workerbootdisk
+      numworker=numworker
+      project=project
+      scopes=scopes
+      max_idle=max_idle
+      max_age=max_age
+  }
   
   scatter (i in range(length(inputbamarray))) {
     call ReadsPipelineSpark {
@@ -50,12 +78,59 @@ workflow ReadsPipelineSparkWorkflow {
         known_variants=known_variants
         sample=inputbamarray[i][1]
         gatk_path=gatk_path
-        bucketpath=bucketpath
-        runner=runner
-        execnum=execnum
+        outputpath=outputpath
+        cluster_name=cluster_name
         mem=mem
         cores=cores
     }
+  }
+}
+
+# TASK DEFITIONS
+
+# Create Dataproc cluster
+task CreateCluster {
+  
+  # Inputs for this task
+  String cluster_name
+  String bucket_name
+  String project
+  String? region
+  String? zone
+  String? mastermachinetype
+  Int? masterbootdisk
+  Int? numworker
+  String? workermachinetype
+  Int? workerbootdisk
+  String? max_idle
+  String? max_age
+  String? scopes
+
+  # runtime params
+  String mem
+  Int cores
+
+  command <<<
+  set -e
+  gcloud beta dataproc clusters create ${cluster_name}\
+    --bucket ${bucket_name}\
+    --region ${default="us-west" region} \
+    --zone ${default="us-west1-b" zone} \
+    --master-machine-type ${default="n1-highmem-8" mastermachinetype} \
+    --master-boot-disk-size ${default=500 masterbootdisk} \
+    --num-workers ${default=10 numworker} \
+    --worker-machine-type ${default="n1-highmem-8" workermachinetype} \
+    --worker-boot-disk-size ${default=50 workerbootdisk} \
+    --project ${project} \
+    --async \
+    --scopes ${default="default,cloud-platform,storage-full" scopes}\
+    --max-idle ${default="t10m" max_idle} \
+    --max-age ${default="4h" max_age}
+  >>>
+
+  runtime {
+    memory: mem
+    cpu: cores
   }
 }
 # uBams to vcf
@@ -66,15 +141,14 @@ task ReadsPipelineSpark {
   File ref_fasta
   File known_variants
   String sample
+  String cluster_name
 
   String gatk_path
-  bucketpath
+  outputpath
 
-  # spark params
-  String runner
-  String? execnum
-  String? mem
-  String? cores
+  # runtime params
+  String mem
+  Int cores
   
   command <<<
     set -e
@@ -82,20 +156,18 @@ task ReadsPipelineSpark {
       ReadsPipelineSpark \
         --input ${input_bam} \
         --knownSites ${known_variants} \
-        --output "${bucketpath}${sample}.vcf" \
+        --output "${outputpath}${sample}.vcf" \
         --reference ${ref_fasta} \
-        --align \
+        --align 
         -- \
-        --spark-runner ${runner} \
+        --spark-runner GCS \
+        --cluster ${cluster_name}
   >>>
   runtime {
-    appMainClass: "org.broadinstitute.hellbender.Main"
-    numberOfExecutors: select_first([execnum, "7"])
-    executorMemory: select_first([mem, "4G"])
-    executorCores: select_first([cores, "3"])
+    memory: mem
+    cpu: cores
   }
   output {
-    File VCF = "${bucketpath}${sample}.vcf" \
-
+    File VCF = "${outputpath}${sample}.vcf" 
   }
 }
