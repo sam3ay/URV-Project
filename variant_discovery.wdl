@@ -55,32 +55,32 @@ workflow ReadsPipelineSparkWorkflow {
 
   call CreateCluster {
     input:
-      cluster=cluster_name
-      bucket=bucket_name
-      region=region
-      zone=zone
-      mastermachinetype=mastermachinetype
-      workermachinetype=workermachinetype
-      masterbootdisk=masterbootdisk
-      workerbootdisk=workerbootdisk
-      numworker=numworker
-      project=project
-      scopes=scopes
-      max_idle=max_idle
+      cluster=cluster_name,
+      bucket=bucket_name,
+      region=region,
+      zone=zone,
+      mastermachinetype=mastermachinetype,
+      workermachinetype=workermachinetype,
+      masterbootdisk=masterbootdisk,
+      workerbootdisk=workerbootdisk,
+      numworker=numworker,
+      project=project,
+      scopes=scopes,
+      max_idle=max_idle,
       max_age=max_age
   }
   
   scatter (i in range(length(inputbamarray))) {
     call ReadsPipelineSpark {
       input:
-        input_bam=inputbamarray[i][0]
-        ref_fasta=ref_fasta
-        known_variants=known_variants
-        sample=inputbamarray[i][1]
-        gatk_path=gatk_path
-        outputpath=outputpath
-        cluster_name=cluster_name
-        mem=mem
+        input_bam=inputbamarray[i][0],
+        ref_fasta=ref_fasta,
+        known_variants=known_variants,
+        sample=inputbamarray[i][1],
+        gatk_path=gatk_path,
+        outputpath=outputpath,
+        cluster_name=cluster_name,
+        mem=mem,
         cores=cores
     }
   }
@@ -92,8 +92,8 @@ workflow ReadsPipelineSparkWorkflow {
 task CreateCluster {
   
   # Inputs for this task
-  String cluster_name
-  String bucket_name
+  String cluster
+  String bucket
   String project
   String? region
   String? zone
@@ -112,8 +112,8 @@ task CreateCluster {
 
   command <<<
   set -e
-  gcloud beta dataproc clusters create ${cluster_name}\
-    --bucket ${bucket_name}\
+  gcloud beta dataproc clusters create ${cluster} \
+    --bucket ${bucket} \
     --region ${default="us-west" region} \
     --zone ${default="us-west1-b" zone} \
     --master-machine-type ${default="n1-highmem-8" mastermachinetype} \
@@ -123,7 +123,7 @@ task CreateCluster {
     --worker-boot-disk-size ${default=50 workerbootdisk} \
     --project ${project} \
     --async \
-    --scopes ${default="default,cloud-platform,storage-full" scopes}\
+    --scopes ${default="default,cloud-platform,storage-full" scopes} \
     --max-idle ${default="t10m" max_idle} \
     --max-age ${default="4h" max_age}
   >>>
@@ -144,7 +144,7 @@ task ReadsPipelineSpark {
   String cluster_name
 
   String gatk_path
-  outputpath
+  String outputpath
 
   # runtime params
   String mem
