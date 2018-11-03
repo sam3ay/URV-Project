@@ -1,0 +1,25 @@
+{
+  "ReadsPipelineSparkWorkflow.CreateCluster.mem": "String",
+  "ReadsPipelineSparkWorkflow.workerbootdisk": "Int? (optional)",
+  "ReadsPipelineSparkWorkflow.mastermachinetype": "String? (optional)",
+  "ReadsPipelineSparkWorkflow.cores": "Int",
+  "ReadsPipelineSparkWorkflow.max_idle": "String? (optional)",
+  "ReadsPipelineSparkWorkflow.workermachinetype": "String? (optional)",
+  "ReadsPipelineSparkWorkflow.bucket_name": "String",
+  "ReadsPipelineSparkWorkflow.zone": "String? (optional)",
+  "ReadsPipelineSparkWorkflow.bamtsv": "File",
+  "ReadsPipelineSparkWorkflow.masterbootdisk": "Int? (optional)",
+  "ReadsPipelineSparkWorkflow.max_age": "String? (optional)",
+  "ReadsPipelineSparkWorkflow.ref_fasta": "File",
+  "ReadsPipelineSparkWorkflow.mem": "String",
+  "ReadsPipelineSparkWorkflow.numworker": "Int? (optional)",
+  "ReadsPipelineSparkWorkflow.project": "String",
+  "ReadsPipelineSparkWorkflow.region": "String? (optional)",
+  "ReadsPipelineSparkWorkflow.gatk_path": "String",
+  "ReadsPipelineSparkWorkflow.known_variants": "File",
+  "ReadsPipelineSparkWorkflow.cluster_name": "String",
+  "ReadsPipelineSparkWorkflow.scopes": "String? (optional)",
+  "ReadsPipelineSparkWorkflow.outputpath": "String",
+  "ReadsPipelineSparkWorkflow.CreateCluster.cores": "Int"
+}
+
