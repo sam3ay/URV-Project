@@ -1,12 +1,10 @@
 {
   "ReadsPipelineSparkWorkflow.cores": "Int? (optional)",
-  "ReadsPipelineSparkWorkflow.runner": "String",
   "ReadsPipelineSparkWorkflow.bamtsv": "File",
   "ReadsPipelineSparkWorkflow.ref_fasta": "File",
   "ReadsPipelineSparkWorkflow.mem": "String? (optional)",
   "ReadsPipelineSparkWorkflow.gatk_path": "String",
   "ReadsPipelineSparkWorkflow.known_variants": "File",
-  "ReadsPipelineSparkWorkflow.cluster_name": "String",
   "ReadsPipelineSparkWorkflow.outputpath": "String"
 }
 

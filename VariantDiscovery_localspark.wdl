@@ -30,8 +30,6 @@ workflow ReadsPipelineSparkWorkflow {
   File ref_fasta
   File known_variants
   String outputpath
-  String runner
-  String cluster_name
 
   String gatk_path
 
@@ -48,8 +46,6 @@ workflow ReadsPipelineSparkWorkflow {
         sample=inputbamarray[i][1],
         gatk_path=gatk_path,
         outputpath=outputpath,
-        cluster_name=cluster_name,
-        runner=runner,
         mem=mem,
         cores=cores
     }
@@ -66,8 +62,6 @@ task ReadsPipelineSpark {
   File ref_fasta
   File known_variants
   String sample
-  String cluster_name
-  String runner
 
   String gatk_path
   String outputpath
@@ -87,8 +81,7 @@ task ReadsPipelineSpark {
         --reference ${ref_fasta} \
         --align \
         -- \
-        --spark-runner runner \
-        --cluster ${cluster_name}
+        --spark-runner LOCAL
   >>>
   runtime {
     appMainClass: "org.broadinstitute.hellbender.Main"
