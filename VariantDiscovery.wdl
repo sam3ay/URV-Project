@@ -16,7 +16,6 @@
 ## - GATK4.beta.3 or later
 ## - Samtools (see gotc docker)
 ## - Python 2.7 & Python 3.6
-## - Google Cloud SDK (ver 223.0.0 or later)
 ##
 ## Cromwell version support 
 ## - Successfully tested on v29 
@@ -25,27 +24,14 @@
 # Workflow Definition
 workflow ReadsPipelineSparkWorkflow {
 
-  # Dataproc settings
-  String cluster_name
-  String bucket_name
-  String project
-  String? region
-  String? zone
-  String? mastermachinetype
-  Int? masterbootdisk
-  String? workermachinetype
-  Int? workerbootdisk
-  Int? numworker
-  String? max_idle
-  String? max_age
-  String? scopes
-
   # ReadsPipelineSpark inputs
   File bamtsv
   Array[Array[String]] inputbamarray = read_tsv(bamtsv)
   File ref_fasta
   File known_variants
   String outputpath
+  String runner
+  String cluster_name
 
   String gatk_path
 
@@ -53,23 +39,6 @@ workflow ReadsPipelineSparkWorkflow {
   String mem
   Int cores
 
-  call CreateCluster {
-    input:
-      cluster=cluster_name,
-      bucket=bucket_name,
-      region=region,
-      zone=zone,
-      mastermachinetype=mastermachinetype,
-      workermachinetype=workermachinetype,
-      masterbootdisk=masterbootdisk,
-      workerbootdisk=workerbootdisk,
-      numworker=numworker,
-      project=project,
-      scopes=scopes,
-      max_idle=max_idle,
-      max_age=max_age
-  }
-  
   scatter (i in range(length(inputbamarray))) {
     call ReadsPipelineSpark {
       input:
@@ -80,6 +49,7 @@ workflow ReadsPipelineSparkWorkflow {
         gatk_path=gatk_path,
         outputpath=outputpath,
         cluster_name=cluster_name,
+        runner=runner,
         mem=mem,
         cores=cores
     }
@@ -88,51 +58,6 @@ workflow ReadsPipelineSparkWorkflow {
 
 # TASK DEFITIONS
 
-# Create Dataproc cluster
-task CreateCluster {
-  
-  # Inputs for this task
-  String cluster
-  String bucket
-  String project
-  String? region
-  String? zone
-  String? mastermachinetype
-  Int? masterbootdisk
-  Int? numworker
-  String? workermachinetype
-  Int? workerbootdisk
-  String? max_idle
-  String? max_age
-  String? scopes
-
-  # runtime params
-  String mem
-  Int cores
-
-  command <<<
-  set -e
-  gcloud beta dataproc clusters create ${cluster} \
-    --bucket ${bucket} \
-    --region ${default="us-west" region} \
-    --zone ${default="us-west1-b" zone} \
-    --master-machine-type ${default="n1-highmem-8" mastermachinetype} \
-    --master-boot-disk-size ${default=500 masterbootdisk} \
-    --num-workers ${default=10 numworker} \
-    --worker-machine-type ${default="n1-highmem-8" workermachinetype} \
-    --worker-boot-disk-size ${default=50 workerbootdisk} \
-    --project ${project} \
-    --async \
-    --scopes ${default="default,cloud-platform,storage-full" scopes} \
-    --max-idle ${default="t10m" max_idle} \
-    --max-age ${default="4h" max_age}
-  >>>
-
-  runtime {
-    memory: mem
-    cpu: cores
-  }
-}
 # uBams to vcf
 task ReadsPipelineSpark {
 
@@ -142,30 +67,33 @@ task ReadsPipelineSpark {
   File known_variants
   String sample
   String cluster_name
+  String runner
 
   String gatk_path
   String outputpath
 
   # runtime params
-  String mem
-  Int cores
+  # expecting 5 workers n8-standard
+  String? mem
+  Int? cores
   
   command <<<
-    set -e
+    set -eu
     ${gatk_path} \
       ReadsPipelineSpark \
         --input ${input_bam} \
         --knownSites ${known_variants} \
         --output "${outputpath}${sample}.vcf" \
         --reference ${ref_fasta} \
-        --align 
+        --align \
         -- \
-        --spark-runner GCS \
+        --spark-runner runner \
         --cluster ${cluster_name}
   >>>
   runtime {
-    memory: mem
-    cpu: cores
+    appMainClass: "org.broadinstitute.hellbender.Main"
+    executorMemory: select_first([mem, "7GB"])
+    executorCores: select_first([cores, "20"])
   }
   output {
     File VCF = "${outputpath}${sample}.vcf" 
