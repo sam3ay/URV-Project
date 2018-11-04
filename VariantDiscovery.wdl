@@ -36,8 +36,8 @@ workflow ReadsPipelineSparkWorkflow {
   String gatk_path
 
   # runtime params
-  String mem
-  Int cores
+  String? mem
+  Int? cores
 
   scatter (i in range(length(inputbamarray))) {
     call ReadsPipelineSpark {
