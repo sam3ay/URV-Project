@@ -174,7 +174,7 @@ task ReadsPipelineSpark {
     gatk \
       ReadsPipelineSpark \
         --input ${input_bam} \
-        --knownSites ${known_variants} \
+        --known-sites ${known_variants} \
         --output "${outputpath}${sample}.vcf" \
         --reference ${ref_fasta} \
         --align
