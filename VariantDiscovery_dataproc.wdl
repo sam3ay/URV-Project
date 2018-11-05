@@ -49,11 +49,14 @@ workflow ReadsPipelineSparkWorkflow {
   String outputpath
 
   # local gatk
-  File gatk_path
+  File? gatk_jar
 
-  # runtime params
-  String mem
-  Int cores
+  # runtime
+  String? gatk_docker
+  String? gcloud_docker
+  Int? mem
+  Int? cpu
+  Int? disk
 
   call CreateCluster {
     input:
@@ -69,7 +72,11 @@ workflow ReadsPipelineSparkWorkflow {
       project=project,
       scopes=scopes,
       max_idle=max_idle,
-      max_age=max_age
+      max_age=max_age,
+      gcloud_docker=gcloud_docker,
+      mem=mem,
+      cpu=cpu,
+      disk=disk
   }
   
   scatter (i in range(length(inputbamarray))) {
@@ -79,11 +86,13 @@ workflow ReadsPipelineSparkWorkflow {
         ref_fasta=ref_fasta,
         known_variants=known_variants,
         sample=inputbamarray[i][1],
-        gatk_path=gatk_path,
+        gatk_jar=gatk_jar,
         outputpath=outputpath,
         cluster_name=cluster_name,
+        gatk_docker=gatk_docker,
         mem=mem,
-        cores=cores
+        cpu=cpu,
+        disk=disk
     }
   }
 }
@@ -108,31 +117,36 @@ task CreateCluster {
   String? max_age
   String? scopes
 
-  # runtime params
-  String mem
-  Int cores
+  # runtime 
+  String? gcloud_docker
+  Int? mem
+  Int? cpu
+  Int? disk
 
   command <<<
-  set -e
-  gcloud beta dataproc clusters create ${cluster} \
+  set -eu
+  gcloud --project ${project} beta dataproc clusters create ${cluster} \
     --bucket ${bucket} \
-    --region ${default="us-west" region} \
+    --region ${default="us-west1" region} \
     --zone ${default="us-west1-b" zone} \
     --master-machine-type ${default="n1-standard-8" mastermachinetype} \
-    --master-boot-disk-size ${default=500 masterbootdisk} \
-    --num-workers ${default=10 numworker} \
+    --master-boot-disk-size ${default=100 masterbootdisk} \
+    --num-workers ${default=5 numworker} \
     --worker-machine-type ${default="n1-standard-8" workermachinetype} \
     --worker-boot-disk-size ${default=50 workerbootdisk} \
-    --project ${project} \
     --async \
     --scopes ${default="default,cloud-platform,storage-full" scopes} \
     --max-idle ${default="t10m" max_idle} \
     --max-age ${default="4h" max_age}
   >>>
-
   runtime {
-    memory: mem
-    cpu: cores
+    docker: select_first([gcloud_docker, "google/cloud-sdk:latest"])
+    memory: select_first([mem, 2]) + " GB"
+    cpu: select_first([cpu, 1])
+    disks: "local-disk " + select_first([disk, 10]) + " HDD"
+  }
+  output {
+    String Dataproc_Name = "${cluster}"
   }
 }
 # uBams to vcf
@@ -145,16 +159,19 @@ task ReadsPipelineSpark {
   String sample
   String cluster_name
 
-  File gatk_path
+  File? gatk_jar
   String outputpath
 
-  # runtime params
-  String mem
-  Int cores
-  
+  # runtime
+  String? gatk_docker
+  Int? mem
+  Int? cpu
+  Int? disk
+
   command <<<
-    set -e
-    ${gatk_path} \
+    set -eu
+    export GATK_LOCAL_JAR=${default="/root/gatk.jar" gatk_jar}
+    gatk \
       ReadsPipelineSpark \
         --input ${input_bam} \
         --knownSites ${known_variants} \
@@ -166,8 +183,10 @@ task ReadsPipelineSpark {
         --cluster ${cluster_name}
   >>>
   runtime {
-    memory: mem
-    cpu: cores
+    docker: select_first([gatk_docker, "broadinstitute/gatk:latest"])
+    memory: select_first([mem, 2]) + " GB"
+    cpu: select_first([cpu, 1])
+    disks: "local-disk " + select_first([disk, 10]) + " HDD"
   }
   output {
     String VCF = "${outputpath}${sample}.vcf" 
