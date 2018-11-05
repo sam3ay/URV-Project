@@ -51,13 +51,6 @@ workflow ReadsPipelineSparkWorkflow {
   # local gatk
   File? gatk_jar
 
-  # runtime
-  String? gatk_docker
-  String? gcloud_docker
-  Int? mem
-  Int? cpu
-  Int? disk
-
   call CreateCluster {
     input:
       cluster=cluster_name,
@@ -72,11 +65,7 @@ workflow ReadsPipelineSparkWorkflow {
       project=project,
       scopes=scopes,
       max_idle=max_idle,
-      max_age=max_age,
-      gcloud_docker=gcloud_docker,
-      mem=mem,
-      cpu=cpu,
-      disk=disk
+      max_age=max_age
   }
   
   scatter (i in range(length(inputbamarray))) {
@@ -88,11 +77,7 @@ workflow ReadsPipelineSparkWorkflow {
         sample=inputbamarray[i][1],
         gatk_jar=gatk_jar,
         outputpath=outputpath,
-        cluster_name=cluster_name,
-        gatk_docker=gatk_docker,
-        mem=mem,
-        cpu=cpu,
-        disk=disk
+        cluster_name=cluster_name
     }
   }
 }
@@ -117,12 +102,6 @@ task CreateCluster {
   String? max_age
   String? scopes
 
-  # runtime 
-  String? gcloud_docker
-  Int? mem
-  Int? cpu
-  Int? disk
-
   command <<<
   set -eu
   gcloud --project ${project} beta dataproc clusters create ${cluster} \
@@ -136,15 +115,9 @@ task CreateCluster {
     --worker-boot-disk-size ${default=50 workerbootdisk} \
     --async \
     --scopes ${default="default,cloud-platform,storage-full" scopes} \
-    --max-idle ${default="t10m" max_idle} \
+    --max-idle ${default="600s" max_idle} \
     --max-age ${default="4h" max_age}
   >>>
-  runtime {
-    docker: select_first([gcloud_docker, "google/cloud-sdk:latest"])
-    memory: select_first([mem, 2]) + " GB"
-    cpu: select_first([cpu, 1])
-    disks: "local-disk " + select_first([disk, 10]) + " HDD"
-  }
   output {
     String Dataproc_Name = "${cluster}"
   }
@@ -162,12 +135,6 @@ task ReadsPipelineSpark {
   File? gatk_jar
   String outputpath
 
-  # runtime
-  String? gatk_docker
-  Int? mem
-  Int? cpu
-  Int? disk
-
   command <<<
     set -eu
     export GATK_LOCAL_JAR=${default="/root/gatk.jar" gatk_jar}
@@ -182,12 +149,6 @@ task ReadsPipelineSpark {
         --spark-runner GCS \
         --cluster ${cluster_name}
   >>>
-  runtime {
-    docker: select_first([gatk_docker, "broadinstitute/gatk:latest"])
-    memory: select_first([mem, 2]) + " GB"
-    cpu: select_first([cpu, 1])
-    disks: "local-disk " + select_first([disk, 10]) + " HDD"
-  }
   output {
     String VCF = "${outputpath}${sample}.vcf" 
   }
