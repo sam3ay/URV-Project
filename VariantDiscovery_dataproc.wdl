@@ -48,7 +48,7 @@ workflow ReadsPipelineSparkWorkflow {
   String ref_fasta
   String known_variants
   String outputpath
-  File service_account
+  String service_account
 
   # local gatk
   File? gatk_jar
@@ -139,7 +139,7 @@ task ReadsPipelineSpark {
   String sample
   String cluster_name
   String project
-  File service_account
+  String service_account
 
   File? gatk_jar
   File? gatk_path
@@ -147,8 +147,6 @@ task ReadsPipelineSpark {
 
   command <<<
     set -eu
-    export HELLBENDER_JSON_SERVICE_ACCOUNT_KEY=${service_account}
-    export HELLBENDER_TEST_PROJECT=${project}
     export GATK_GCS_STAGING="${outputpath}"
     export GATK_LOCAL_JAR=${default="/root/gatk.jar" gatk_jar}
     ${default="gatk" gatk_path} \
@@ -160,9 +158,7 @@ task ReadsPipelineSpark {
         --align \
         -- \
         --spark-runner GCS \
-        --cluster ${cluster_name} \
-        --conf spark.hadoop.fs.gs.project.id=${project},\
-        spark.hadoop.google.cloud.auth.service.account.json.keyfile=${service_account}
+        --cluster ${cluster_name}
   >>>
   output {
     String VCF = "${outputpath}${sample}.vcf" 
