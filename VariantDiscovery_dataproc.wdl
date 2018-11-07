@@ -40,6 +40,8 @@ workflow ReadsPipelineSparkWorkflow {
   String? max_idle
   String? max_age
   String? scopes
+  String initaction
+  String metadata
 
   # ReadsPipelineSpark inputs
   # If gs:// links keep as strings, if local change to files
@@ -66,8 +68,11 @@ workflow ReadsPipelineSparkWorkflow {
       workerbootdisk=workerbootdisk,
       numworker=numworker,
       project=project,
+      service_account=service_account,
       scopes=scopes,
       max_idle=max_idle,
+      initaction=initaction,
+      metadata=metadata,
       max_age=max_age
   }
   
@@ -82,7 +87,6 @@ workflow ReadsPipelineSparkWorkflow {
         outputpath=outputpath,
         cluster_name=cluster_name,
         project=project,
-        service_account=service_account,
         gatk_path=gatk_path
     }
   }
@@ -107,6 +111,9 @@ task CreateCluster {
   String? max_idle
   String? max_age
   String? scopes
+  String service_account
+  String initaction
+  String metadata
 
   command <<<
   set -eu
@@ -123,7 +130,9 @@ task CreateCluster {
     --async \
     --scopes ${default="default,cloud-platform,storage-full" scopes} \
     --max-idle ${default="600s" max_idle} \
-    --max-age ${default="4h" max_age}
+    --max-age ${default="4h" max_age} \
+    --initialization-action ${initaction} \
+    --metadata ${metadata}
   >>>
   output {
     String Dataproc_Name = "${cluster}"
@@ -139,7 +148,6 @@ task ReadsPipelineSpark {
   String sample
   String cluster_name
   String project
-  String service_account
 
   File? gatk_jar
   File? gatk_path

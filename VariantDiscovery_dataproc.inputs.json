@@ -1,5 +1,6 @@
 {
   "ReadsPipelineSparkWorkflow.workerbootdisk": "Int? (optional)",
+  "ReadsPipelineSparkWorkflow.initaction": "String",
   "ReadsPipelineSparkWorkflow.mastermachinetype": "String? (optional)",
   "ReadsPipelineSparkWorkflow.max_idle": "String? (optional)",
   "ReadsPipelineSparkWorkflow.workermachinetype": "String? (optional)",
@@ -11,6 +12,7 @@
   "ReadsPipelineSparkWorkflow.service_account": "String",
   "ReadsPipelineSparkWorkflow.max_age": "String? (optional)",
   "ReadsPipelineSparkWorkflow.ref_fasta": "String",
+  "ReadsPipelineSparkWorkflow.metadata": "String",
   "ReadsPipelineSparkWorkflow.numworker": "Int? (optional)",
   "ReadsPipelineSparkWorkflow.project": "String",
   "ReadsPipelineSparkWorkflow.region": "String? (optional)",
