@@ -21,6 +21,7 @@
 ## Cromwell version support 
 ## - Successfully tested on v36
 ## - Does not work on versions < v23 due to output syntax
+## --gcs-project-for-requester-pays ${project} \
 
 # Workflow Definition
 workflow ReadsPipelineSparkWorkflow {
@@ -47,9 +48,11 @@ workflow ReadsPipelineSparkWorkflow {
   String ref_fasta
   String known_variants
   String outputpath
+  File service_account
 
   # local gatk
   File? gatk_jar
+  File? gatk_path
 
   call CreateCluster {
     input:
@@ -77,7 +80,10 @@ workflow ReadsPipelineSparkWorkflow {
         sample=inputbamarray[i][1],
         gatk_jar=gatk_jar,
         outputpath=outputpath,
-        cluster_name=cluster_name
+        cluster_name=cluster_name,
+        project=project,
+        service_account=service_account,
+        gatk_path=gatk_path
     }
   }
 }
@@ -104,15 +110,16 @@ task CreateCluster {
 
   command <<<
   set -eu
-  gcloud --project ${project} beta dataproc clusters create ${cluster} \
+  gcloud beta dataproc clusters create ${cluster} \
     --bucket ${bucket} \
-    --region ${default="us-west1" region} \
+    --region ${default="global" region} \
     --zone ${default="us-west1-b" zone} \
     --master-machine-type ${default="n1-standard-8" mastermachinetype} \
     --master-boot-disk-size ${default=100 masterbootdisk} \
     --num-workers ${default=5 numworker} \
     --worker-machine-type ${default="n1-standard-8" workermachinetype} \
     --worker-boot-disk-size ${default=50 workerbootdisk} \
+    --project ${project} \
     --async \
     --scopes ${default="default,cloud-platform,storage-full" scopes} \
     --max-idle ${default="600s" max_idle} \
@@ -131,23 +138,31 @@ task ReadsPipelineSpark {
   String known_variants
   String sample
   String cluster_name
+  String project
+  File service_account
 
   File? gatk_jar
+  File? gatk_path
   String outputpath
 
   command <<<
     set -eu
+    export HELLBENDER_JSON_SERVICE_ACCOUNT_KEY=${service_account}
+    export HELLBENDER_TEST_PROJECT=${project}
+    export GATK_GCS_STAGING="${outputpath}"
     export GATK_LOCAL_JAR=${default="/root/gatk.jar" gatk_jar}
-    gatk \
+    ${default="gatk" gatk_path} \
       ReadsPipelineSpark \
         --input ${input_bam} \
         --known-sites ${known_variants} \
-        --output "${outputpath}${sample}.vcf" \
+        --output "${outputpath}/vcf/${sample}.vcf" \
         --reference ${ref_fasta} \
-        --align
+        --align \
         -- \
         --spark-runner GCS \
-        --cluster ${cluster_name}
+        --cluster ${cluster_name} \
+        --conf spark.hadoop.fs.gs.project.id=${project},\
+        spark.hadoop.google.cloud.auth.service.account.json.keyfile=${service_account}
   >>>
   output {
     String VCF = "${outputpath}${sample}.vcf" 
