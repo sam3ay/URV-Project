@@ -41,7 +41,7 @@ workflow ReadsPipelineSparkWorkflow {
   String? max_age
   String? scopes
   String initaction
-  String metadata
+  String? metadata
 
   # ReadsPipelineSpark inputs
   # If gs:// links keep as strings, if local change to files
@@ -51,6 +51,7 @@ workflow ReadsPipelineSparkWorkflow {
   String known_variants
   String outputpath
   String service_account
+  String json_location
 
   # local gatk
   File? gatk_jar
@@ -73,6 +74,7 @@ workflow ReadsPipelineSparkWorkflow {
       max_idle=max_idle,
       initaction=initaction,
       metadata=metadata,
+      json_location=json_location,
       max_age=max_age
   }
   
@@ -111,9 +113,10 @@ task CreateCluster {
   String? max_idle
   String? max_age
   String? scopes
-  String service_account
   String initaction
-  String metadata
+  String? metadata
+  String json_location
+  String service_account
 
   command <<<
   set -eu
@@ -131,8 +134,8 @@ task CreateCluster {
     --scopes ${default="default,cloud-platform,storage-full" scopes} \
     --max-idle ${default="600s" max_idle} \
     --max-age ${default="4h" max_age} \
-    --initialization-action ${initaction} \
-    --metadata ${metadata}
+    --initialization-actions ${initaction} \
+    --metadata service_account="${service_account},json_location=${json_location},${metadata}"
   >>>
   output {
     String Dataproc_Name = "${cluster}"

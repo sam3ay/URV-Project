@@ -8,6 +8,7 @@
   "ReadsPipelineSparkWorkflow.zone": "String? (optional)",
   "ReadsPipelineSparkWorkflow.gatk_jar": "File? (optional)",
   "ReadsPipelineSparkWorkflow.bamtsv": "File",
+  "ReadsPipelineSparkWorkflow.json_location": "String",
   "ReadsPipelineSparkWorkflow.masterbootdisk": "Int? (optional)",
   "ReadsPipelineSparkWorkflow.service_account": "String",
   "ReadsPipelineSparkWorkflow.max_age": "String? (optional)",
