@@ -42,6 +42,7 @@ workflow ReadsPipelineSparkWorkflow {
   String? scopes
   String initaction
   String? metadata
+  String? conf
 
   # ReadsPipelineSpark inputs
   # If gs:// links keep as strings, if local change to files
@@ -89,6 +90,7 @@ workflow ReadsPipelineSparkWorkflow {
         outputpath=outputpath,
         cluster_name=cluster_name,
         project=project,
+        conf=conf,
         gatk_path=gatk_path
     }
   }
@@ -124,11 +126,11 @@ task CreateCluster {
     --bucket ${bucket} \
     --region ${default="global" region} \
     --zone ${default="us-west1-b" zone} \
-    --master-machine-type ${default="n1-standard-8" mastermachinetype} \
+    --master-machine-type ${default="n1-standard-4" mastermachinetype} \
     --master-boot-disk-size ${default=100 masterbootdisk} \
     --num-workers ${default=5 numworker} \
-    --worker-machine-type ${default="n1-standard-8" workermachinetype} \
-    --worker-boot-disk-size ${default=50 workerbootdisk} \
+    --worker-machine-type ${default="n1-highmem-8" workermachinetype} \
+    --worker-boot-disk-size ${default=500 workerbootdisk} \
     --project ${project} \
     --async \
     --scopes ${default="default,cloud-platform,storage-full" scopes} \
@@ -151,6 +153,7 @@ task ReadsPipelineSpark {
   String sample
   String cluster_name
   String project
+  String? conf
 
   File? gatk_jar
   File? gatk_path
@@ -170,6 +173,7 @@ task ReadsPipelineSpark {
         -- \
         --spark-runner GCS \
         --cluster ${cluster_name}
+        --conf "spark.yarn.executor.memoryOverhead=132000,{conf}"
   >>>
   output {
     String VCF = "${outputpath}${sample}.vcf" 
