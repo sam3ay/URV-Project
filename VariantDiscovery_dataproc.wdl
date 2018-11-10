@@ -26,6 +26,7 @@
 # Workflow Definition
 workflow ReadsPipelineSparkWorkflow {
 
+  Boolean? create_dataproc
   # Dataproc settings
   String cluster_name
   String bucket_name
@@ -65,26 +66,28 @@ workflow ReadsPipelineSparkWorkflow {
   Int? execores             # cores per executor (5 per executor)
   String? drivermem         # used to bolster yarn node manager
 
-  call CreateCluster {
-    input:
-      cluster=cluster_name,
-      bucket=bucket_name,
-      region=region,
-      zone=zone,
-      mastermachinetype=mastermachinetype,
-      workermachinetype=workermachinetype,
-      masterbootdisk=masterbootdisk,
-      workerbootdisk=workerbootdisk,
-      numworker=numworker,
-      project=project,
-      service_account=service_account,
-      scopes=scopes,
-      max_idle=max_idle,
-      initaction=initaction,
-      image_ver=image_ver,
-      metadata=metadata,
-      json_location=json_location,
-      max_age=max_age
+  if (select_first([create_dataproc, true])) {
+    call CreateCluster {
+      input:
+        cluster=cluster_name,
+        bucket=bucket_name,
+        region=region,
+        zone=zone,
+        mastermachinetype=mastermachinetype,
+        workermachinetype=workermachinetype,
+        masterbootdisk=masterbootdisk,
+        workerbootdisk=workerbootdisk,
+        numworker=numworker,
+        project=project,
+        service_account=service_account,
+        scopes=scopes,
+        max_idle=max_idle,
+        initaction=initaction,
+        image_ver=image_ver,
+        metadata=metadata,
+        json_location=json_location,
+        max_age=max_age
+    }
   }
   
   scatter (i in range(length(inputbamarray))) {
