@@ -42,6 +42,7 @@ workflow ReadsPipelineSparkWorkflow {
   String? scopes
   String initaction
   String? metadata
+  String? image_ver
   String? conf
 
   # ReadsPipelineSpark inputs
@@ -57,6 +58,12 @@ workflow ReadsPipelineSparkWorkflow {
   # local gatk
   File? gatk_jar
   File? gatk_path
+
+  # spark properties
+  String? execmem           # memory per executor (~90% of worker mem/3)
+  Int? numexec              # total number of executors (3 per node generally)
+  Int? execores             # cores per executor (5 per executor)
+  String? drivermem         # used to bolster yarn node manager
 
   call CreateCluster {
     input:
@@ -74,6 +81,7 @@ workflow ReadsPipelineSparkWorkflow {
       scopes=scopes,
       max_idle=max_idle,
       initaction=initaction,
+      image_ver=image_ver,
       metadata=metadata,
       json_location=json_location,
       max_age=max_age
@@ -90,6 +98,10 @@ workflow ReadsPipelineSparkWorkflow {
         outputpath=outputpath,
         cluster_name=cluster_name,
         project=project,
+        execmem=execmem,
+        numexec=numexec,
+        execores=execores,
+        drivermem=drivermem,
         conf=conf,
         gatk_path=gatk_path
     }
@@ -119,6 +131,7 @@ task CreateCluster {
   String? metadata
   String json_location
   String service_account
+  String? image_ver
 
   command <<<
   set -eu
@@ -135,8 +148,9 @@ task CreateCluster {
     --async \
     --scopes ${default="default,cloud-platform,storage-full" scopes} \
     --max-idle ${default="600s" max_idle} \
-    --max-age ${default="4h" max_age} \
+    --max-age ${default="12h" max_age} \
     --initialization-actions ${initaction} \
+    --image-version ${default="1.3-deb9" image_ver} \
     --metadata service_account="${service_account},json_location=${json_location},${metadata}"
   >>>
   output {
@@ -154,10 +168,19 @@ task ReadsPipelineSpark {
   String cluster_name
   String project
   String? conf
+  String? execmem           # memory per executor (~90% of worker mem/3)
+  Int? numexec              # total number of executors (3 per node generally)
+  Int? execores             # cores per executor (5 per executor)
+  String? drivermem         # used to bolster yarn node manager
+
 
   File? gatk_jar
   File? gatk_path
   String outputpath
+
+  # spark calcs assuming 52 gbs per worker
+  # want no more than 5 executors per node
+
 
   command <<<
     set -eu
@@ -172,8 +195,12 @@ task ReadsPipelineSpark {
         --align \
         -- \
         --spark-runner GCS \
-        --cluster ${cluster_name}
-        --conf "spark.yarn.executor.memoryOverhead=132000,{conf}"
+        --cluster ${cluster_name} \
+        --num-executors ${default=15 numexec} \
+        --executor-cores ${default=5 execores} \
+        --executor-memory ${default="16G" execmem} \
+        --driver-memory ${default="4G" drivermem} \
+        --conf ${default="spark.dynamicAllocation.enabled=false" conf}
   >>>
   output {
     String VCF = "${outputpath}${sample}.vcf" 
