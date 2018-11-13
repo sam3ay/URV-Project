@@ -152,7 +152,7 @@ task CreateCluster {
     --max-age ${default="12h" max_age} \
     --initialization-actions ${initaction} \
     --image-version ${default="1.3-deb9" image_ver} \
-    --metadata service_account="service_account=${service_account},json_location=${json_location},${metadata}"
+    --metadata service_account="${service_account},json_location=${json_location},${metadata}"
   >>>
   output {
     String Dataproc_Name = "${cluster}"
@@ -201,7 +201,7 @@ task ReadsPipelineSpark {
         --executor-cores ${default=5 execores} \
         --executor-memory ${default="16G" execmem} \
         --driver-memory ${default="4G" drivermem} \
-        --conf ${default="spark.dynamicAllocation.enabled=false,spark.yarn.executor.memoryOverhead=10000" conf}
+        --conf ${default="spark.dynamicAllocation.enabled=false,spark.yarn.executor.memoryOverhead=9000" conf}
   >>>
   output {
     String VCF = "${outputpath}${sample}.vcf" 
