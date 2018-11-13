@@ -16,3 +16,7 @@ if [[ "${ROLE}" == 'Master' ]]; then
     echo 'export HELLBENDER_JSON_SERVICE_ACCOUNT_KEY=$JSON_LOCATION' | tee -a /etc/profile
     source /etc/profile
 fi
+
+# Download and run the Stackdriver installation script
+curl -sSO https://dl.google.com/cloudagents/install-monitoring-agent.sh
+sudo bash install-monitoring-agent.sh

@@ -6,7 +6,6 @@
 ## - - files must pass validation by ValidateSamFile
 ## - - reads are provided in query-sorted order
 ## - - all reads must have an RG tag
-## - Local environment must contain
 ## Output :
 ## - Filtered VCF file and its index, filtered using variant quality score recalibration
 ##   (VQSR). All sites that are present in the input VCF are retained.
@@ -18,7 +17,7 @@
 ## - Python 2.7 & Python 3.6
 ##
 ## Cromwell version support 
-## - Successfully tested on v29 
+## - Successfully tested on v36 
 ## - Does not work on versions < v23 due to output syntax
 
 # Workflow Definition
@@ -32,6 +31,7 @@ workflow ReadsPipelineSparkWorkflow {
   String outputpath
 
   String gatk_path
+  String? gatk_jar
 
   # runtime params
   String? mem
@@ -45,6 +45,7 @@ workflow ReadsPipelineSparkWorkflow {
         known_variants=known_variants,
         sample=inputbamarray[i][1],
         gatk_path=gatk_path,
+        gatk_jar=gatk_jar,
         outputpath=outputpath,
         mem=mem,
         cores=cores
@@ -64,15 +65,19 @@ task ReadsPipelineSpark {
   String sample
 
   String gatk_path
+  String? gatk_jar
   String outputpath
 
+
   # runtime params
-  # expecting 5 workers n8-standard
-  String? mem
+  Int? mem
   Int? cores
+  Int over_ratio = 360
+  Int overhead = select_first([mem*over_ratio, 2500])
   
   command <<<
     set -eu
+    export GATK_LOCAL_JAR=${default="/root/gatk.jar" gatk_jar}
     ${gatk_path} \
       ReadsPipelineSpark \
         --input ${input_bam} \
@@ -81,12 +86,13 @@ task ReadsPipelineSpark {
         --reference ${ref_fasta} \
         --align \
         -- \
-        --spark-runner LOCAL
+        --spark-runner LOCAL \
+        --conf "spark.yarn.executor.memoryOverhead=${overhead}"
   >>>
   runtime {
     appMainClass: "org.broadinstitute.hellbender.Main"
-    executorMemory: select_first([mem, "7GB"])
-    executorCores: select_first([cores, "20"])
+    executorMemory: select_first([mem + "GB", 7 + "GB"])
+    executorCores: select_first([cores, 20])
   }
   output {
     File VCF = "${outputpath}${sample}.vcf" 

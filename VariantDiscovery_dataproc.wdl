@@ -6,7 +6,6 @@
 ## - - files must pass validation by ValidateSamFile
 ## - - reads are provided in query-sorted order
 ## - - all reads must have an RG tag
-## - Local environment must contain
 ## Output :
 ## - Filtered VCF file and its index, filtered using variant quality score recalibration
 ##   (VQSR). All sites that are present in the input VCF are retained.
@@ -21,7 +20,6 @@
 ## Cromwell version support 
 ## - Successfully tested on v36
 ## - Does not work on versions < v23 due to output syntax
-## --gcs-project-for-requester-pays ${project} \
 
 # Workflow Definition
 workflow ReadsPipelineSparkWorkflow {
@@ -41,10 +39,12 @@ workflow ReadsPipelineSparkWorkflow {
   String? max_idle
   String? max_age
   String? scopes
-  String initaction
+  String? initaction
   String? metadata
   String? image_ver
   String? conf
+  String? service_account
+  String? json_location
 
   # ReadsPipelineSpark inputs
   # If gs:// links keep as strings, if local change to files
@@ -53,8 +53,6 @@ workflow ReadsPipelineSparkWorkflow {
   String ref_fasta
   String known_variants
   String outputpath
-  String service_account
-  String json_location
 
   # local gatk
   File? gatk_jar
@@ -130,10 +128,10 @@ task CreateCluster {
   String? max_idle
   String? max_age
   String? scopes
-  String initaction
+  String? initaction
   String? metadata
-  String json_location
-  String service_account
+  String? json_location
+  String? service_account
   String? image_ver
 
   command <<<
@@ -142,7 +140,7 @@ task CreateCluster {
     --bucket ${bucket} \
     --region ${default="global" region} \
     --zone ${default="us-west1-b" zone} \
-    --master-machine-type ${default="n1-standard-4" mastermachinetype} \
+    --master-machine-type ${default="n1-highmem-4" mastermachinetype} \
     --master-boot-disk-size ${default=100 masterbootdisk} \
     --num-workers ${default=5 numworker} \
     --worker-machine-type ${default="n1-highmem-8" workermachinetype} \
@@ -154,7 +152,7 @@ task CreateCluster {
     --max-age ${default="12h" max_age} \
     --initialization-actions ${initaction} \
     --image-version ${default="1.3-deb9" image_ver} \
-    --metadata service_account="${service_account},json_location=${json_location},${metadata}"
+    --metadata service_account="service_account=${service_account},json_location=${json_location},${metadata}"
   >>>
   output {
     String Dataproc_Name = "${cluster}"
@@ -187,7 +185,7 @@ task ReadsPipelineSpark {
 
   command <<<
     set -eu
-    export GATK_GCS_STAGING="${outputpath}"
+    export GATK_GCS_STAGING="${outputpath}/"
     export GATK_LOCAL_JAR=${default="/root/gatk.jar" gatk_jar}
     ${default="gatk" gatk_path} \
       ReadsPipelineSpark \
@@ -203,7 +201,7 @@ task ReadsPipelineSpark {
         --executor-cores ${default=5 execores} \
         --executor-memory ${default="16G" execmem} \
         --driver-memory ${default="4G" drivermem} \
-        --conf ${default="spark.dynamicAllocation.enabled=false" conf}
+        --conf ${default="spark.dynamicAllocation.enabled=false,spark.yarn.executor.memoryOverhead=10000" conf}
   >>>
   output {
     String VCF = "${outputpath}${sample}.vcf" 
