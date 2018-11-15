@@ -205,7 +205,7 @@ task ReadsPipelineSpark {
         --executor-cores ${default=7 execores} \
         --executor-memory ${default="5G" execmem} \
         --driver-memory ${default="15G" drivermem} \
-        --conf ${default="spark.dynamicAllocation.enabled=false,spark.yarn.executor.memoryOverhead=10240" conf}
+        --conf "spark.dynamicAllocation.enabled=false,spark.yarn.executor.memoryOverhead=10240,spark.scheduler.allocation.file=${fair_scheduler},${conf}"
   >>>
   output {
     String VCF = "${outputpath}${sample}.vcf" 
