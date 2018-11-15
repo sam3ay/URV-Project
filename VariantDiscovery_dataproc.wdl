@@ -44,6 +44,7 @@ workflow ReadsPipelineSparkWorkflow {
   String? image_ver
   String? conf
   String? service_account
+  String? fair_scheduler
   String? json_location
 
   # ReadsPipelineSpark inputs
@@ -103,6 +104,7 @@ workflow ReadsPipelineSparkWorkflow {
         numexec=numexec,
         execores=execores,
         drivermem=drivermem,
+        fair_scheduler=fair_scheduler,
         conf=conf,
         gatk_path=gatk_path
     }
@@ -170,6 +172,7 @@ task ReadsPipelineSpark {
   String cluster_name
   String project
   String? conf
+  String? fair_scheduler
   String? execmem           # memory per executor (~90% of worker mem/3)
   Int? numexec              # total number of executors (3 per node generally)
   Int? execores             # cores per executor (5 per executor)
