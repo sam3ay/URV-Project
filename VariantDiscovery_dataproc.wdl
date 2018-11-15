@@ -140,11 +140,11 @@ task CreateCluster {
     --bucket ${bucket} \
     --region ${default="global" region} \
     --zone ${default="us-west1-b" zone} \
-    --master-machine-type ${default="n1-highmem-4" mastermachinetype} \
-    --master-boot-disk-size ${default=100 masterbootdisk} \
+    --master-machine-type ${default="n1-standard-4" mastermachinetype} \
+    --master-boot-disk-size ${default=300 masterbootdisk} \
     --num-workers ${default=5 numworker} \
     --worker-machine-type ${default="n1-highmem-8" workermachinetype} \
-    --worker-boot-disk-size ${default=500 workerbootdisk} \
+    --worker-boot-disk-size ${default=300 workerbootdisk} \
     --project ${project} \
     --async \
     --scopes ${default="default,cloud-platform,storage-full" scopes} \
@@ -152,7 +152,8 @@ task CreateCluster {
     --max-age ${default="12h" max_age} \
     --initialization-actions ${initaction} \
     --image-version ${default="1.3-deb9" image_ver} \
-    --metadata service_account="${service_account},json_location=${json_location},${metadata}"
+    --metadata service_account="${service_account},json_location=${json_location},${metadata}" \
+    --properties "dataproc:dataproc.logging.stackdriver.enable=true,dataproc:dataproc.monitoring.stackdriver.enable=true"
   >>>
   output {
     String Dataproc_Name = "${cluster}"
@@ -197,11 +198,11 @@ task ReadsPipelineSpark {
         -- \
         --spark-runner GCS \
         --cluster ${cluster_name} \
-        --num-executors ${default=15 numexec} \
-        --executor-cores ${default=5 execores} \
-        --executor-memory ${default="16G" execmem} \
-        --driver-memory ${default="4G" drivermem} \
-        --conf ${default="spark.dynamicAllocation.enabled=false,spark.yarn.executor.memoryOverhead=9000" conf}
+        --num-executors ${default=10 numexec} \
+        --executor-cores ${default=7 execores} \
+        --executor-memory ${default="5G" execmem} \
+        --driver-memory ${default="15G" drivermem} \
+        --conf ${default="spark.dynamicAllocation.enabled=false,spark.yarn.executor.memoryOverhead=10240" conf}
   >>>
   output {
     String VCF = "${outputpath}${sample}.vcf" 
