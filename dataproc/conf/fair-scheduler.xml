@@ -2,7 +2,7 @@
 <allocations>
   <queue name="gatk_queue">
     <queueMaxAppsDefault>1</queueMaxAppsDefault>
-    <schedulingPolicy>fair</schedulingPolicy>
+    <schedulingPolicy>fifo</schedulingPolicy>
   </queue>
   <queuePlacementPolicy>
     <rule name="default" queue="gatk_queue" />

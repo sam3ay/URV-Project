@@ -1,5 +1,4 @@
 {
-  "ReadsPipelineSparkWorkflow.fair_scheduler": "String? (optional)",
   "ReadsPipelineSparkWorkflow.workerbootdisk": "Int? (optional)",
   "ReadsPipelineSparkWorkflow.execmem": "String? (optional)",
   "ReadsPipelineSparkWorkflow.initaction": "String? (optional)",
@@ -18,6 +17,7 @@
   "ReadsPipelineSparkWorkflow.image_ver": "String? (optional)",
   "ReadsPipelineSparkWorkflow.max_age": "String? (optional)",
   "ReadsPipelineSparkWorkflow.ref_fasta": "String",
+  "ReadsPipelineSparkWorkflow.fair_location": "String? (optional)",
   "ReadsPipelineSparkWorkflow.metadata": "String? (optional)",
   "ReadsPipelineSparkWorkflow.numworker": "Int? (optional)",
   "ReadsPipelineSparkWorkflow.execores": "Int? (optional)",
@@ -28,6 +28,7 @@
   "ReadsPipelineSparkWorkflow.conf": "String? (optional)",
   "ReadsPipelineSparkWorkflow.known_variants": "String",
   "ReadsPipelineSparkWorkflow.cluster_name": "String",
+  "ReadsPipelineSparkWorkflow.scheduler": "String? (optional)",
   "ReadsPipelineSparkWorkflow.scopes": "String? (optional)",
   "ReadsPipelineSparkWorkflow.outputpath": "String"
 }

@@ -44,7 +44,8 @@ workflow ReadsPipelineSparkWorkflow {
   String? image_ver
   String? conf
   String? service_account
-  String? fair_scheduler
+  String? fair_location
+  String? scheduler
   String? json_location
 
   # ReadsPipelineSpark inputs
@@ -84,6 +85,8 @@ workflow ReadsPipelineSparkWorkflow {
         initaction=initaction,
         image_ver=image_ver,
         metadata=metadata,
+        scheduler=scheduler,
+        fair_location=fair_location,
         json_location=json_location,
         max_age=max_age
     }
@@ -104,7 +107,7 @@ workflow ReadsPipelineSparkWorkflow {
         numexec=numexec,
         execores=execores,
         drivermem=drivermem,
-        fair_scheduler=fair_scheduler,
+        fair_location=fair_location,
         conf=conf,
         gatk_path=gatk_path
     }
@@ -133,6 +136,8 @@ task CreateCluster {
   String? initaction
   String? metadata
   String? json_location
+  String? fair_location
+  String? scheduler
   String? service_account
   String? image_ver
 
@@ -154,7 +159,7 @@ task CreateCluster {
     --max-age ${default="12h" max_age} \
     --initialization-actions ${initaction} \
     --image-version ${default="1.3-deb9" image_ver} \
-    --metadata service_account="${service_account},json_location=${json_location},${metadata}" \
+    --metadata service_account="${service_account},json_location=${json_location},scheduler=${scheduler},fair_location=${fair_location},${metadata}" \
     --properties "dataproc:dataproc.logging.stackdriver.enable=true,dataproc:dataproc.monitoring.stackdriver.enable=true"
   >>>
   output {
@@ -172,7 +177,7 @@ task ReadsPipelineSpark {
   String cluster_name
   String project
   String? conf
-  String? fair_scheduler
+  String? fair_location
   String? execmem           # memory per executor (~90% of worker mem/3)
   Int? numexec              # total number of executors (3 per node generally)
   Int? execores             # cores per executor (5 per executor)
@@ -203,9 +208,10 @@ task ReadsPipelineSpark {
         --cluster ${cluster_name} \
         --num-executors ${default=10 numexec} \
         --executor-cores ${default=7 execores} \
-        --executor-memory ${default="5G" execmem} \
-        --driver-memory ${default="15G" drivermem} \
-        --conf "spark.dynamicAllocation.enabled=false,spark.yarn.executor.memoryOverhead=10240,spark.scheduler.allocation.file=${fair_scheduler},${conf}"
+        --executor-memory ${default="15G" execmem} \
+        --driver-memory ${default="12G" drivermem} \
+        --driver-cores 4
+        --conf "spark.dynamicAllocation.enabled=false,spark.yarn.executor.memoryOverhead=10240,spark.scheduler.allocation.file=${fair_location},${conf}"
   >>>
   output {
     String VCF = "${outputpath}${sample}.vcf" 
