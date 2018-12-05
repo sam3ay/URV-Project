@@ -86,7 +86,6 @@ workflow ReadsPipelineSparkWorkflow {
         image_ver=image_ver,
         metadata=metadata,
         scheduler=scheduler,
-        fair_location=fair_location,
         json_location=json_location,
         max_age=max_age
     }
@@ -136,7 +135,6 @@ task CreateCluster {
   String? initaction
   String? metadata
   String? json_location
-  String? fair_location
   String? scheduler
   String? service_account
   String? image_ver
@@ -159,7 +157,7 @@ task CreateCluster {
     --max-age ${default="12h" max_age} \
     --initialization-actions ${initaction} \
     --image-version ${default="1.3-deb9" image_ver} \
-    --metadata service_account="${service_account},json_location=${json_location},scheduler=${scheduler},fair_location=${fair_location},${metadata}" \
+    --metadata service_account="${service_account},json_location=${json_location},scheduler=${scheduler},${metadata}" \
     --properties "dataproc:dataproc.logging.stackdriver.enable=true,dataproc:dataproc.monitoring.stackdriver.enable=true"
   >>>
   output {
