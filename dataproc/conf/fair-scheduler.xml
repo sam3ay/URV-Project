@@ -1,5 +1,6 @@
 <?xml version="1.0"?>
 <allocations>
+  <queueMaxAppsDefault>1</queueMaxAppsDefault>
   <queue name="gatk_queue">
     <queueMaxAppsDefault>1</queueMaxAppsDefault>
     <schedulingPolicy>fifo</schedulingPolicy>
