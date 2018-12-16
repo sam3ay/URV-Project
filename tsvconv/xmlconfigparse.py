@@ -5,7 +5,7 @@ import xml.etree.ElementTree as ET
 import asyncio
 
 
-def xmlinsert(xpath, xmlfile, tag='/', findall=False):
+def xmlinsert(xpath, xmlfile, tag='', findall=False):
     """Inserts elements from an xpath
 
     refs: xml.etree.ElementPath
@@ -49,9 +49,9 @@ def xmlinsert(xpath, xmlfile, tag='/', findall=False):
     # check recursive
     if findall:
         for element in root.iterfind(tag):
-            elementinsert(token_iter, element)
+            asyncio.run(elementinsert(token_iter, element))
     else:
-        elementinsert(token_iter, root.find(tag))
+        asyncio.run(elementinsert(token_iter, root.find(tag)))
     tree.write(xmlfile)
     return xmlfile
 
@@ -87,13 +87,13 @@ async def elementinsert(token_iter, xmlelement):
     else:
         try:
             if token[0] == "":
-                ET.SubElement(xmlelement, token[1])
+                xmlelement = ET.SubElement(xmlelement, token[1])
             elif token[0] == "[":
-                new_element = await add_predicate[token[0]](
+                xmlelement = await add_predicate[token[0]](
                                       xmlelement, token, token_iter)
         except KeyError:
             raise  # invalid character
-        await elementinsert(token_iter, new_element, token_iter)
+    await elementinsert(token_iter, xmlelement)
 
 
 async def add_predicate(xmlelement, token, token_iter):

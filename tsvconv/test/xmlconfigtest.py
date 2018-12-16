@@ -10,7 +10,7 @@ class XmlToDictTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         """Creates new xml file to test"""
-        root = ET.ELEMENT('root')
+        root = ET.Element('root')
         foo = ET.SubElement(root, 'foo')
         ET.SubElement(foo, 'bar')
         ET.SubElement(foo, 'bar')
@@ -23,7 +23,7 @@ class XmlToDictTest(unittest.TestCase):
         """
         xmlfile = xmlconfigparse.xmlinsert('bar/name(Text)/value(total)',
                                            'test.xml',
-                                           tag='/root/foo/'
+                                           tag='foo'
                                            )
         try:
             xmlroot = ET.parse(xmlfile).getroot()
