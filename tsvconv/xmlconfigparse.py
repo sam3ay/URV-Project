@@ -2,6 +2,7 @@
 
 import xml.etree.ElementPath as EP
 import xml.etree.ElementTree as ET
+import asyncio
 
 
 def xmlinsert(xpath, xmlfile, tag='/', findall=False):
@@ -63,7 +64,7 @@ def xmlinsert(xpath, xmlfile, tag='/', findall=False):
     # don't see a reason to support "." or ".." current and parent contexts
 
 
-def elementinsert(token_iter, xmlelement):
+async def elementinsert(token_iter, xmlelement):
     """takes element and adds subelements
 
     Args
@@ -76,16 +77,51 @@ def elementinsert(token_iter, xmlelement):
     Notes:
         Supports simple xpath syntax
     """
-    operations = {
-            "": add_subelement,  # child elements
-            "[": add_predicate
-            }
     try:
         token = next(token_iter)
     except StopIteration:
         return
+    # if delimiter is a '/' skip token
+    if token[0] == '/':
+        await elementinsert(token_iter, xmlelement)
+    else:
+        try:
+            if token[0] == "":
+                ET.SubElement(xmlelement, token[1])
+            elif token[0] == "[":
+                new_element = await add_predicate[token[0]](
+                                      xmlelement, token, token_iter)
+        except KeyError:
+            raise  # invalid character
+        await elementinsert(token_iter, new_element, token_iter)
+
+
+async def add_predicate(xmlelement, token, token_iter):
+    """takes element and updates values
+
+    Args
+        xmlelement (obj: 'str'): element class from elementtree package
+        token (tuple(str)): contains a pair of strings
+        token_iter (obj): iterator type object containing tuples of strings
+        key_flag (bool): if True, strings are appended to key, otherwise value
+    Returns:
+        (obj: 'str'): element class
+    """
+    attrib_key = []
+    attrib_value = []
     try:
-        new_element = ops[token[0]](xmlelement, token)
-    except KeyError:
-        raise  # invalid character
-    elementinsert(token_iter, new_element)
+        token = next(token_iter)
+    except StopIteration:
+        return xmlelement
+    if token[0] == "]":
+        xmlelement["".join(attrib_key)] = "".join(attrib_value)
+        return xmlelement
+    elif token == ('', ''):
+        await add_predicate(xmlelement, token, token_iter)
+    elif token[0] == '':
+        attrib_key.append()
+    elif token[1] == '':
+        attrib_value.append()
+    else:
+        raise SyntaxError("invalid character")
+    return await add_predicate(xmlelement, token, token_iter)
