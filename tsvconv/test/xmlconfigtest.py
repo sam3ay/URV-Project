@@ -23,7 +23,7 @@ class XmlToDictTest(unittest.TestCase):
         """
         xmlfile = xmlconfigparse.xmlinsert('bar/name(Text)/value(total)',
                                            'test.xml',
-                                           tag='foo'
+                                           tag='foo[last()]'
                                            )
         try:
             xmlroot = ET.parse(xmlfile).getroot()

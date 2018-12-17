@@ -55,7 +55,6 @@ def xmlinsert(xpath, xmlfile, tag='', findall=False):
     tree.write(xmlfile)
     return xmlfile
 
-    # / if first character then absolute path
     # [tag] add to direct descendents
     # [tag='text'] add subelements with an xpath as text
     # [position] add subelement at this position
@@ -84,44 +83,52 @@ async def elementinsert(token_iter, xmlelement):
     # if delimiter is a '/' skip token
     if token[0] == '/':
         await elementinsert(token_iter, xmlelement)
-    else:
-        try:
-            if token[0] == "":
-                xmlelement = ET.SubElement(xmlelement, token[1])
-            elif token[0] == "[":
-                xmlelement = await add_predicate[token[0]](
-                                      xmlelement, token, token_iter)
-        except KeyError:
-            raise  # invalid character
+    elif token[0] == "" and len(token[1]) > 0:
+        xmlelement = ET.SubElement(xmlelement, token[1])
+    elif token[0] == "[":
+        xmlelement = await add_predicate[token[0]](
+                              token_iter, xmlelement)
     await elementinsert(token_iter, xmlelement)
 
 
-async def add_predicate(xmlelement, token, token_iter):
+async def add_predicate(token_iter, xmlelement, attribute_flag):
     """takes element and updates values
 
     Args
         xmlelement (obj: 'str'): element class from elementtree package
-        token (tuple(str)): contains a pair of strings
         token_iter (obj): iterator type object containing tuples of strings
-        key_flag (bool): if True, strings are appended to key, otherwise value
+        attribute_flag (str): determines whether input is attribute of
     Returns:
         (obj: 'str'): element class
+
+    Notes:
+        when we hit either ] or "and" we take stock
+        we use signature to determine the course of action
+          if signature has @ it's an attribute,
+          if signature has () it's a value of the tag
+          if signature has / or empty or [ it's an xpath
     """
-    attrib_key = []
-    attrib_value = []
+    predicate = []
+    modifiers = []
     try:
         token = next(token_iter)
     except StopIteration:
         return xmlelement
     if token[0] == "]":
-        xmlelement["".join(attrib_key)] = "".join(attrib_value)
+        signature = "".join(modifiers)
+        if signature == "@=":
+            xmlelement.attrib["".join(attrib_key)] = "".join(attrib_value)
+        elif signature in {"", "/"}:
+
         return xmlelement
+    elif 
     elif token == ('', ''):
-        await add_predicate(xmlelement, token, token_iter)
+        # ignore whitespace possibly change to pass
+        pass
     elif token[0] == '':
-        attrib_key.append()
+        predicate.append(token[1])
     elif token[1] == '':
-        attrib_value.append()
+        modifiers.append(token[0])
     else:
         raise SyntaxError("invalid character")
     return await add_predicate(xmlelement, token, token_iter)
