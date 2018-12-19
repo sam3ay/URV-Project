@@ -10,6 +10,7 @@
   "ReadsPipelineSparkWorkflow.zone": "String? (optional)",
   "ReadsPipelineSparkWorkflow.gatk_jar": "File? (optional)",
   "ReadsPipelineSparkWorkflow.bamtsv": "File",
+  "ReadsPipelineSparkWorkflow.fair_sched": "File? (optional)",
   "ReadsPipelineSparkWorkflow.json_location": "String? (optional)",
   "ReadsPipelineSparkWorkflow.masterbootdisk": "Int? (optional)",
   "ReadsPipelineSparkWorkflow.service_account": "String? (optional)",

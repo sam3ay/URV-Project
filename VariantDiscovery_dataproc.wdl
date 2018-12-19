@@ -90,9 +90,15 @@ workflow ReadsPipelineSparkWorkflow {
         json_location=json_location,
         max_age=max_age
     }
+    call CopyStaticIntoHDFSSpark {
+      input:
+    }
   }
   
-  scatter (i in range(length(inputbamarray))) {
+  scatter (i in range(length(inputbamarray))) { 
+    call CopyGCSDirectoryIntoHDFSSpark {
+      input:
+    }
     call ReadsPipelineSpark {
       input:
         input_bam=inputbamarray[i][0],
@@ -160,7 +166,7 @@ task CreateCluster {
     --initialization-actions ${initaction} \
     --image-version ${default="1.3-deb9" image_ver} \
     --metadata service_account="${service_account},json_location=${json_location},scheduler=${scheduler},schedule_location=${fair_location},${metadata}" \
-    --properties "dataproc:dataproc.logging.stackdriver.enable=true,dataproc:dataproc.monitoring.stackdriver.enable=true"
+    --properties "dataproc:dataproc.logging.stackdriver.enable=true,dataproc:dataproc.monitoring.stackdriver.enable=true,yarn:yarn.resourcemanager.scheduler.class=org.apache.hadoop.yarn.server.resourcemanager.scheduler.fair.FairScheduler,yarn:yarn.scheduler.fair.user-as-default-queue=false"
   >>>
   output {
     String Dataproc_Name = "${cluster}"
@@ -191,7 +197,6 @@ task ReadsPipelineSpark {
   # spark calcs assuming 52 gbs per worker
   # want no more than 5 executors per node
 
-
   command <<<
     set -eu
     export GATK_GCS_STAGING="${outputpath}/"
@@ -211,7 +216,8 @@ task ReadsPipelineSpark {
         --executor-memory ${default="15G" execmem} \
         --driver-memory ${default="12G" drivermem} \
         --driver-cores 4 \
-        --conf "spark.dynamicAllocation.enabled=false,spark.yarn.executor.memoryOverhead=10240,spark.scheduler.allocation.file=${fair_location},${conf}"
+        --verbosity=debug \
+        --conf "spark.dynamicAllocation.enabled=false,spark.yarn.executor.memoryOverhead=10240"
   >>>
   output {
     String VCF = "${outputpath}${sample}.vcf" 
