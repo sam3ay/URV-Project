@@ -1,6 +1,7 @@
 {
   "ReadsPipelineSparkWorkflow.workerbootdisk": "Int? (optional)",
   "ReadsPipelineSparkWorkflow.execmem": "String? (optional)",
+  "ReadsPipelineSparkWorkflow.gcs_dir": "String",
   "ReadsPipelineSparkWorkflow.initaction": "String? (optional)",
   "ReadsPipelineSparkWorkflow.mastermachinetype": "String? (optional)",
   "ReadsPipelineSparkWorkflow.max_idle": "String? (optional)",
@@ -10,7 +11,6 @@
   "ReadsPipelineSparkWorkflow.zone": "String? (optional)",
   "ReadsPipelineSparkWorkflow.gatk_jar": "File? (optional)",
   "ReadsPipelineSparkWorkflow.bamtsv": "File",
-  "ReadsPipelineSparkWorkflow.fair_sched": "File? (optional)",
   "ReadsPipelineSparkWorkflow.json_location": "String? (optional)",
   "ReadsPipelineSparkWorkflow.masterbootdisk": "Int? (optional)",
   "ReadsPipelineSparkWorkflow.service_account": "String? (optional)",

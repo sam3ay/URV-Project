@@ -48,6 +48,9 @@ workflow ReadsPipelineSparkWorkflow {
   String? scheduler
   String? json_location
 
+  # gcs copy Variables
+  String gcs_dir
+  String hdfs_out="hdfs://${cluster_name}-m:8020/${project}/"
   # ReadsPipelineSpark inputs
   # If gs:// links keep as strings, if local change to files
   File bamtsv
@@ -90,22 +93,29 @@ workflow ReadsPipelineSparkWorkflow {
         json_location=json_location,
         max_age=max_age
     }
-    call CopyStaticIntoHDFSSpark {
-      input:
-    }
   }
   
-  scatter (i in range(length(inputbamarray))) { 
-    call CopyGCSDirectoryIntoHDFSSpark {
-      input:
-    }
+  call CopyGCSDirIntoHDFSSpark {
+    input:
+      gatk_path=gatk_path,
+      gatk_jar=gatk_jar,
+      gcs_dir=gcs_dir,
+      outputpath=outputpath,
+      project=project,
+      hdfs_out=hdfs_out,
+      cluster_name=CreateCluster.cluster_name
+  }
+
+  scatter (i in range(length(inputbamarray))) {
     call ReadsPipelineSpark {
       input:
+        gatk_jar=gatk_jar,
+        gatk_path=gatk_path,
+        hdfs_path=CopyGCSDirIntoHDFSSpark.hdfs_path,
         input_bam=inputbamarray[i][0],
+        sample=inputbamarray[i][1],
         ref_fasta=ref_fasta,
         known_variants=known_variants,
-        sample=inputbamarray[i][1],
-        gatk_jar=gatk_jar,
         outputpath=outputpath,
         cluster_name=cluster_name,
         project=project,
@@ -114,8 +124,7 @@ workflow ReadsPipelineSparkWorkflow {
         execores=execores,
         drivermem=drivermem,
         fair_location=fair_location,
-        conf=conf,
-        gatk_path=gatk_path
+        conf=conf
     }
   }
 }
@@ -155,21 +164,48 @@ task CreateCluster {
     --zone ${default="us-west1-b" zone} \
     --master-machine-type ${default="n1-standard-4" mastermachinetype} \
     --master-boot-disk-size ${default=300 masterbootdisk} \
-    --num-workers ${default=5 numworker} \
+    --num-workers ${default=6 numworker} \
     --worker-machine-type ${default="n1-highmem-8" workermachinetype} \
     --worker-boot-disk-size ${default=300 workerbootdisk} \
     --project ${project} \
     --async \
     --scopes ${default="default,cloud-platform,storage-full" scopes} \
     --max-idle ${default="600s" max_idle} \
-    --max-age ${default="12h" max_age} \
+    --max-age ${default="24h" max_age} \
     --initialization-actions ${initaction} \
     --image-version ${default="1.3-deb9" image_ver} \
     --metadata service_account="${service_account},json_location=${json_location},scheduler=${scheduler},schedule_location=${fair_location},${metadata}" \
     --properties "dataproc:dataproc.logging.stackdriver.enable=true,dataproc:dataproc.monitoring.stackdriver.enable=true,yarn:yarn.resourcemanager.scheduler.class=org.apache.hadoop.yarn.server.resourcemanager.scheduler.fair.FairScheduler,yarn:yarn.scheduler.fair.user-as-default-queue=false"
   >>>
   output {
-    String Dataproc_Name = "${cluster}"
+    String cluster_name = "${cluster}"
+  }
+}
+task CopyGCSDirIntoHDFSSpark {
+
+  String gcs_dir
+  String cluster_name
+  String project
+  String hdfs_out
+  
+  File? gatk_jar
+  File? gatk_path
+  String? outputpath
+
+  command <<<
+    set -eu
+    export GATK_GCS_STAGING="${outputpath}/"
+    export GATK_LOCAL_JAR=${default="/root/gatk.jar" gatk_jar}
+    ${default="gatk" gatk_path} \
+      ParallelCopyGCSDirectoryIntoHDFSSpark \
+        --input-gcs-path "${gcs_dir}" \
+        --output-hdfs-directory "${hdfs_out}" \
+        -- \
+        --spark-runner GCS \
+        --cluster "${cluster_name}"
+  >>>
+  output {
+      String hdfs_path = "${hdfs_out}"
   }
 }
 # uBams to vcf
@@ -178,6 +214,7 @@ task ReadsPipelineSpark {
   # Inputs for this task
   String input_bam
   String ref_fasta
+  String hdfs_path
   String known_variants
   String sample
   String cluster_name
@@ -203,17 +240,17 @@ task ReadsPipelineSpark {
     export GATK_LOCAL_JAR=${default="/root/gatk.jar" gatk_jar}
     ${default="gatk" gatk_path} \
       ReadsPipelineSpark \
-        --input ${input_bam} \
-        --known-sites ${known_variants} \
+        --input "${hdfs_path}/${sample}.unmapped.bam" \
+        --known-sites $"${hdfs_path}/${known_variants}" \
         --output "${outputpath}/vcf/${sample}.vcf" \
-        --reference ${ref_fasta} \
+        --reference $"${hdfs_path}/${ref_fasta}" \
         --align \
         -- \
         --spark-runner GCS \
         --cluster ${cluster_name} \
         --num-executors ${default=10 numexec} \
-        --executor-cores ${default=7 execores} \
-        --executor-memory ${default="15G" execmem} \
+        --executor-cores ${default=5 execores} \
+        --executor-memory ${default="10G" execmem} \
         --driver-memory ${default="12G" drivermem} \
         --driver-cores 4 \
         --verbosity=debug \

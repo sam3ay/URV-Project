@@ -14,6 +14,7 @@ if [[ "${ROLE}" == 'Master' ]]; then
     # edit the yarn-site.xml to point to fair scheduler location
     mkdir -p ${JSON_LOCATION%/*}
     mkdir -p ${SCHEDULER_LOCATION%/*}
+    mkdir -p /${PROJECT}
     gsutil cp $SERVICE_ACCOUNT $JSON_LOCATION
     gsutil cp $FAIR_SCHEDULER $SCHEDULER_LOCATION
     # Env variables necessary for GCS hadoop connector to be configured properly
