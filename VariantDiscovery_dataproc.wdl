@@ -162,11 +162,11 @@ task CreateCluster {
     --bucket ${bucket} \
     --region ${default="global" region} \
     --zone ${default="us-west1-b" zone} \
-    --master-machine-type ${default="n1-standard-4" mastermachinetype} \
-    --master-boot-disk-size ${default=300 masterbootdisk} \
+    --master-machine-type ${default="n1-highmem-8" mastermachinetype} \
+    --master-boot-disk-size ${default=800 masterbootdisk} \
     --num-workers ${default=6 numworker} \
     --worker-machine-type ${default="n1-highmem-8" workermachinetype} \
-    --worker-boot-disk-size ${default=300 workerbootdisk} \
+    --worker-boot-disk-size ${default=800 workerbootdisk} \
     --project ${project} \
     --async \
     --scopes ${default="default,cloud-platform,storage-full" scopes} \
@@ -231,8 +231,9 @@ task ReadsPipelineSpark {
   File? gatk_path
   String outputpath
 
-  # spark calcs assuming 52 gbs per worker
-  # want no more than 5 executors per node
+  # spark calcs assuming 52 gbs per worker total worker 6
+  # want no more than 5 executors per node 2 by default
+  ,spark.yarn.executor.memoryOverhead=10480"
 
   command <<<
     set -eu
@@ -248,13 +249,13 @@ task ReadsPipelineSpark {
         -- \
         --spark-runner GCS \
         --cluster ${cluster_name} \
-        --num-executors ${default=10 numexec} \
-        --executor-cores ${default=5 execores} \
-        --executor-memory ${default="10G" execmem} \
+        --num-executors ${default=12 numexec} \
+        --executor-cores ${default=3 execores} \
+        --executor-memory ${default="15G" execmem} \
         --driver-memory ${default="12G" drivermem} \
         --driver-cores 4 \
         --verbosity=debug \
-        --conf "spark.dynamicAllocation.enabled=false,spark.yarn.executor.memoryOverhead=10240"
+        --conf "spark.dynamicAllocation.enabled=false,spark.yarn.executor.memoryOverhead=10480"
   >>>
   output {
     String VCF = "${outputpath}${sample}.vcf" 
