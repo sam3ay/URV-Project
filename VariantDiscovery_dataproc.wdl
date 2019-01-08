@@ -50,7 +50,7 @@ workflow ReadsPipelineSparkWorkflow {
 
   # gcs copy Variables
   String gcs_dir
-  String hdfs_out="hdfs://${cluster_name}-m:8020/${project}/"
+  String hdfs_out="hdfs://${cluster_name}-m:8020/${project}"
   # ReadsPipelineSpark inputs
   # If gs:// links keep as strings, if local change to files
   File bamtsv
@@ -58,6 +58,7 @@ workflow ReadsPipelineSparkWorkflow {
   String ref_fasta
   String known_variants
   String outputpath
+  String vcf_list_name
 
   # local gatk
   File? gatk_jar
@@ -126,6 +127,13 @@ workflow ReadsPipelineSparkWorkflow {
         fair_location=fair_location,
         conf=conf
     }
+  }
+  call CopyHDFSIntoGCS {
+    input:
+      vcf=ReadsPipelineSpark.VCF,
+      vcf_list=vcf_list_name,
+      outputpath=outputpath,
+      hdfs_path=CopyGCSDirIntoHDFSSpark.hdfs_path
   }
 }
 
@@ -233,7 +241,6 @@ task ReadsPipelineSpark {
 
   # spark calcs assuming 52 gbs per worker total worker 6
   # want no more than 5 executors per node 2 by default
-  ,spark.yarn.executor.memoryOverhead=10480"
 
   command <<<
     set -eu
@@ -242,22 +249,37 @@ task ReadsPipelineSpark {
     ${default="gatk" gatk_path} \
       ReadsPipelineSpark \
         --input "${hdfs_path}/${sample}.unmapped.bam" \
-        --known-sites $"${hdfs_path}/${known_variants}" \
-        --output "${outputpath}/vcf/${sample}.vcf" \
-        --reference $"${hdfs_path}/${ref_fasta}" \
+        --known-sites "${hdfs_path}/${known_variants}" \
+        --output "${hdfs_path}/vcf/${sample}.vcf" \
+        --reference "${hdfs_path}/${ref_fasta}" \
         --align \
         -- \
         --spark-runner GCS \
         --cluster ${cluster_name} \
         --num-executors ${default=12 numexec} \
-        --executor-cores ${default=3 execores} \
-        --executor-memory ${default="15G" execmem} \
-        --driver-memory ${default="12G" drivermem} \
+        --executor-cores ${default=2 execores} \
+        --executor-memory ${default="10G" execmem} \
+        --driver-memory ${default="10G" drivermem} \
         --driver-cores 4 \
         --verbosity=debug \
-        --conf "spark.dynamicAllocation.enabled=false,spark.yarn.executor.memoryOverhead=10480"
+        --conf "spark.dynamicAllocation.enabled=false,spark.yarn.executor.memoryOverhead=10240"
   >>>
   output {
-    String VCF = "${outputpath}${sample}.vcf" 
+      String VCF = "${hdfs_path}/vcf/${sample}.vcf" 
+  }
+}
+
+task CopyHDFSIntoGCS {
+  Array[String] vcf
+  String vcf_list
+  String hdfs_path
+  String outputpath
+
+  command {
+    mv ${write_lines(vcf)} ${vcf_list}.list && \
+    gcloud dataproc jobs submit pig --execute "sh hadoop distcp ${hdfs_path}/vcf/ ${outputpath}/"
+  }
+  output {
+    File vcf_out_list = "${vcf_list}.list"
   }
 }

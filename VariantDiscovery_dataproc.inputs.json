@@ -29,6 +29,7 @@
   "ReadsPipelineSparkWorkflow.conf": "String? (optional)",
   "ReadsPipelineSparkWorkflow.known_variants": "String",
   "ReadsPipelineSparkWorkflow.cluster_name": "String",
+  "ReadsPipelineSparkWorkflow.vcf_list_name": "String",
   "ReadsPipelineSparkWorkflow.scheduler": "String? (optional)",
   "ReadsPipelineSparkWorkflow.scopes": "String? (optional)",
   "ReadsPipelineSparkWorkflow.outputpath": "String"
