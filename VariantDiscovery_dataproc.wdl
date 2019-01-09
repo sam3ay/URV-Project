@@ -17,6 +17,7 @@
 ## - Python 2.7 & Python 3.6
 ## - Google Cloud SDK (ver 223.0.0 or later)
 ##
+## if moving from hdfs upon completion gcloud dataproc jobs submit pig --execute "sh hadoop distcp ${hdfs_path}/vcf/ ${outputpath}/"
 ## Cromwell version support 
 ## - Successfully tested on v36
 ## - Does not work on versions < v23 due to output syntax
@@ -263,20 +264,20 @@ task ReadsPipelineSpark {
         --reference "${hdfs_path}/${ref_fasta}" \
         --dbsnp "${hdfs_path}/${dbsnpvcf}" \
         --tmp-dir "/tmp" \
-        --sharded-output ${default='true' shard_output} \
+        --sharded-output ${default='false' shard_output} \
         --align 'true' \
         -- \
         --spark-runner GCS \
         --cluster ${cluster_name} \
         --num-executors ${default=12 numexec} \
-        --executor-cores ${default=2 execores} \
+        --executor-cores ${default=3 execores} \
         --executor-memory ${default="10G" execmem} \
         --driver-memory ${default="10G" drivermem} \
         --driver-cores ${default=4 drivercores} \
         --conf "spark.dynamicAllocation.enabled=false,spark.yarn.executor.memoryOverhead=10240"
   >>>
   output {
-    String VCF = "${hdfs_path}/vcf/${sample}.vcf"
+    String VCF = "${outputpath}/vcf/${sample}.vcf"
   }
 }
 
@@ -287,8 +288,7 @@ task CopyHDFSIntoGCS {
   String outputpath
 
   command {
-    mv ${write_lines(vcf)} ${vcf_list}.list && \
-    gcloud dataproc jobs submit pig --execute "sh hadoop distcp ${hdfs_path}/vcf/ ${outputpath}/"
+    mv ${write_lines(vcf)} ${vcf_list}.list
   }
   output {
     File vcf_out_list = "${vcf_list}.list"
