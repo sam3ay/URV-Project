@@ -2,12 +2,11 @@ from pathlib import PurePath
 from urllib import parse
 
 
-def get_fileurl(url, filename, sep, suffix, depth, pair=False):
+def get_fileurl(url, sep, suffix, depth, pair=False):
     """Retrieve path of file with specified file name and extension
 
     Args:
         url (str): Path being scanned
-        filename (str): Name of file or folder
         sep (str): character separating file and extension
         suffix (str): extension of file or folder in parent directory.
         depth (int): Which ancestor the file is located in
@@ -24,13 +23,13 @@ def get_fileurl(url, filename, sep, suffix, depth, pair=False):
     path = urlp.path
     accension = None
     parentpath = PurePath(path).parents[depth]
-    if filename is None and pair:
+    if pair:
         filename = PurePath(path).parts[-1].split(sep)[0]
         accension = PurePath(path).parts[-2]
-    elif filename is None:
+    elif depth > 0:
         filename = parentpath.parts[-1]
     if suffix is not None:
-        filereturn = filename + sep + suffix
+        filereturn = filename + suffix
     else:
         filereturn = filename
     output_path = parentpath.joinpath(filereturn)

@@ -11,7 +11,9 @@ import pathhandling
 import asyncio
 
 
-def tsvbuild(json_path, gcsbucket, suffix, tsv_name):
+def tsvbuild(
+        json_path, gcsbucket, suffix, pairflag,
+        tsv_name, default, metaflag):
     """builds a tsv file from a directory of paired files
 
     Retrieves location of pairs of files matching suffix and retrieves
@@ -23,7 +25,9 @@ def tsvbuild(json_path, gcsbucket, suffix, tsv_name):
         gcsbucket (str): google cloud bucket name, recursively searched
         suffix (str): file identifying pattern being searched
         tsv_name (str): filename or tsv file
-        default ('bool'): Use the default credentials
+        default (bool): Use the default credentials
+        metaflag (bool): Find and write metadata
+        pairflag (bool): Find and write File pair
 
     Returns:
         str: location of tsv file
@@ -37,51 +41,59 @@ def tsvbuild(json_path, gcsbucket, suffix, tsv_name):
     """
     exp_dict = {}
     # set google auth
-    try:
+    if not default:
         env.set_env(
             'GOOGLE_APPLICATION_CREDENTIALS',
             json_path)
-    except NameError:
-        pass
     header = True
     loop = asyncio.get_event_loop()
     for gcs_url in gcloudstorage.blob_generator(gcsbucket, suffix):
         meta_dict = {}
-        exp_name, exp_path, exp_folder = pathhandling.get_fileurl(
-                url=gcs_url,
-                filename=None,
-                sep='.',
-                suffix='experiment.xml',
-                depth=1,
-                pair=False)
-        gcs_pairname, gcs_pairpath, accension = pathhandling.get_fileurl(
-                url=gcs_url,
-                filename=None,
-                sep='_',
-                suffix='2.fastq.bz2',
-                depth=0,
-                pair=True)
-        output_bam = 'gs://{0}/output/{1}.ubam'.format(gcsbucket, gcs_pairname)
-        meta_dict['Fastq1'] = gcs_url
-        meta_dict['Fastq2'] = gcs_pairpath
-        meta_dict['output'] = output_bam
-        try:
-            curr_dict = next(dict_extract.dict_extract(
-                    value=accension,
-                    var=exp_dict[exp_name]))
-        except KeyError:
-            xmlfile = gcloudstorage.blob_download(exp_path)
-            exp_dict[exp_name] = xmldictconv.xmldictconv(xmlfile)
-            curr_dict = next(dict_extract.dict_extract(
-                    value=accension,
-                    var=exp_dict[exp_name]))
-        loop.run_until_complete(
-                asyncio.gather(dictquery.dict_endpoints(
-                    input_dict=curr_dict,
-                    endpoint_dict=meta_dict)))
+        meta_dict['File'] = gcs_url
+        if pairflag:
+            gcs_pairname, gcs_pairpath, accension = pathhandling.get_fileurl(
+                    url=gcs_url,
+                    sep=suffix[0],
+                    suffix=suffix,
+                    depth=0,
+                    pair=pairflag)
+            if gcloudstorage.blob_exists(gcs_pairpath):
+                meta_dict['File_2'] = gcs_pairpath
+        else:
+            # seeking to create a filename
+            gcs_fileout, gcs_filepath, parent = pathhandling.get_fileurl(
+                    url=gcs_url,
+                    sep=suffix[0],
+                    suffix=suffix,
+                    depth=0,
+                    pair=True)
+            meta_dict['output'] = gcs_fileout
+        if metaflag:
+            exp_name, exp_path, exp_folder = pathhandling.get_fileurl(
+                    url=gcs_url,
+                    sep=suffix[0],
+                    suffix='.experiment.xml',
+                    depth=1,
+                    pair=False)
+            try:
+                curr_dict = next(dict_extract.dict_extract(
+                        value=accension,
+                        var=exp_dict[exp_name]))
+            except KeyError:
+                xmlfile = gcloudstorage.blob_download(exp_path)
+                exp_dict[exp_name] = xmldictconv.xmldictconv(xmlfile)
+                curr_dict = next(dict_extract.dict_extract(
+                        value=accension,
+                        var=exp_dict[exp_name]))
+            loop.run_until_complete(
+                    dictquery.dict_endpoints(
+                        input_dict=curr_dict,
+                        endpoint_dict=meta_dict))
         tsvwriter(tsv_name, meta_dict, header)
         header = False
     loop.close()
+    if not default:
+        env.unset_env('GOOGLE_APPLICATION_CREDENTIALS')
     return tsv_name
 
 
@@ -113,4 +125,6 @@ if __name__ == '__main__':
             gcsbucket=darg['gcs'],
             suffix=darg['suffix'],
             tsv_name=darg['tsv_name'],
-            default=darg['default'])
+            default=darg['default'],
+            pairflag=darg['pairflag'],
+            metaflag=darg['metaflag'])
