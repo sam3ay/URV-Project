@@ -1,5 +1,6 @@
 {
   "ReadsPipelineSparkWorkflow.workerbootdisk": "Int? (optional)",
+  "ReadsPipelineSparkWorkflow.shard_output": "Boolean? (optional)",
   "ReadsPipelineSparkWorkflow.execmem": "String? (optional)",
   "ReadsPipelineSparkWorkflow.gcs_dir": "String",
   "ReadsPipelineSparkWorkflow.initaction": "String? (optional)",
@@ -11,6 +12,7 @@
   "ReadsPipelineSparkWorkflow.zone": "String? (optional)",
   "ReadsPipelineSparkWorkflow.gatk_jar": "File? (optional)",
   "ReadsPipelineSparkWorkflow.bamtsv": "File",
+  "ReadsPipelineSparkWorkflow.drivercores": "Int? (optional)",
   "ReadsPipelineSparkWorkflow.json_location": "String? (optional)",
   "ReadsPipelineSparkWorkflow.masterbootdisk": "Int? (optional)",
   "ReadsPipelineSparkWorkflow.service_account": "String? (optional)",
@@ -22,6 +24,7 @@
   "ReadsPipelineSparkWorkflow.metadata": "String? (optional)",
   "ReadsPipelineSparkWorkflow.numworker": "Int? (optional)",
   "ReadsPipelineSparkWorkflow.execores": "Int? (optional)",
+  "ReadsPipelineSparkWorkflow.dbsnp": "String",
   "ReadsPipelineSparkWorkflow.project": "String",
   "ReadsPipelineSparkWorkflow.region": "String? (optional)",
   "ReadsPipelineSparkWorkflow.drivermem": "String? (optional)",

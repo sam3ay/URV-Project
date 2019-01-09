@@ -57,6 +57,8 @@ workflow ReadsPipelineSparkWorkflow {
   Array[Array[String]] inputbamarray = read_tsv(bamtsv)
   String ref_fasta
   String known_variants
+  String dbsnp
+  Boolean? shard_output
   String outputpath
   String vcf_list_name
 
@@ -69,6 +71,7 @@ workflow ReadsPipelineSparkWorkflow {
   Int? numexec              # total number of executors (3 per node generally)
   Int? execores             # cores per executor (5 per executor)
   String? drivermem         # used to bolster yarn node manager
+  Int? drivercores
 
   if (select_first([create_dataproc, true])) {
     call CreateCluster {
@@ -117,6 +120,9 @@ workflow ReadsPipelineSparkWorkflow {
         sample=inputbamarray[i][1],
         ref_fasta=ref_fasta,
         known_variants=known_variants,
+        dbsnpvcf=dbsnp,
+        shard_output=shard_output,
+        drivercores=drivercores,
         outputpath=outputpath,
         cluster_name=cluster_name,
         project=project,
@@ -224,15 +230,18 @@ task ReadsPipelineSpark {
   String ref_fasta
   String hdfs_path
   String known_variants
+  String dbsnpvcf
   String sample
   String cluster_name
   String project
   String? conf
   String? fair_location
+  Boolean? shard_output
   String? execmem           # memory per executor (~90% of worker mem/3)
   Int? numexec              # total number of executors (3 per node generally)
   Int? execores             # cores per executor (5 per executor)
   String? drivermem         # used to bolster yarn node manager
+  Int? drivercores
 
 
   File? gatk_jar
@@ -241,6 +250,7 @@ task ReadsPipelineSpark {
 
   # spark calcs assuming 52 gbs per worker total worker 6
   # want no more than 5 executors per node 2 by default
+  #--verbosity=debug \
 
   command <<<
     set -eu
@@ -252,6 +262,8 @@ task ReadsPipelineSpark {
         --known-sites "${hdfs_path}/${known_variants}" \
         --output "${hdfs_path}/vcf/${sample}.vcf" \
         --reference "${hdfs_path}/${ref_fasta}" \
+        --dbsnp "${hdfs_path}/${dbsnpvcf}" \
+        --sharded-output ${default='true' shard_output} \
         --align \
         -- \
         --spark-runner GCS \
@@ -260,12 +272,11 @@ task ReadsPipelineSpark {
         --executor-cores ${default=2 execores} \
         --executor-memory ${default="10G" execmem} \
         --driver-memory ${default="10G" drivermem} \
-        --driver-cores 4 \
-        --verbosity=debug \
+        --driver-cores ${default=4 drivercores} \
         --conf "spark.dynamicAllocation.enabled=false,spark.yarn.executor.memoryOverhead=10240"
   >>>
   output {
-      String VCF = "${hdfs_path}/vcf/${sample}.vcf" 
+    String VCF = "${hdfs_path}/vcf/${sample}.vcf"
   }
 }
 
