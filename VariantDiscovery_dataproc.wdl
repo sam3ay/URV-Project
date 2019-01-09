@@ -250,7 +250,6 @@ task ReadsPipelineSpark {
 
   # spark calcs assuming 52 gbs per worker total worker 6
   # want no more than 5 executors per node 2 by default
-  #--verbosity=debug \
 
   command <<<
     set -eu
@@ -260,11 +259,12 @@ task ReadsPipelineSpark {
       ReadsPipelineSpark \
         --input "${hdfs_path}/${sample}.unmapped.bam" \
         --known-sites "${hdfs_path}/${known_variants}" \
-        --output "${hdfs_path}/vcf/${sample}.vcf" \
+        --output "${outputpath}/vcf/${sample}.vcf" \
         --reference "${hdfs_path}/${ref_fasta}" \
         --dbsnp "${hdfs_path}/${dbsnpvcf}" \
+        --tmp-dir "/tmp" \
         --sharded-output ${default='true' shard_output} \
-        --align \
+        --align 'true' \
         -- \
         --spark-runner GCS \
         --cluster ${cluster_name} \

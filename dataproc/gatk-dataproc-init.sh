@@ -34,6 +34,7 @@ if [[ "${ROLE}" == 'Master' ]]; then
     systemctl restart hadoop-yarn-resourcemanager.service
 fi
 
+mkdir -p /tmp
 # Download and run the Stackdriver installation script
 curl -sSO https://dl.google.com/cloudagents/install-monitoring-agent.sh
 sudo bash install-monitoring-agent.sh
